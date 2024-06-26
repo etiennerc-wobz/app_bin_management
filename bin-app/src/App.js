@@ -9,6 +9,7 @@ import SimpleBottomNavigation from './components/BottomNavigation/BottomNavigati
 import Festival from './pages/Festival';
 import MagicBins from './pages/MagicBins';
 import Map from './pages/Map';
+import Bin from './pages/Bin';
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,16 +20,18 @@ const App = () => {
 
   return (
     <Router>
-      <div className="App flex items-center justify-center min-h-screen bg-gray-100 pt-12">
+      <div className="App flex items-center justify-center min-h-screen bg-gray-100">
 
-        <Routes>
-          <Route path="/" element={<Festival />} />
-          <Route path="/magic-bins" element={<MagicBins />} />
-          <Route path="/map" element={<Map />} /> 
-        </Routes>
+    <Routes>
+      <Route path="/" element={<Festival />} />
+      <Route path="/magic-bins" element={<MagicBins />} />
+      <Route path="/map" element={<Map />} /> 
+      <Route path="/magic-bins/:id" element={<Bin />} />
+    </Routes>
 
-        <SimpleBottomNavigation />
       </div>
+      <SimpleBottomNavigation />
+
 
 
     </Router>
