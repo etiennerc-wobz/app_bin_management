@@ -8,6 +8,9 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import FestivalIcon from '@mui/icons-material/Festival';
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+
 const SimpleBottomNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,9 +37,24 @@ const SimpleBottomNavigation = () => {
       navigate('/map');
     }
   };
+  const theme = createTheme({
+    components: {
+      MuiBottomNavigationAction: {
+        styleOverrides: {
+          root: {
+            "&.Mui-selected": {
+              color: "green",
+            },
+          },
+        },
+      },
+    },
+  });
 
   return (
-    <Box sx={{ width: '100%', position: 'fixed', bottom: 0 }}>
+    <ThemeProvider theme={theme}>
+
+    <Box sx={{ width: '100%', position: 'fixed', bottom: 0 , zIndex:1000}}>
       <BottomNavigation
         showLabels
         value={value}
@@ -47,6 +65,8 @@ const SimpleBottomNavigation = () => {
         <BottomNavigationAction label="Carte" icon={<LocationOnIcon />} />
       </BottomNavigation>
     </Box>
+    </ThemeProvider>
+
   );
 };
 

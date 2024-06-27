@@ -10,9 +10,17 @@ import Festival from './pages/Festival';
 import MagicBins from './pages/MagicBins';
 import Map from './pages/Map';
 import Bin from './pages/Bin';
+import ResponsiveAppBar from './components/TopNavigation/TopNavigation';
+
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
   const handleMenuButtonClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -20,20 +28,20 @@ const App = () => {
 
   return (
     <Router>
+      {isMobile ? <SimpleBottomNavigation /> : <ResponsiveAppBar />}
+
       <div className="App flex items-center justify-center min-h-screen bg-gray-100">
 
-    <Routes>
-      <Route path="/" element={<Festival />} />
-      <Route path="/magic-bins" element={<MagicBins />} />
-      <Route path="/map" element={<Map />} /> 
-      <Route path="/magic-bins/:id" element={<Bin />} />
-    </Routes>
+        <Routes>
+          <Route path="/" element={<Festival />} />
+          <Route path="/magic-bins" element={<MagicBins />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/magic-bins/:id" element={<Bin />} />
+        </Routes>
 
       </div>
-      <SimpleBottomNavigation />
 
-
-
+      
     </Router>
   );
 };

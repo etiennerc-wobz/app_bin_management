@@ -1,8 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
+import { getBins } from '../api';
 
 const Map = () => {
+
+  const [bins, setBins] = useState([]);
+
   useEffect(() => {
+    const fetchBins = async () => {
+      try {
+        const bins = await getBins();
+        setBins(bins);
+      } catch (error) {
+        console.error('Error fetching bins:', error);
+      }
+    };
+    fetchBins();
+  }, []);
+
+  useEffect(() => {
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ3JlZ29pcmVtdWxsZXIiLCJhIjoiY2x4dnJubm9iMG9oZjJsc2dtZ281N3VzZiJ9.H_bx7U5CwGOjxDM7LP8nUQ';
     const map = new mapboxgl.Map({
       container: 'map', // container ID
@@ -25,36 +42,25 @@ const Map = () => {
 
     // Trigger the geolocation control once the map is loaded
     map.on('load', () => {
-      
+      console.log('bins:', bins);
       map.loadImage('https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png', (error, image) => {
-        if(error) throw error;
+        if (error) throw error;
         map.addImage('custom-marker', image);
         map.addSource('points', {
           'type': 'geojson',
           'data': {
             'type': 'FeatureCollection',
-            'features': [
-              {
-                'type': 'Feature',
-                'geometry': {
-                  'type': 'Point',
-                  'coordinates': [4.901472, 45.716701]
-                },
-                'properties': {
-                  'title': 'Bin-Entree'
-                }
+            'features': bins.map(bin => ({
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [bin.gps.lon, bin.gps.lat]
               },
-              {
-                'type': 'Feature',
-                'geometry': {
-                  'type': 'Point',
-                  'coordinates': [4.897744, 45.717148]
-                },
-                'properties': {
-                  'title': 'Bin-Scene'
-                }
+              'properties': {
+                'title': bin.name,
+                'id': bin.id
               }
-            ]
+            }))
           }
         });
         map.addLayer({
@@ -70,11 +76,11 @@ const Map = () => {
           }
         });
 
-// Add a popup to the bins
-map.on('click', 'points', function (e) {
-  new mapboxgl.Popup()
-    .setLngLat(e.features[0].geometry.coordinates)
-    .setHTML(`<a href="/magic-bins">${e.features[0].properties.title}</a>
+        // Add a popup to the bins
+        map.on('click', 'points', function (e) {
+          new mapboxgl.Popup()
+            .setLngLat(e.features[0].geometry.coordinates)
+            .setHTML(`<a href="/magic-bins/${e.features[0].properties.id}">${e.features[0].properties.title}</a>
     <style>
     a {
       padding: 5px;
@@ -82,8 +88,8 @@ map.on('click', 'points', function (e) {
       font-weight: bold;
     }
     `)
-    .addTo(map);
-});
+            .addTo(map);
+        });
 
       }
       );
@@ -91,7 +97,7 @@ map.on('click', 'points', function (e) {
 
 
     });
-  }, []);
+  }, [bins]);
 
   return <div id="map" style={{ width: '100%', height: '100vh', zIndex: 0 }} />;
 };
