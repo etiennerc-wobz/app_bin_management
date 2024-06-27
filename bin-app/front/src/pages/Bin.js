@@ -4,24 +4,28 @@ import { getBins } from '../api';
 
 
 const Bin = () => {
-    const {id} = useParams();
+    const { id } = useParams();
 
     const [bins, setBins] = useState([]);
     const [thisBin, setThisBin] = useState(null);
 
     useEffect(() => {
+
         const fetchBins = async () => {
             try {
-              const bins = await getBins();
-              setBins(bins);
-              const bin = bins.find(bin => bin.id === id);
-              setThisBin(bin);
+                const bins = await getBins();
+                setBins(bins);
+                console.log('bins:', bins);
+                console.log('id:', id);
+                const bin = bins.find(bin => String(bin.id) === String(id));
+                setThisBin(bin);
             } catch (error) {
-              console.error('Error fetching bins:', error);
+                console.error('Error fetching bins:', error);
             }
         };
         fetchBins();
     }, [id]);
+
 
 
     if (!thisBin) {

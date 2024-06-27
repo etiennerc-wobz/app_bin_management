@@ -1,6 +1,7 @@
 import React from 'react';
 import CircularProgressWithLabel from '../CircularProgressWithLabel/CircularProgressWithLabel';
 
+
 const BinListElement = ({ title, zone, traps, id, fillrate, onClick }) => {
   return (
     <div className="lg:w-3/4 p-4 border-b border-gray-200 bg-gray-200 rounded-full hover:bg-gray-300 mx-auto cursor-pointer" onClick={onClick}>
