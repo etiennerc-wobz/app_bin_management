@@ -14,8 +14,8 @@ export default function SelectSmall(props) {
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 180 }} size="small">
-      <InputLabel id="demo-select-small-label">Trier par</InputLabel>
+<FormControl sx={{ m: 1, minWidth: 180, marginRight: 16 }} size="small">     
+<InputLabel id="demo-select-small-label">Trier par</InputLabel>
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"

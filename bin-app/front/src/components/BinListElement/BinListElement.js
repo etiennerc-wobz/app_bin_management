@@ -1,10 +1,15 @@
 import React from 'react';
 import CircularProgressWithLabel from '../CircularProgressWithLabel/CircularProgressWithLabel';
 
-const BinListElement = ({ title, zone, traps, id, fillrate, onClick }) => {
+const BinListElement = ({ title, zone, traps, id, fillrate, onClick, deleteMode }) => {
+
+  const baseStyle = "lg:w-3/4 p-4 border-b border-gray-200 bg-gray-200 rounded-full mx-auto cursor-pointer flex items-center justify-between";
+  const hoverStyle = deleteMode ? "hover:bg-red-500" : "hover:bg-gray-300";
+  const activeStyle = deleteMode ? "bg-red-200" : "";
+
   return (
     <div 
-      className="lg:w-3/4 p-4 border-b border-gray-200 bg-gray-200 rounded-full hover:bg-gray-300 mx-auto cursor-pointer flex items-center justify-between" 
+      className={`${baseStyle} ${hoverStyle} ${activeStyle}`} 
       onClick={onClick}
     >
       <div className="flex items-center">
