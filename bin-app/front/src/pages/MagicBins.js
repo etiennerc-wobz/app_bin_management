@@ -1,11 +1,14 @@
 // src/pages/MagicBins.js
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { getBins } from '../api';
 import BinListElement from '../components/BinListElement/BinListElement';
 import SelectInput from '../components/SelectInput/SelectInput';
 import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
+import { deleteBin } from '../api';
+import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
+import NewBinDialog from '../components/NewBinDialog/NewBinDialog';
 
 const MagicBins = () => {
 
@@ -18,6 +21,9 @@ const MagicBins = () => {
   const [bins, setBins] = useState([]);
 
   const [deleteMode, setDeleteMode] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [openNewBinDialog, setOpenNewBinDialog] = useState(false);
 
 
 
@@ -46,38 +52,68 @@ const MagicBins = () => {
 
 
   const handleBinClick = (id) => {
-    if(!deleteMode){
+    if (!deleteMode) {
       navigate(`/magic-bins/${id}`);
     }
-    else{
-        // Implement your logic to confirm the deletion of the bin with the given id
-        // For example, you can show a confirmation dialog and proceed with the deletion if the user confirms
-        if (window.confirm('Voulez-vous supprimer la Bin ' + id + ' ?')) {
-          // Call the deleteBin function with the id
-          //deleteBin(id);
-          console.log('delete bin:', id);
+    else {
+      const binName = bins.find(bin => bin.id === id).name;
+      if (window.confirm('Voulez-vous supprimer la Bin : ' + binName + ' ?')) {
+
+        //deleteBin(id);
+        console.log('delete bin:', id);
+        deleteBin(id).then(() => {
+          setBins(bins.filter(bin => bin.id !== id));
+          setSnackbarMessage('Bin supprimée avec succès');
+          setOpenSnackbar(true); 
         }
-      };
-      setDeleteMode(false);
-    }
-  
+        );
+
+      }
+    };
+    setDeleteMode(false);
+  }
+
+  const handleAddBinClick = () => {
+    setOpenNewBinDialog(true);
+  }
+
+  const handleBinAdded = () => {
+    const fetchBins = async () => {
+      try {
+        let bins = await getBins();
+        setBins(bins);
+        setSnackbarMessage('Bin ajoutée avec succès');
+        setOpenSnackbar(true);
+      } catch (error) {
+        console.error('Error fetching bins:', error);
+      }
+    };
+
+    fetchBins();
+  }
+
 
   const handleTriChange = (newTri) => {
     setTri(newTri);
     navigate(`/magic-bins?sort=${newTri}`);
+    setSnackbarMessage('Tri effectué avec succès');
+    setOpenSnackbar(true); 
+
   };
 
-  console.log('magicbins// bins: ', bins);
 
+  
   return (
     <>
-      <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 md:pt-24 pb-20 md:pb-6">
-        <SelectInput onTriChange={handleTriChange}/>
+      <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6">
+        <SelectInput onTriChange={handleTriChange} />
         {bins.map((bin, index) => (
           <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} onClick={() => handleBinClick(bin.id)} deleteMode={deleteMode} />
         ))}
       </div>
-      <ButtonBinList setDeleteMode={setDeleteMode} />
+      <ButtonBinList setDeleteMode={setDeleteMode} onAddBinClick={handleAddBinClick} />
+      <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} />
+      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded}/>
     </>
   );
 };

@@ -13,3 +13,28 @@ export const getBins = async () => {
   }
 };
 
+export const deleteBin = async (id) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/deletebin`, null, {
+      params: {
+        id: id
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting bin:', error);
+    throw error;
+  }
+}
+
+export const createBin = async (bin) => {
+  try {
+    console.log('tentative de création de la bin : ', bin);
+    const response = await axios.post(`${API_URL}/api/createbin`, bin);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating bin:', error);
+    throw error;
+  }
+}
+

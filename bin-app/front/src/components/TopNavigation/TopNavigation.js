@@ -143,7 +143,7 @@ function ResponsiveAppBar() {
                                         '&:hover': {
                                             backgroundColor: '#094735',
                                             cursor: 'pointer',
-                                        }
+                                        },
                                     }}
                                 >
                                     {page}

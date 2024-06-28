@@ -34,8 +34,8 @@ const theme = createTheme({
 
 
 
-export default function ButtonBinList({setDeleteMode}) {
-  const defaultTheme = useTheme();  // Ensure the theme is applied
+export default function ButtonBinList({ setDeleteMode, onAddBinClick }) {
+  const defaultTheme = useTheme(); 
   const isMobile = useMediaQuery(defaultTheme.breakpoints.down('sm'));
 
 
@@ -43,9 +43,13 @@ export default function ButtonBinList({setDeleteMode}) {
   const handleIconClick = (action) => {
     console.log(action.name);
     if(action.name === 'Supprimer une bin') {
-        setDeleteMode(true);
+      setDeleteMode(true);
     }
-};
+    if(action.name === 'Ajouter une bin') {
+      console.log('ajouter une bin');
+      onAddBinClick(); 
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -61,7 +65,7 @@ export default function ButtonBinList({setDeleteMode}) {
         }}
       >
         <SpeedDial
-          ariaLabel="SpeedDial basic example"
+          ariaLabel="SpeedDial"
           sx={{ position: 'fixed', right: 4 }}
           icon={<SpeedDialIcon />}
           direction={isMobile ? 'down' : 'left'}
