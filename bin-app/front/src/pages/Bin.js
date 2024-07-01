@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getBins } from '../api';
+import { getBins,getBinTraps } from '../api';
 import CircularProgressWithLabel from '../components/CircularProgressWithLabel/CircularProgressWithLabel';
 import { useMediaQuery } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
+import Traps from '../components/Traps/Traps';
 
 const Bin = () => {
     const { id } = useParams();
@@ -13,6 +14,7 @@ const Bin = () => {
     const [error, setError] = useState(null); 
     const isSmallScreen = useMediaQuery('(max-width:640px)');
     const [thisStatus, setThisStatus] = useState(false);
+    const [binTraps, setBinTraps] = useState([]);
 
     useEffect(() => {
 
@@ -36,6 +38,18 @@ const Bin = () => {
             }
         };
         fetchBins();
+
+        const fetchBinTraps = async () => {
+            try {
+                const binTraps = await getBinTraps(id);
+                setBinTraps(binTraps);
+                console.log('binTraps:', binTraps);
+            } catch (error) {
+                console.error('Error fetching bin traps:', error);
+            }
+        }
+        fetchBinTraps();
+
     }, [id]);
 
     if (error) {
@@ -45,7 +59,6 @@ const Bin = () => {
     if (!thisBin) {
         return <div>Loading...</div>;
     }
-
 
 
     return (
@@ -64,6 +77,10 @@ const Bin = () => {
             </div>
             <div className="absolute top-10 right-4 sm:top-24 sm:right-20 text-xl p-2">
                 <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"}/>
+            </div>
+            
+            <div className="mt-40 sm:mt-52">
+                <Traps traps={binTraps} />
             </div>
         </>
     );
