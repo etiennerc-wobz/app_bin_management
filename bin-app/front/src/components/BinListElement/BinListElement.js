@@ -42,7 +42,7 @@ const BinListElement = ({ title, zone, traps, fillrate, status, onClick, deleteM
           <CircularProgressWithLabel value={fillrate} size="1" />
         </div>
 
-        <div className="ml-4 sm:ml-10 flex flex-col items-start w-36 sm:w-80" ref={containerRef}>
+        <div className="ml-4 sm:ml-10 flex flex-col items-start w-24 sm:w-80" ref={containerRef}>
           <h2 className="text-xl pb-1 font-bold sm:text-4xl sm:mr-2" ref={titleRef}>
             {title}
           </h2>

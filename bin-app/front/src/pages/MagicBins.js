@@ -24,6 +24,8 @@ const MagicBins = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openNewBinDialog, setOpenNewBinDialog] = useState(false);
+  const [search, setSearch] = useState(''); // Nouvel état pour la recherche
+
 
 
 
@@ -78,6 +80,10 @@ const MagicBins = () => {
     setOpenNewBinDialog(true);
   }
 
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
   const handleBinAdded = () => {
     const fetchBins = async () => {
       try {
@@ -106,9 +112,18 @@ const MagicBins = () => {
   
   return (
     <>
-      <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6">
-        <SelectInput onTriChange={handleTriChange} />
-        {bins.map((bin, index) => (
+      <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
+        <div className=" flex flex-row items-center ">
+          <input
+            type="text"
+            placeholder="Rechercher"
+            value={search}
+            onChange={handleSearchChange}
+            className="w-36 px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-blue outline"
+          />
+          <SelectInput onTriChange={handleTriChange} />
+        </div>
+        {bins.filter(bin => bin.name.toLowerCase().includes(search.toLowerCase())).map((bin, index) => (
           <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} deleteMode={deleteMode} />
         ))}
       </div>
