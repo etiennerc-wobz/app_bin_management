@@ -21,13 +21,11 @@ export default function NewBinDialog({open, onClose, onBinAdded}) {
     const formJson = Object.fromEntries(formData.entries());
 
     try {
-      // Appeler l'API avec les données du formulaire
       const response = await createBin(formJson);
         console.log('response:', response);
         onBinAdded();
       handleClose();
     } catch (error) {
-      // Gérer l'erreur
       console.error('Erreur lors de la création de la bin:', error);
     }
   };

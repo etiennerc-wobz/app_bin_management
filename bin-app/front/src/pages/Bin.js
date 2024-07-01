@@ -26,7 +26,7 @@ const Bin = () => {
                 console.log('id:', id);
                 const bin = bins.find(bin => String(bin.id) === String(id));
                 if (!bin) {
-                    setError('Aucune bin avec cet ID n\'a été trouvée.'); // Définir le message d'erreur si la bin n'est pas trouvée
+                    setError('Aucune bin avec cet ID n\'a été trouvée.'); 
                 } else {
                     setThisBin(bin);
                     setThisStatus(bin.status==="connected" ? true : false);
@@ -39,17 +39,6 @@ const Bin = () => {
         };
         fetchBins();
 
-        const fetchBinTraps = async () => {
-            try {
-                const binTraps = await getBinTraps(id);
-                setBinTraps(binTraps);
-                console.log('binTraps:', binTraps);
-            } catch (error) {
-                console.error('Error fetching bin traps:', error);
-            }
-        }
-        fetchBinTraps();
-
     }, [id]);
 
     if (error) {
@@ -61,29 +50,31 @@ const Bin = () => {
     }
 
 
-    return (
-        <>
-            <div className="absolute top-8 sm:top-28 left-0 sm:left-10 h-40 w-56 sm:w-auto">
-                <div className="top-10 sm:top-32 left-20 sm:text-2xl p-0 flex justify-center">
+return (
+    <div id="pageBin" className="flex flex-col items-start sm:items-center p-0 absolute top-10 sm:top-20 w-11/12 sm:px-20 overflow-hidden">
+        <div className="fixed sm:relative top-0 left-0 flex flex-row justify-between items-center w-full bg-gray-200 sm:bg-white p-4 sm:p-0">
+            <div className="flex flex-col items-start sm:mr-10 ">
+                <div className="mb-4">
                     <StatusIndicator isConnected={thisStatus} />
                 </div>
-    
-                <div className="top-10 sm:top-32 left-10 text-2xl p-2 sm:pt-6">
+
+                <div className="text-start">
                     <span className="font-bold text-4xl sm:text-5xl">{thisBin.name}</span>
                 </div>
-                <div className="top-24 sm:top-44 left-10 text-2xl sm:text-4xl p-2">
+                <div className="text-2xl sm:text-4xl text-start mt-4">
                     Zone : <span className="font-bold text-3xl sm:text-4xl">{thisBin.zone}</span>
                 </div>
             </div>
-            <div className="absolute top-10 right-4 sm:top-24 sm:right-20 text-xl p-2">
-                <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"}/>
+            <div className="mt-4 sm:mt-0">
+                <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
             </div>
-            
-            <div className="mt-40 sm:mt-52">
-                <Traps traps={binTraps} />
-            </div>
-        </>
-    );
+        </div>
+        <div className="pt-32 sm:pt-0 mt-8 sm:mt-0 w-full ">   
+            <p className="text-2xl sm:text-4xl text-start">Bouches : </p>
+            <Traps binId={thisBin.id} />
+        </div>
+    </div>
+);
 }
 
 export default Bin;

@@ -27,10 +27,10 @@ const App = () => {
   };
 
   return (
-    <Router>
+    <Router className="overflow-hidden">
       {isMobile ? <SimpleBottomNavigation /> : <ResponsiveAppBar />}
 
-      <div className="App flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="App flex items-center justify-center min-h-screen  overflow-hidden">
 
         <Routes>
           <Route path="/" element={<Festival />} />
