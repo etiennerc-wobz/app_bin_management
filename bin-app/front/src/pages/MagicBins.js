@@ -40,6 +40,7 @@ const MagicBins = () => {
         } else if (triNumber === 30) {
           bins.sort((a, b) => a.traps.length - b.traps.length);
         }
+        console.log('bins:', bins);
 
         setBins(bins);
       } catch (error) {
@@ -108,7 +109,7 @@ const MagicBins = () => {
       <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6">
         <SelectInput onTriChange={handleTriChange} />
         {bins.map((bin, index) => (
-          <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} onClick={() => handleBinClick(bin.id)} deleteMode={deleteMode} />
+          <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} deleteMode={deleteMode} />
         ))}
       </div>
       <ButtonBinList setDeleteMode={setDeleteMode} onAddBinClick={handleAddBinClick} />

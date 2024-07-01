@@ -12,7 +12,6 @@ export default function CircularProgressWithLabel(props) {
   const [sizeProgress, setSizeProgress] = React.useState();
   const [sizeLabel, setSizeLabel] = React.useState();
 
-  console.log('size:', size);
 
   React.useEffect(() => {
     if(size==="3"){ //Bin page laptop

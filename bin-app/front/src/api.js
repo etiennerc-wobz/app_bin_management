@@ -13,6 +13,30 @@ export const getBins = async () => {
   }
 };
 
+export const getTraps = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/api/traps`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching traps data:', error);
+    throw error;
+  }
+};
+
+export const getBinTraps = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/bintraps`, {
+      params: {
+        id: id
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching bin traps data:', error);
+    throw error;
+  }
+}
+
 export const deleteBin = async (id) => {
   try {
     const response = await axios.post(`${API_URL}/api/deletebin`, null, {
@@ -37,4 +61,6 @@ export const createBin = async (bin) => {
     throw error;
   }
 }
+
+
 
