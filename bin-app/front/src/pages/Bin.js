@@ -5,6 +5,7 @@ import CircularProgressWithLabel from '../components/CircularProgressWithLabel/C
 import { useMediaQuery } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
 import Traps from '../components/Traps/Traps';
+import { AuthContext } from '../components/AuthContext/AuthContext';
 
 const Bin = () => {
     const { id } = useParams();

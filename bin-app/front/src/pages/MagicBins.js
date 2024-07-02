@@ -1,5 +1,5 @@
 // src/pages/MagicBins.js
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { getBins,getBinTraps } from '../api';
@@ -9,6 +9,13 @@ import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
 import { deleteBin } from '../api';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import NewBinDialog from '../components/NewBinDialog/NewBinDialog';
+
+import { getMyFestivalBins } from '../api';
+
+import { AuthContext } from '../components/AuthContext/AuthContext';
+
+import { getFavoriteFestival } from '../api';
+import FavoriteFestival from './Festival';
 
 const MagicBins = () => {
 
@@ -26,13 +33,15 @@ const MagicBins = () => {
   const [openNewBinDialog, setOpenNewBinDialog] = useState(false);
   const [search, setSearch] = useState(''); // Nouvel état pour la recherche
 
+  const { user } = useContext(AuthContext);
+  const [FavoriteFestival, setFavoriteFestival] = useState('');
 
 
 
   useEffect(() => {
     const fetchBins = async () => {
       try {
-        let bins = await getBins();
+        let bins = await getMyFestivalBins(user.id);
         const triNumber = Number(tri);
 
         if (triNumber === 10) {
@@ -51,7 +60,20 @@ const MagicBins = () => {
     };
 
     fetchBins();
+
+    const fetchFavoriteFestival = async () => {
+      try {
+        const festival = await getFavoriteFestival(user.id);
+        console.log('festival:', festival);
+        setFavoriteFestival(festival.name);
+      } catch (error) {
+        console.error('Error fetching favorite festival:', error);
+      }
+    }
+    fetchFavoriteFestival();
   }, [tri]);
+
+
 
 
   const handleBinClick = (id) => {
@@ -113,6 +135,8 @@ const MagicBins = () => {
   return (
     <>
       <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
+        <h1 className="text-xl sm:text-xl w-48 pl-4 sm:w-full 
+        ">Liste des Bins de :<strong> {FavoriteFestival} </strong></h1>
         <div className=" flex flex-row items-center sm:pl-56">
           <input
             type="text"

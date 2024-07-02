@@ -128,5 +128,16 @@ export const getFavoriteFestival = async (userId) => {
   }
 };
 
+export const getMyFestivalBins = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/users/${userId}/bins`);
+    return response.data;
+  }
+  catch (error) {
+    console.error('Error fetching my festival bins:', error);
+    throw error;
+  }
+}
+
 
 
