@@ -118,7 +118,7 @@ export const login = async (username, password) => {
   }
 }
 
-export const getFestival = async (userId) => {
+export const getFavoriteFestival = async (userId) => {
   try {
     const response = await axios.get(`${API_URL}/api/users/${userId}/favorite-festival`);
     return response.data;
@@ -126,7 +126,7 @@ export const getFestival = async (userId) => {
     console.error('Error fetching favorite festival:', error);
     throw error;
   }
-}
+};
 
 
 

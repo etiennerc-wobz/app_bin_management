@@ -13,6 +13,7 @@ import Map from './pages/Map';
 import Bin from './pages/Bin';
 import ResponsiveAppBar from './components/TopNavigation/TopNavigation';
 import Login from './components/Login/Login';
+import UserProfile from './pages/UserProfile';
 
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -48,6 +49,8 @@ const App = () => {
           <Route path="/magic-bins" element={<PrivateRoute><MagicBins /></PrivateRoute>} />
           <Route path="/map" element={<PrivateRoute><Map /></PrivateRoute>} />
           <Route path="/magic-bins/:id" element={<PrivateRoute><Bin /></PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+
         </Routes>
 
       </div>

@@ -1,9 +1,7 @@
-// FavoriteFestival.js
+// Festival.js
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext/AuthContext';
-import axios from 'axios';
-
-const API_URL = 'http://10.58.131.69:4040'; 
+import { getFavoriteFestival } from '../api';
 
 const FavoriteFestival = () => {
   const { user } = useContext(AuthContext);
@@ -12,8 +10,8 @@ const FavoriteFestival = () => {
   useEffect(() => {
     const fetchFavoriteFestival = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/users/${user.id}/favorite-festival`);
-        setFavoriteFestival(response.data);
+        const festival = await getFavoriteFestival(user.id); 
+        setFavoriteFestival(festival);
       } catch (error) {
         console.error('Error fetching favorite festival:', error);
       }

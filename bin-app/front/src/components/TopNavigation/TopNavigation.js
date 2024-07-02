@@ -14,9 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
+import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
 
 const pages = ['Festival', 'Magic-Bins', 'Carte', 'Deconnecter'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile','Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -24,6 +25,9 @@ function ResponsiveAppBar() {
     const navigate = useNavigate();
     const location = useLocation();
     const { logout } = useContext(AuthContext);
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+    const { user } = useContext(AuthContext);
 
     const handlePageClick = (page) => {
         console.log('page:', page);
@@ -35,6 +39,19 @@ function ResponsiveAppBar() {
         }
         navigate(`/${page.toLowerCase()}`);
         handleCloseNavMenu();
+    };
+
+    const handleSettingsButton = (setting) => {
+        console.log('setting:', setting.target.innerText);
+        if (setting.target.innerText === 'Logout') {
+            logout();
+            setOpenSnackbar(true);
+            return;
+        }
+        if (setting.target.innerText === 'Profile') {
+            navigate('/profile');
+        }
+        handleCloseUserMenu();
     };
 
     const handleOpenNavMenu = (event) => {
@@ -161,7 +178,8 @@ function ResponsiveAppBar() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt={user? user.name : '?'}
+                                 src="/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -181,7 +199,7 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <MenuItem key={setting} onClick={handleSettingsButton}>
                                     <Typography textAlign="center">{setting}</Typography>
                                 </MenuItem>
                             ))}
@@ -189,6 +207,7 @@ function ResponsiveAppBar() {
                     </Box>
                 </Toolbar>
             </Container>
+            <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message="Vous avez été déconnecté" color="info" />
         </AppBar>
     );
 }
