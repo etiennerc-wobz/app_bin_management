@@ -2,7 +2,7 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-export default function SnackbarAlert({ open, onClose, message}) {
+export default function SnackbarAlert({ open, onClose, message, color }) {
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -11,6 +11,7 @@ export default function SnackbarAlert({ open, onClose, message}) {
 
     onClose();
   };
+
 
   return (
     <div>
@@ -23,7 +24,7 @@ export default function SnackbarAlert({ open, onClose, message}) {
       >
         <Alert
           onClose={handleClose}
-          severity="success"
+          severity={color}
           variant="filled"
           sx={{ width: '100%',borderRadius: '15px' }} 
         >

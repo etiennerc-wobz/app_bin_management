@@ -12,9 +12,12 @@ const AuthProvider = ({ children }) => {
   const login = async (username, password) => {
     try {
       const data = await apiLogin(username, password);
+      if (!data) {
+        throw new Error('Invalid credentials');
+      }
       console.log('data:', data);
       setUser(data); 
-      localStorage.setItem('user', JSON.stringify(data)); // Convertir data en chaîne JSON avant de le stocker
+      localStorage.setItem('user', JSON.stringify(data));
       console.log('localStorage:', localStorage.getItem('user'));
     } catch (error) {
       console.error('Error logging in:', error);

@@ -47,6 +47,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/magic-bins" element={<PrivateRoute><MagicBins /></PrivateRoute>} />
           <Route path="/map" element={<PrivateRoute><Map /></PrivateRoute>} />
+          <Route path="/magic-bins/:id" element={<PrivateRoute><Bin /></PrivateRoute>} />
         </Routes>
 
       </div>

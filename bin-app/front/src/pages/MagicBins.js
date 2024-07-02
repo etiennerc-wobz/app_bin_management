@@ -128,7 +128,7 @@ const MagicBins = () => {
         ))}
       </div>
       <ButtonBinList setDeleteMode={setDeleteMode} onAddBinClick={handleAddBinClick} />
-      <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} />
+      <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
       <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded}/>
     </>
   );
