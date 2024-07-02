@@ -6,6 +6,8 @@ import { useMediaQuery } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
 import Traps from '../components/Traps/Traps';
 import { AuthContext } from '../components/AuthContext/AuthContext';
+import Fab from '@mui/material/Fab';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Bin = () => {
     const { id } = useParams();
@@ -72,6 +74,11 @@ return (
         </div>
         <div className="relative sm:static top-0 left-4 pt-36 sm:pt-0 sm:mt-0 w-11/12 ">   
             <Traps binId={thisBin.id} />
+        </div>
+        <div className="fixed bottom-20 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
+            <Fab color="success" aria-label="edit">
+                <EditIcon />
+            </Fab>
         </div>
     </div>
 );

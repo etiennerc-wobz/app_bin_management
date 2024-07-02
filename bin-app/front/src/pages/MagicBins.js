@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { getBins,getBinTraps } from '../api';
+import { getBins, getBinTraps } from '../api';
 import BinListElement from '../components/BinListElement/BinListElement';
 import SelectInput from '../components/SelectInput/SelectInput';
 import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
@@ -89,7 +89,7 @@ const MagicBins = () => {
         deleteBin(id).then(() => {
           setBins(bins.filter(bin => bin.id !== id));
           setSnackbarMessage('Bin supprimée avec succès');
-          setOpenSnackbar(true); 
+          setOpenSnackbar(true);
         }
         );
 
@@ -126,16 +126,17 @@ const MagicBins = () => {
     setTri(newTri);
     navigate(`/magic-bins?sort=${newTri}`);
     setSnackbarMessage('Tri effectué avec succès');
-    setOpenSnackbar(true); 
+    setOpenSnackbar(true);
 
   };
 
 
-  
+
   return (
     <>
       <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
-        <h1 className="text-xl sm:text-xl w-48 pl-4 sm:w-full 
+        <h1 className="text-xl sm:text-3xl w-52 pl-4 sm:w-fit bg-gray-100
+        rounded-full shadow-md sm:text-center sm:mx-auto sm:my-4 sm:p-4
         ">Liste des Bins de :<strong> {FavoriteFestival} </strong></h1>
         <div className=" flex flex-row items-center sm:pl-56">
           <input
@@ -153,7 +154,7 @@ const MagicBins = () => {
       </div>
       <ButtonBinList setDeleteMode={setDeleteMode} onAddBinClick={handleAddBinClick} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
-      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded}/>
+      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded} />
     </>
   );
 };

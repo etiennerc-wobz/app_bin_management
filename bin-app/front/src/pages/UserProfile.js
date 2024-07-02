@@ -27,9 +27,9 @@ const UserProfile = () => {
     return (
         <div>
             <h1>Vous êtes :</h1>
-            <p className='text-2xl sm:text-4xl'>{user.name}</p>
+            <p className='text-2xl sm:text-4xl mb-8'>{user? user.name: 'Loading...'}</p>
             <h2>Votre festival est :</h2>
-            <p className='text-2xl sm:text-4xl'>{favoriteFestival.name}</p>
+            <p className='text-2xl sm:text-4xl'>{favoriteFestival ? favoriteFestival.name : 'Loading...'}</p>
         </div>
     );
 };
