@@ -1,6 +1,7 @@
 // src/App.js
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthContext } from './components/AuthContext/AuthContext';
 import './App.css';
 import Button from './components/Button/Button';
 import Menu from './components/Menu/Menu';
@@ -11,6 +12,7 @@ import MagicBins from './pages/MagicBins';
 import Map from './pages/Map';
 import Bin from './pages/Bin';
 import ResponsiveAppBar from './components/TopNavigation/TopNavigation';
+import Login from './components/Login/Login';
 
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -20,11 +22,18 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const { user,loading } = useContext(AuthContext);
 
   const handleMenuButtonClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  if(loading) {
+    return <div>Loading...</div>;
+  }
+  //<Route path="/magic-bins" element={<MagicBins />} />
+  //<Route path="/map" element={<Map />} />
+  //<Route path="/magic-bins/:id" element={<Bin />} />
 
   return (
     <Router className="overflow-hidden">
@@ -33,17 +42,22 @@ const App = () => {
       <div className="App flex items-center justify-center min-h-screen  overflow-hidden">
 
         <Routes>
-          <Route path="/" element={<Festival />} />
-          <Route path="/magic-bins" element={<MagicBins />} />
-          <Route path="/map" element={<Map />} />
-          <Route path="/magic-bins/:id" element={<Bin />} />
+
+          <Route path="/" element={<PrivateRoute><Festival /></PrivateRoute>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/magic-bins" element={<PrivateRoute><MagicBins /></PrivateRoute>} />
+          <Route path="/map" element={<PrivateRoute><Map /></PrivateRoute>} />
         </Routes>
 
       </div>
 
-      
     </Router>
   );
+};
+
+const PrivateRoute = ({ children }) => {
+  const { user } = useContext(AuthContext);
+  return user ? children : <Navigate to="/login" />;
 };
 
 export default App;

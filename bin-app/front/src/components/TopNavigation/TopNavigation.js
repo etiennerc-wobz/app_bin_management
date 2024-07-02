@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,8 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthContext/AuthContext';
 
-const pages = ['Festival', 'Magic-Bins', 'Carte'];
+const pages = ['Festival', 'Magic-Bins', 'Carte', 'Deconnecter'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -22,11 +23,16 @@ function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate();
     const location = useLocation();
+    const { logout } = useContext(AuthContext);
 
     const handlePageClick = (page) => {
         console.log('page:', page);
         if (page === 'Festival') page = '';
         if (page === 'Carte') page = 'map';
+        if (page === 'Deconnecter') {
+            logout();
+            return;
+        }
         navigate(`/${page.toLowerCase()}`);
         handleCloseNavMenu();
     };

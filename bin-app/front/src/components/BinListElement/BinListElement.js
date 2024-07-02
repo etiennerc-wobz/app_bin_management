@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CircularProgressWithLabel from '../CircularProgressWithLabel/CircularProgressWithLabel';
 import StatusIndicator from '../StatusIndicator/StatusIndicator';
+import { getBinTraps } from '../../api';
 
-const useResizeFont = (ref, containerRef) => {
+const useResizeFont = (ref, containerRef, title) => {
   useEffect(() => {
     const adjustFontSize = () => {
       if (ref.current && containerRef.current) {
@@ -20,10 +21,10 @@ const useResizeFont = (ref, containerRef) => {
     adjustFontSize();
     window.addEventListener('resize', adjustFontSize);
     return () => window.removeEventListener('resize', adjustFontSize);
-  }, [ref, containerRef]);
+  }, [ref, containerRef, title]); // Ajoutez 'title' aux dépendances
 };
 
-const BinListElement = ({ title, zone, traps, fillrate, status, onClick, deleteMode }) => {
+const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, deleteMode }) => {
   const baseStyle = "md:w-3/4 p-4 border-b border-gray-200 bg-gray-200 rounded-full mx-auto cursor-pointer flex items-center justify-between";
   const hoverStyle = deleteMode ? "hover:bg-red-500" : "hover:bg-gray-300";
   const activeStyle = deleteMode ? "bg-red-200" : "";
@@ -33,7 +34,25 @@ const BinListElement = ({ title, zone, traps, fillrate, status, onClick, deleteM
   const titleRef = useRef(null);
   const containerRef = useRef(null);
 
-  useResizeFont(titleRef, containerRef);
+  const [binTraps, setBinTraps] = useState();
+
+  useEffect(() => {
+    const fetchBinTraps = async () => {
+      try {
+        let binTraps = await getBinTraps(id);
+        setBinTraps(binTraps);
+      } catch (error) {
+        console.error('Error fetching bin traps:', error);
+      }
+    };
+
+    fetchBinTraps();
+  }
+  , []);
+
+  useResizeFont(titleRef, containerRef, title); // Passez 'title' à useResizeFont
+
+
 
   return (
     <div className={`${baseStyle} ${hoverStyle} ${activeStyle}`} onClick={onClick}>
@@ -42,7 +61,7 @@ const BinListElement = ({ title, zone, traps, fillrate, status, onClick, deleteM
           <CircularProgressWithLabel value={fillrate} size="1" />
         </div>
 
-        <div className="ml-4 sm:ml-10 flex flex-col items-start w-24 sm:w-80" ref={containerRef}>
+        <div className="ml-4 sm:ml-10 flex flex-col items-start w-32 sm:w-80" ref={containerRef}>
           <h2 className="text-xl pb-1 font-bold sm:text-4xl sm:mr-2" ref={titleRef}>
             {title}
           </h2>
@@ -51,7 +70,7 @@ const BinListElement = ({ title, zone, traps, fillrate, status, onClick, deleteM
       </div>
       <div className="text-right text-xs sm:text-base mr-2 sm:mr-10">
         <p className="text-gray-600">Zone : <span className="font-bold">{zone}</span></p>
-        <p className="text-gray-600">Bouches : <span className="font-bold">{traps.length}</span></p>
+        <p className="text-gray-600">Bouches : <span className="font-bold">{binTraps ? binTraps.length : '...'}</span></p>
       </div>
     </div>
   );

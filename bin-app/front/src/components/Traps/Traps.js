@@ -25,13 +25,17 @@ const Traps = ({ binId }) => {
 
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pb-16">
+    <>
+        <p className="text-2xl sm:text-4xl text-start pl-4">{traps.length>0 ? 'Bouches : ' : 'Aucune bouche'}</p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 pb-16">
             {traps.map((trap, index) => (
                 <div key={index} className="p-1.5">
                     <TrapListElement trap={trap} onUpdateTrap={updateTrap} />
                 </div>
             ))}
         </div>
+    </>
     );
 };
 

@@ -45,32 +45,31 @@ const Bin = () => {
         return <div>{error}</div>; 
     }
 
-    if (!thisBin) {
+    if (!thisBin  || !binTraps) {
         return <div>Loading...</div>;
     }
 
 
 return (
     <div id="pageBin" className="flex flex-col items-start sm:items-center p-0 absolute top-10 sm:top-20 w-11/12 sm:px-20 overflow-hidden">
-        <div className="fixed sm:relative top-0 left-0 flex flex-row justify-between items-center w-full bg-gray-200 sm:bg-white p-4 sm:p-0">
-            <div className="flex flex-col items-start sm:mr-10 ">
+        <div className="fixed sm:relative top-0 left-0 flex flex-row justify-between items-center w-full bg-gray-200 sm:bg-white p-4 sm:p-0 z-10">
+            <div className="flex flex-col items-start  sm:mr-10 w-48 sm:w-11/12">
                 <div className="mb-4">
                     <StatusIndicator isConnected={thisStatus} />
                 </div>
 
                 <div className="text-start">
-                    <span className="font-bold text-4xl sm:text-5xl">{thisBin.name}</span>
+                    <span className="font-bold text-xl sm:text-5xl">{thisBin.name}</span>
                 </div>
                 <div className="text-2xl sm:text-4xl text-start mt-4">
-                    Zone : <span className="font-bold text-3xl sm:text-4xl">{thisBin.zone}</span>
+                    Zone : <span className="font-bold text-2xl sm:text-4xl">{thisBin.zone}</span>
                 </div>
             </div>
             <div className="mt-4 sm:mt-0">
                 <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
             </div>
         </div>
-        <div className="pt-32 sm:pt-0 mt-8 sm:mt-0 w-full ">   
-            <p className="text-2xl sm:text-4xl text-start">Bouches : </p>
+        <div className="relative sm:static top-0 left-4 pt-36 sm:pt-0 sm:mt-0 w-11/12 ">   
             <Traps binId={thisBin.id} />
         </div>
     </div>

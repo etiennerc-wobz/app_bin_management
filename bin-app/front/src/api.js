@@ -24,7 +24,6 @@ export const getTraps = async () => {
 };
 
 export const getBinTraps = async (id) => {
-  console.log('tentative de récupération des traps de la bin : ', id);
   try {
     const response = await axios.get(`${API_URL}/api/bintraps`, {
       params: {
@@ -99,6 +98,26 @@ export const openTrap = async (trapId) => {
     return response.data;
   } catch (error) {
     console.error('Error opening trap:', error);
+    throw error;
+  }
+}
+
+export const login = async (username, password) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/login`, { username, password });
+    return response.data;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
+}
+
+export const getFestival = async (userId) => {
+  try {
+    const response = await axios.get(`${API_URL}/api/users/${userId}/favorite-festival`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching favorite festival:', error);
     throw error;
   }
 }

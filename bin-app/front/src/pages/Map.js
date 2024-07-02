@@ -25,9 +25,12 @@ const Map = () => {
       container: 'map', // container ID
       style: 'mapbox://styles/mapbox/outdoors-v12',
       center: [4.85, 45.75], // starting position [lng, lat]
-      zoom: 11 // starting zoom
+      zoom: 11, // starting zoom
     });
     map.addControl(new mapboxgl.NavigationControl());
+    map.dragRotate.disable();
+    map.touchZoomRotate.disableRotation();
+    map.touchPitch.disable();
 
     // Add geolocate control to the map.
     const geolocate = new mapboxgl.GeolocateControl({
@@ -54,7 +57,7 @@ const Map = () => {
               'type': 'Feature',
               'geometry': {
                 'type': 'Point',
-                'coordinates': [bin.gps.lon, bin.gps.lat]
+                'coordinates': [bin.lon, bin.lat]
               },
               'properties': {
                 'title': bin.name,
@@ -68,6 +71,8 @@ const Map = () => {
           'type': 'symbol',
           'source': 'points',
           layout: {
+            "icon-allow-overlap": true,
+            "text-allow-overlap": true,
             'icon-image': 'custom-marker',
             'text-field': ['get', 'title'],
             'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
@@ -99,7 +104,7 @@ const Map = () => {
     });
   }, [bins]);
 
-  return <div id="map" style={{ width: '100%', height: '100vh', zIndex: 0 }} />;
+    return <div id="map" className="w-full h-[100vh] sm:h-[90vh] mt-0 sm:mt-16 relative z-0" />;
 };
 
 export default Map;

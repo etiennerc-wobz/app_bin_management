@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { getBins } from '../api';
+import { getBins,getBinTraps } from '../api';
 import BinListElement from '../components/BinListElement/BinListElement';
 import SelectInput from '../components/SelectInput/SelectInput';
 import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
@@ -113,13 +113,13 @@ const MagicBins = () => {
   return (
     <>
       <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
-        <div className=" flex flex-row items-center ">
+        <div className=" flex flex-row items-center sm:pl-56">
           <input
             type="text"
             placeholder="Rechercher"
             value={search}
             onChange={handleSearchChange}
-            className="w-36 px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-blue outline"
+            className="w-36 sm:w-48 px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-blue outline"
           />
           <SelectInput onTriChange={handleTriChange} />
         </div>
