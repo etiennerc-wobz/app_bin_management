@@ -25,7 +25,7 @@ const SimpleBottomNavigation = () => {
 
   React.useEffect(() => {
     setValue(pathToIndex[location.pathname]);
-  }, [location]);
+  }, [location.pathname]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

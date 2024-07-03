@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { getBins, getBinTraps } from '../api';
+import { getBins } from '../api';
 import BinListElement from '../components/BinListElement/BinListElement';
 import SelectInput from '../components/SelectInput/SelectInput';
 import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
@@ -15,7 +15,6 @@ import { getMyFestivalBins } from '../api';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 
 import { getFavoriteFestival } from '../api';
-import FavoriteFestival from './Festival';
 
 const MagicBins = () => {
 
@@ -33,7 +32,7 @@ const MagicBins = () => {
   const [openNewBinDialog, setOpenNewBinDialog] = useState(false);
   const [search, setSearch] = useState(''); // Nouvel état pour la recherche
 
-  const { user , token } = useContext(AuthContext);
+  const { user  } = useContext(AuthContext);
   const [FavoriteFestival, setFavoriteFestival] = useState('');
 
 

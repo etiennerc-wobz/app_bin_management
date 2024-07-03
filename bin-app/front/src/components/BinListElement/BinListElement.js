@@ -48,7 +48,7 @@ const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, del
 
     fetchBinTraps();
   }
-  , []);
+  , [id]);
 
   useResizeFont(titleRef, containerRef, title); // Passez 'title' à useResizeFont
 

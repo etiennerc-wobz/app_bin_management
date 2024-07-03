@@ -1,7 +1,5 @@
 // src/api/api.js
 import axios from 'axios';
-import { AuthContext } from './components/AuthContext/AuthContext';
-import { useContext } from 'react';
 
 const API_URL = 'http://10.58.131.69:4040';
 
@@ -179,3 +177,13 @@ export const getMyFestivalBins = async (userId) => {
     throw error;
   }
 };
+
+export const getFestivalTraps = async (festivalId) => {
+  try {
+    const response = await api.get(`/api/festivals/${festivalId}/traps`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching festival traps:', error);
+    throw error;
+  }
+}

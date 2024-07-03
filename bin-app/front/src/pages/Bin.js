@@ -5,7 +5,6 @@ import CircularProgressWithLabel from '../components/CircularProgressWithLabel/C
 import { useMediaQuery } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
 import Traps from '../components/Traps/Traps';
-import { AuthContext } from '../components/AuthContext/AuthContext';
 import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 

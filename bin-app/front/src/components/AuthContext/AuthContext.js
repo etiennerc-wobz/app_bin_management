@@ -1,8 +1,9 @@
 // AuthContext.js
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { login as apiLogin } from '../../api';
 import { setAuthToken } from '../../api';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
+import { Navigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
@@ -11,6 +12,7 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   // Fonction pour se connecter
   const login = async (username, password) => {
@@ -32,13 +34,19 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // Fonction pour simuler une déconnexion
   const logout = () => {
     setUser(null);
     setToken(null);
     setAuthToken(null);
     localStorage.removeItem('token');
+    setSnackbarMessage('Vous êtes déconnecté');
     setOpenSnackbar(true);
+  };
+
+  const notLogged = () => {
+    setSnackbarMessage('Vous devez vous connecter');
+    setOpenSnackbar(true);
+    return <Navigate to="/login" />
   };
 
 
@@ -57,11 +65,11 @@ const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, token  }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, token,notLogged  }}>
       {children}
       <SnackbarAlert
         open={openSnackbar}
-        message="Vous avez été déconnecté"
+        message={snackbarMessage}
         color="info"
         onClose={() => setOpenSnackbar(false)}
       />

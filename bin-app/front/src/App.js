@@ -1,10 +1,8 @@
 // src/App.js
-import React, { useState, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, {  useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthContext } from './components/AuthContext/AuthContext';
 import './App.css';
-import Button from './components/Button/Button';
-import Menu from './components/Menu/Menu';
 import SimpleBottomNavigation from './components/BottomNavigation/BottomNavigation';
 
 import Festival from './pages/Festival';
@@ -20,14 +18,11 @@ import { useTheme } from '@mui/material/styles';
 
 
 const App = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { user, token, loading } = useContext(AuthContext);
+  const {  loading } = useContext(AuthContext);
 
-  const handleMenuButtonClick = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+
 
   if(loading) {
     return <div>Loading...</div>;
@@ -60,8 +55,8 @@ const App = () => {
 };
 
 const PrivateRoute = ({ children }) => {
-  const { user, token } = useContext(AuthContext);
-  return user && token ? children : <Navigate to="/login" />;
+  const { user, token, notLogged } = useContext(AuthContext);
+  return user && token ? children : notLogged();
 };
 
 export default App;
