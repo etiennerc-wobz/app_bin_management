@@ -23,7 +23,7 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { user,loading } = useContext(AuthContext);
+  const { user, token, loading } = useContext(AuthContext);
 
   const handleMenuButtonClick = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -60,8 +60,8 @@ const App = () => {
 };
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
-  return user ? children : <Navigate to="/login" />;
+  const { user, token } = useContext(AuthContext);
+  return user && token ? children : <Navigate to="/login" />;
 };
 
 export default App;

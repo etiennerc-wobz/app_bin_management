@@ -33,7 +33,7 @@ const MagicBins = () => {
   const [openNewBinDialog, setOpenNewBinDialog] = useState(false);
   const [search, setSearch] = useState(''); // Nouvel état pour la recherche
 
-  const { user } = useContext(AuthContext);
+  const { user , token } = useContext(AuthContext);
   const [FavoriteFestival, setFavoriteFestival] = useState('');
 
 

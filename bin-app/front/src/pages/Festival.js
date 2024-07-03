@@ -4,22 +4,22 @@ import { AuthContext } from '../components/AuthContext/AuthContext';
 import { getFavoriteFestival } from '../api';
 
 const FavoriteFestival = () => {
-  const { user } = useContext(AuthContext);
+  const { user , token } = useContext(AuthContext);
   const [favoriteFestival, setFavoriteFestival] = useState(null);
 
   useEffect(() => {
     const fetchFavoriteFestival = async () => {
       try {
-        const festival = await getFavoriteFestival(user.id); 
-        setFavoriteFestival(festival);
+        if (user){
+          const festival = await getFavoriteFestival(user.id, token);
+          setFavoriteFestival(festival);
+        }
       } catch (error) {
         console.error('Error fetching favorite festival:', error);
       }
     };
+    fetchFavoriteFestival();
 
-    if (user) {
-      fetchFavoriteFestival();
-    }
   }, [user]);
 
   if (!favoriteFestival) {

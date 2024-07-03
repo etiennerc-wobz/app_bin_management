@@ -1,11 +1,50 @@
 // src/api/api.js
 import axios from 'axios';
+import { AuthContext } from './components/AuthContext/AuthContext';
+import { useContext } from 'react';
 
-const API_URL = 'http://10.58.131.69:4040'; 
+const API_URL = 'http://10.58.131.69:4040';
 
+// Création d'une instance Axios
+const api = axios.create({
+  baseURL: API_URL,
+});
+
+let logoutFunction = null;
+
+
+// Fonction pour définir le token JWT dans les en-têtes des requêtes Axios
+export const setAuthToken = (token,logout) => {
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common['Authorization'];
+  }
+  logoutFunction=logout;
+};
+
+// Interceptor Axios pour gérer les erreurs d'authentification (401 et 403)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const { status } = error.response;
+      if (status === 401 || status === 403) {
+        console.error('Unauthorized or Forbidden error:', error);
+        // Déconnecter l'utilisateur côté client
+        if(logoutFunction){
+          logoutFunction();
+        }
+    }
+  }
+    return Promise.reject(error);
+  }
+);
+
+// Exports de toutes vos fonctions d'appel API avec l'instance Axios configurée
 export const getBins = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/bins`);
+    const response = await api.get('/api/bins');
     return response.data;
   } catch (error) {
     console.error('Error fetching bins data:', error);
@@ -15,7 +54,7 @@ export const getBins = async () => {
 
 export const getTraps = async () => {
   try {
-    const response = await axios.get(`${API_URL}/api/traps`);
+    const response = await api.get('/api/traps');
     return response.data;
   } catch (error) {
     console.error('Error fetching traps data:', error);
@@ -25,7 +64,7 @@ export const getTraps = async () => {
 
 export const getBinTraps = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/api/bintraps`, {
+    const response = await api.get('/api/bintraps', {
       params: {
         id: id
       }
@@ -35,27 +74,25 @@ export const getBinTraps = async (id) => {
     console.error('Error fetching bin traps data:', error);
     throw error;
   }
-}
-
+};
 
 export const getTrap = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/api/trap`, {
+    const response = await api.get('/api/trap', {
       params: {
         id: id
       }
     });
-    console.log('gettrapresponse:', response);
     return response.data;
   } catch (error) {
     console.error('Error fetching trap:', error);
     throw error;
   }
-}
+};
 
 export const deleteBin = async (id) => {
   try {
-    const response = await axios.post(`${API_URL}/api/deletebin`, null, {
+    const response = await api.post('/api/deletebin', null, {
       params: {
         id: id
       }
@@ -65,62 +102,67 @@ export const deleteBin = async (id) => {
     console.error('Error deleting bin:', error);
     throw error;
   }
-}
+};
 
 export const createBin = async (bin) => {
   try {
-    console.log('tentative de création de la bin : ', bin);
-    const response = await axios.post(`${API_URL}/api/createbin`, bin);
+    console.log('Attempting to create bin:', bin);
+    const response = await api.post('/api/createbin', bin);
     return response.data;
   } catch (error) {
     console.error('Error creating bin:', error);
     throw error;
   }
-}
+};
 
 export const closeTrap = async (trapId) => {
   try {
-    console.log('tentative de fermeture de la trap : ', trapId);
-    const response = await axios.post(`${API_URL}/api/closetrap`, { id: trapId });
-    console.log('response:', response);
+    console.log('Attempting to close trap:', trapId);
+    const response = await api.post('/api/closetrap', { id: trapId });
+    console.log('Response:', response);
     return response.data;
   } catch (error) {
     console.error('Error closing trap:', error);
     throw error;
   }
-}
+};
 
 export const openTrap = async (trapId) => {
   try {
-    console.log('tentative d\'ouverture de la trap : ', trapId);
-    const response = await axios.post(`${API_URL}/api/opentrap`, { id: trapId });
-    console.log('response:', response);
+    console.log('Attempting to open trap:', trapId);
+    const response = await api.post('/api/opentrap', { id: trapId });
+    console.log('Response:', response);
     return response.data;
   } catch (error) {
     console.error('Error opening trap:', error);
     throw error;
   }
-}
+};
 
 export const login = async (username, password) => {
   try {
-    const response = await axios.post(`${API_URL}/api/login`, { username, password });
-    console.log('respdata',response.data)
-    if(response.data){
-      return response.data;
-    }else{
-      console.log('False cred')
-      return false;
-    }
+    const response = await api.post('/api/login', { username, password });
+    console.log('Response:', response.data);
+    return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
     throw error;
   }
-}
+};
+
+export const fetchProtectedData = async () => {
+  try {
+    const response = await api.get('/api/protected');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching protected data:', error);
+    throw error;
+  }
+};
 
 export const getFavoriteFestival = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}/api/users/${userId}/favorite-festival`);
+    const response = await api.get(`/api/users/${userId}/favorite-festival`);
     return response.data;
   } catch (error) {
     console.error('Error fetching favorite festival:', error);
@@ -130,14 +172,10 @@ export const getFavoriteFestival = async (userId) => {
 
 export const getMyFestivalBins = async (userId) => {
   try {
-    const response = await axios.get(`${API_URL}/api/users/${userId}/bins`);
+    const response = await api.get(`/api/users/${userId}/bins`);
     return response.data;
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error fetching my festival bins:', error);
     throw error;
   }
-}
-
-
-
+};

@@ -14,10 +14,9 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
-import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
 
-const pages = ['Festival', 'Magic-Bins', 'Carte', 'Deconnecter'];
-const settings = ['Profile','Logout'];
+const pages = ['Festival', 'Magic-Bins', 'Carte'];
+const settings = ['Profile','Déconnexion'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -33,19 +32,15 @@ function ResponsiveAppBar() {
         console.log('page:', page);
         if (page === 'Festival') page = '';
         if (page === 'Carte') page = 'map';
-        if (page === 'Deconnecter') {
-            logout();
-            return;
-        }
+
         navigate(`/${page.toLowerCase()}`);
         handleCloseNavMenu();
     };
 
     const handleSettingsButton = (setting) => {
         console.log('setting:', setting.target.innerText);
-        if (setting.target.innerText === 'Logout') {
+        if (setting.target.innerText === 'Déconnexion') {
             logout();
-            setOpenSnackbar(true);
             return;
         }
         if (setting.target.innerText === 'Profile') {
@@ -207,7 +202,6 @@ function ResponsiveAppBar() {
                     </Box>
                 </Toolbar>
             </Container>
-            <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message="Vous avez été déconnecté" color="info" />
         </AppBar>
     );
 }
