@@ -188,3 +188,23 @@ export const getFestivalTraps = async (festivalId) => {
     throw error;
   }
 }
+
+export const getFestivals = async () => {
+  try {
+    const response = await api.get('/api/festivals');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching festivals:', error);
+    throw error;
+  }
+}
+
+export const changeFavoriteFestival = async (userId, festivalId) => {
+  try {
+    const response = await api.post(`/api/users/${userId}/favorite-festival`, { festivalId });
+    return response.data;
+  } catch (error) {
+    console.error('Error changing favorite festival:', error);
+    throw error;
+  }
+}
