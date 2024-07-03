@@ -88,8 +88,9 @@ const FavoriteFestival = () => {
   }
 
   return (
-    <div>
+    <div className='fixed top-10 sm:sticky'>
 
+      <div className='flex flex-row items-center pb-10'>
       <FormControl variant="filled" sx={{ m: 1, minWidth: 180 }}>
         <InputLabel id="demo-simple-select-filled-label">{favoriteFestival.name}</InputLabel>
         <Select
@@ -107,22 +108,21 @@ const FavoriteFestival = () => {
         </Select>
       </FormControl>
 
-      <Button variant="contained" color="primary" onClick={() => {handleButton()}}>
+      <Button variant="contained" color="success" onClick={() => {handleButton()}}>
         Valider
       </Button>
+      </div>
 
       <h1>Votre festival favori est :</h1>
-      <p className='text-2xl sm:text-4xl text-start pl-4'
+      <p className='text-2xl sm:text-4xl pl-4'
       >{favoriteFestival.name}</p>
-      <h3>Dates : {new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}</h3>      <h2>Les cassettes de ce festival sont :</h2>
+      <h3>Dates : {new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}</h3>      
+      <h2 className='pt-10'
+      >Les cassettes de ce festival sont :</h2>
       {Object.entries(bins).map(([bin, ids]) => (
         <div key={bin}>
-          <h3>Bin {bin} :</h3>
-          <ul>
-            {ids.map((id) => (
-              <li key={id}>{id}</li>
-            ))}
-          </ul>
+          <h3><strong>Bin {bin} :</strong></h3>
+          <p>{ids.join(' - ')}</p>
         </div>
       ))}
 
