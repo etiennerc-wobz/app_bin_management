@@ -1,6 +1,6 @@
 // src/App.js
 import React, {  useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthContext } from './components/AuthContext/AuthContext';
 import './App.css';
 import SimpleBottomNavigation from './components/BottomNavigation/BottomNavigation';
@@ -55,8 +55,8 @@ const App = () => {
 };
 
 const PrivateRoute = ({ children }) => {
-  const { user, token, notLogged } = useContext(AuthContext);
-  return user && token ? children : notLogged();
+  const { user, token } = useContext(AuthContext);
+  return user && token ? children : <Navigate to="/login" />;
 };
 
 export default App;

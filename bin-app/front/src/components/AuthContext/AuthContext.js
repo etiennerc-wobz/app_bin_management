@@ -1,5 +1,5 @@
 // AuthContext.js
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { login as apiLogin } from '../../api';
 import { setAuthToken } from '../../api';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
       setToken(data.token);
       setAuthToken(data.token,logout);
       localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
       console.log('localstorage token is : ', localStorage.getItem('token'));
     } catch (error) {
       console.error('Error logging in:', error);
@@ -53,9 +54,12 @@ const AuthProvider = ({ children }) => {
   // Vérifier si l'utilisateur est déjà connecté lors du chargement de la page
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
     if (storedToken) {
       try {
         setToken(storedToken);
+        setAuthToken(storedToken,logout);
+        setUser(JSON.parse(storedUser));
       } catch (error) {
         console.error('Error parsing stored user:', error);
       }

@@ -13,6 +13,7 @@ let logoutFunction = null;
 
 // Fonction pour définir le token JWT dans les en-têtes des requêtes Axios
 export const setAuthToken = (token,logout) => {
+  console.log('Setting token:', token);
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   } else {
