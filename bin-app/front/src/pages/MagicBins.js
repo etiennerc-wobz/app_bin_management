@@ -129,6 +129,26 @@ const MagicBins = () => {
 
   };
 
+  if(!FavoriteFestival){
+    return (
+      <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
+        <h1 className="text-xl sm:text-3xl w-52 pl-4 sm:w-fit bg-gray-100
+        rounded-full shadow-md sm:text-center sm:mx-auto sm:my-4 sm:p-4
+        ">Aucun festival favori</h1>
+        <div className=" flex flex-row items-center sm:pl-56">
+          <input
+            type="text"
+            placeholder="Rechercher"
+            value={search}
+            onChange={handleSearchChange}
+            className="w-36 sm:w-48 px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-blue outline"
+          />
+          <SelectInput onTriChange={handleTriChange} />
+        </div>
+        <h1>Veuillez sélectionner un festival dans l'onglet Festival...</h1>
+      </div>
+    );
+  }
 
 
   return (
@@ -147,6 +167,7 @@ const MagicBins = () => {
           />
           <SelectInput onTriChange={handleTriChange} />
         </div>
+        {bins.length === 0 && <h1>Aucune Bin pour ce festival</h1>}
         {bins.filter(bin => bin.name.toLowerCase().includes(search.toLowerCase())).map((bin, index) => (
           <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} deleteMode={deleteMode} />
         ))}

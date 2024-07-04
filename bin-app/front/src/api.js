@@ -208,3 +208,26 @@ export const changeFavoriteFestival = async (userId, festivalId) => {
     throw error;
   }
 }
+
+export const createFestival = async (festival) => {
+  try {
+    console.log('Attempting to create festival:', festival);
+    const response = await api.post('/api/festivals', festival);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating festival:', error);
+    throw error;
+  }
+}
+
+export const setFestivalBins = async (festivalId, bins) => {
+  try {
+    console.log('Attempting to set festival bins:', bins);
+    console.log('Festival ID:', festivalId);
+    const response = await api.post(`/api/festivals/${festivalId}/bins`, { bins });
+    return response.data;
+  } catch (error) {
+    console.error('Error setting festival bins:', error);
+    throw error;
+  }
+}
