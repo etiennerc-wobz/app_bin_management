@@ -53,9 +53,9 @@ const Bin = () => {
 
 
 return (
-    <div id="pageBin" className="flex flex-col items-start sm:items-center p-0 absolute top-10 sm:top-20 w-11/12 sm:px-20 overflow-hidden">
-        <div className="fixed sm:relative top-0 left-0 flex flex-row justify-between items-center w-full bg-gray-200 sm:bg-white p-4 sm:p-0 z-10">
-            <div className="flex flex-col items-start  sm:mr-10 w-48 sm:w-11/12">
+    <div id="pageBin" className="absolute flex flex-col items-start sm:items-center p-0  h-full w-11/12 sm:pt-20 sm:px-20 overflow-hidden">
+        <div id="header" className="fixed sm:relative top-0 left-0 flex flex-row justify-between items-center w-full bg-gray-200 sm:bg-white p-4 sm:p-0 z-10">
+            <div className="flex flex-col items-start  sm:mr-10 w-48 sm:w-11/12 ">
                 <div className="mb-4">
                     <StatusIndicator isConnected={thisStatus} />
                 </div>
@@ -71,7 +71,7 @@ return (
                 <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
             </div>
         </div>
-        <div className="relative sm:static top-0 left-4 pt-36 sm:pt-0 sm:mt-0 w-11/12 ">   
+        <div id="body" className="relative sm:static top-48 left-4 sm:pt-0 sm:mt-0 w-11/12 ">   
             <Traps binId={thisBin.id} />
         </div>
         <div className="fixed bottom-20 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
