@@ -251,3 +251,13 @@ export const unassignTrapFromFestival = async (trapId) => {
     throw error;
   }
 }
+
+export const assignTrapsToFestival = async (festivalId, traps) => {
+  try {
+    const response = await api.post(`/api/festivals/${festivalId}/traps`, { traps });
+    return response.data;
+  } catch (error) {
+    console.error('Error assigning traps to festival:', error);
+    throw error;
+  }
+}

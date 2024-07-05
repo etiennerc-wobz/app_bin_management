@@ -103,7 +103,7 @@ const Festival = () => {
 
   const handleTrapsUpdate = () => {
     fetchFestivalTraps();
-    setSnackbarMessage("Trap supprimée");
+    setSnackbarMessage("Traps modifiées");
     setOpenSnackbar(true);
   }
 
