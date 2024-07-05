@@ -6,6 +6,7 @@ import CreateFestivalDialog from '../components/CreateFestivalDialog/CreateFesti
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import FestivalMenu from '../components/FestivalMenu/FestivalMenu';
 import AssignBinDialog from '../components/AssignBinDialog/AssignBinDialog';
+import FestivalTraps from '../components/FestivalTraps/FestivalTraps';
 
 const Festival = () => {
   const { user, token } = useContext(AuthContext);
@@ -14,6 +15,7 @@ const Festival = () => {
   const [festivals, setFestivals] = useState([]);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   // Fetch the user's favorite festival
   useEffect(() => {
@@ -79,6 +81,7 @@ const Festival = () => {
       console.log('Modification de festival favori pour user', user.id, 'festival id : ', festivalId);
       changeFavoriteFestival(user.id, festivalId, token).then(() => {
         setFavoriteFestival(festivals.find(festival => festival.id === festivalId));
+        setSnackbarMessage('Festival favori modifié');
         setOpenSnackbar(true);
         fetchFestivals();
         fetchFavoriteFestival();
@@ -98,45 +101,49 @@ const Festival = () => {
     fetchFestivals();
   };
 
+  const handleTrapsUpdate = () => {
+    fetchFestivalTraps();
+    setSnackbarMessage("Trap supprimée");
+    setOpenSnackbar(true);
+  }
+
   return (
-    <div className='fixed top-10 sm:top-32 space-y-10'>
-      <FestivalMenu 
-        festivalId={favoriteFestival ? favoriteFestival.id : null} 
+    <div className='fixed top-10 sm:top-32 space-y-10 '>
+      <FestivalMenu
+        festivalId={favoriteFestival ? favoriteFestival.id : null}
         festivals={festivals}
         onChangeFestival={handleFestivalChange}
-      />    
+      />
+      <div className='sm:flex sm:flex-row sm:h-96 sm:space-x-10'>
+        <div className='bg-gray-200 p-10 sm:h-40 rounded-lg mb-10 flex flex-col justify-center'>
+          {!favoriteFestival ? (
+            <>
+              <h1>Vous n'avez pas de festival favori</h1>
+              <Button variant="contained" color="success" onClick={handleCreateButton} sx={{ marginTop: 4, borderRadius: 10 }}>
+                Créer un festival
+              </Button>
+            </>
+          ) : (
+            <>
+              <h1>Votre festival favori est :</h1>
+              <p className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
+              <h3>
+                Dates : {new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
+              </h3>
+              {traps.length > 0 ? (null
+              ) :
+                <h2 className='pt-10'>Aucune cassette pour ce festival</h2>
+              }
 
-      <div className='bg-gray-200 p-10 rounded-lg'>
-        {!favoriteFestival ? (
-          <>
-            <h1>Vous n'avez pas de festival favori</h1>
-            <Button variant="contained" color="success" onClick={handleCreateButton} sx={{ marginTop:4, borderRadius: 10 }}>
-              Créer un festival
-            </Button>
-          </>
-        ) : (
-          <>
-            <h1>Votre festival favori est :</h1>
-            <p className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
-            <h3>
-              Dates : {new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
-            </h3>
-            {traps.length > 0 ? (
-            <h2 className='pt-10'>Les cassettes de ce festival sont :</h2>
-            ): 
-            <h2 className='pt-10'>Aucune cassette pour ce festival</h2>
-            }
-            {Object.entries(bins).map(([bin, ids]) => (
-              <div key={bin}>
-                <h3><strong>Bin {bin} :</strong></h3>
-                <p>{ids.join(' - ')}</p>
-              </div>
-            ))}
-          </>
-        )}
+            </>
+          )}
+        </div>
+        <div >
+          <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
+        </div>
       </div>
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={handleFestivalCreated} />
-      <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message='Festival favori modifié' color='success' />
+      <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color='success' />
     </div>
   );
 };

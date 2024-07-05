@@ -241,3 +241,13 @@ export const getFreeTraps = async () => {
     throw error;
   }
 }
+
+export const unassignTrapFromFestival = async (trapId) => {
+  try {
+    const response = await api.post(`/api/traps/${trapId}/unassign`);
+    return response.data;
+  } catch (error) {
+    console.error('Error unassigning trap from festival:', error);
+    throw error;
+  }
+}
