@@ -1,30 +1,22 @@
-// Festival.js
-
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import { getFavoriteFestival, getFestivalTraps, getFestivals, changeFavoriteFestival } from '../api';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import { Button } from '@mui/material';
 import CreateFestivalDialog from '../components/CreateFestivalDialog/CreateFestivalDialog';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import FestivalMenu from '../components/FestivalMenu/FestivalMenu';
 import AssignBinDialog from '../components/AssignBinDialog/AssignBinDialog';
 
-const FavoriteFestival = () => {
+const Festival = () => {
   const { user, token } = useContext(AuthContext);
   const [favoriteFestival, setFavoriteFestival] = useState(null);
   const [traps, setTraps] = useState([]);
-  const [festivalInput, setFestivalInput] = useState('');
   const [festivals, setFestivals] = useState([]);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   // Fetch the user's favorite festival
   useEffect(() => {
-
     fetchFavoriteFestival();
   }, [user, token]);
 
@@ -81,17 +73,12 @@ const FavoriteFestival = () => {
     return acc;
   }, {});
 
-  // Handle festival input change
-  const handleFestivalInput = (event) => {
-    setFestivalInput(event.target.value);
-  };
-
-  // Validate the selected festival as the user's favorite
-  const handleValidateButton = () => {
-    if (festivalInput) {
-      console.log('Modification de festival favori pour user', user.id, 'festival id : ', festivalInput);
-      changeFavoriteFestival(user.id, festivalInput, token).then(() => {
-        setFavoriteFestival(festivals.find(festival => festival.id === festivalInput));
+  // Handle festival change
+  const handleFestivalChange = (festivalId) => {
+    if (festivalId) {
+      console.log('Modification de festival favori pour user', user.id, 'festival id : ', festivalId);
+      changeFavoriteFestival(user.id, festivalId, token).then(() => {
+        setFavoriteFestival(festivals.find(festival => festival.id === festivalId));
         setOpenSnackbar(true);
         fetchFestivals();
         fetchFavoriteFestival();
@@ -111,41 +98,14 @@ const FavoriteFestival = () => {
     fetchFestivals();
   };
 
-//      <FestivalMenu festivalId={favoriteFestival ? favoriteFestival.id : null}  />    
-
-
   return (
-    <div className='fixed top-10 sm:top-32'>
-      <div className='flex flex-row items-center pb-10'>
-        <FormControl variant="filled" sx={{ m: 1, minWidth: 180 }}>
-          <InputLabel id="festival-select-label">
-            {favoriteFestival ? favoriteFestival.name : 'Aucun'}
-          </InputLabel>
-          <Select
-            labelId="festival-select-label"
-            id="festival-select"
-            value={festivalInput}
-            onChange={handleFestivalInput}
-          >
-            <MenuItem value="">
-              <em>{favoriteFestival ? favoriteFestival.name : 'Aucun'}</em>
-            </MenuItem>
-            {favoriteFestival ? (<MenuItem value={-1} style={{ fontWeight: 'bold', color: 'red' }}>
-                Aucun festival
-            </MenuItem>) : null}
-            {festivals.map((festival) => (
-              (!favoriteFestival || festival.id !== favoriteFestival.id) && (
-                <MenuItem key={festival.id} value={festival.id}>
-                  {festival.name}
-                </MenuItem>
-              )
-            ))}
-          </Select>
-        </FormControl>
-        <Button variant="contained" color="success" onClick={handleValidateButton} sx={{ borderRadius: 10 }}>
-          Valider
-        </Button>
-      </div>
+    <div className='fixed top-10 sm:top-32 space-y-10'>
+      <FestivalMenu 
+        festivalId={favoriteFestival ? favoriteFestival.id : null} 
+        festivals={festivals}
+        onChangeFestival={handleFestivalChange}
+      />    
+
       <div className='bg-gray-200 p-10 rounded-lg'>
         {!favoriteFestival ? (
           <>
@@ -181,4 +141,4 @@ const FavoriteFestival = () => {
   );
 };
 
-export default FavoriteFestival;
+export default Festival;

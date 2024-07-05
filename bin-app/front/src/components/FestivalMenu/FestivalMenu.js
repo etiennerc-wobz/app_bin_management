@@ -5,24 +5,23 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import JoinFullIcon from '@mui/icons-material/JoinFull';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import { FormControl, InputLabel, Select } from '@mui/material';
 import AssignBinDialog from '../AssignBinDialog/AssignBinDialog';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const StyledMenu = styled((props) => (
   <Menu
     elevation={0}
     anchorOrigin={{
       vertical: 'bottom',
-      horizontal: 'left',
+      horizontal: 'center',
     }}
     transformOrigin={{
       vertical: 'top',
-      horizontal: 'left',
+      horizontal: 'center',
     }}
     {...props}
   />
@@ -30,9 +29,10 @@ const StyledMenu = styled((props) => (
   '& .MuiPaper-root': {
     borderRadius: 6,
     marginTop: theme.spacing(1),
-    minWidth: 180,
-    color:
-      theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+    minWidth: 160,
+    border: '1px solid',
+    color: theme.palette.mode === 'light' ? 'rgb(56, 65, 81)' : theme.palette.grey[300],
+    backgroundColor: theme.palette.mode === 'light' ? 'rgb(255, 255, 255)' : theme.palette.grey[800],
     boxShadow:
       'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     '& .MuiMenu-list': {
@@ -43,6 +43,7 @@ const StyledMenu = styled((props) => (
         fontSize: 18,
         color: theme.palette.text.secondary,
         marginRight: theme.spacing(1.5),
+
       },
       '&:active': {
         backgroundColor: alpha(
@@ -54,10 +55,11 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function FestivalMenu(festivalId) {
+export default function FestivalMenu({ festivalId, festivals, onChangeFestival }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [openBinsDialog, setOpenBinsDialog] = React.useState(false);
+  const [selectedFestival, setSelectedFestival] = React.useState('');
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -69,10 +71,24 @@ export default function FestivalMenu(festivalId) {
   const handleAssignBin = () => {
     console.log('Assigner cassettes');
     setOpenBinsDialog(true);
-  }
+  };
 
+  const handleFestivalChange = (event) => {
+    setSelectedFestival(event.target.value.id);
+    handleValidateChange(event.target.value);
+  };
 
-
+  const handleValidateChange = (selectedFestival) => {
+    if(selectedFestival===-1) {
+      if(window.confirm('Voulez-vous vraiment changer de festival pour aucun ?')) {
+        onChangeFestival(-1);
+      }
+    } 
+    if(window.confirm('Voulez-vous vraiment changer de festival pour ' + selectedFestival.name + ' ?')) {
+      onChangeFestival(selectedFestival.id);
+    }
+    setAnchorEl(null);
+  };
 
   return (
     <div>
@@ -84,9 +100,10 @@ export default function FestivalMenu(festivalId) {
         variant="contained"
         disableElevation
         onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={<MenuIcon />}
+        sx = {{ borderRadius: 10 ,backgroundColor: '#08852E', color: 'white', '&:hover': { backgroundColor: '#388e3c' } }}
       >
-        Options
+        Menu
       </Button>
       <StyledMenu
         id="demo-customized-menu"
@@ -106,16 +123,34 @@ export default function FestivalMenu(festivalId) {
           Assigner Bins
         </MenuItem>
         <Divider sx={{ my: 0.5 }} />
-        <MenuItem onClick={handleClose} disableRipple>
-          <ArchiveIcon />
-          Archive
+        <MenuItem disableRipple>
+          <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }}>
+            <InputLabel id="festival-select-label">Changer de festival</InputLabel>
+            <Select
+              labelId="festival-select-label"
+              id="festival-select"
+              value={selectedFestival}
+              onChange={handleFestivalChange}
+            >
+              {festivalId && (
+                <MenuItem value={-1} sx={{ color: 'red' }} >
+                  <em>Aucun festival</em>
+                </MenuItem>
+              )}
+              {festivals.map((festival) => (
+                <MenuItem key={festival.id} value={festival}>
+                  {festival.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </MenuItem>
         <MenuItem onClick={handleClose} disableRipple>
           <MoreHorizIcon />
-          More
+          Plus
         </MenuItem>
       </StyledMenu>
-        <AssignBinDialog festivalId={festivalId} open={openBinsDialog} onClose={() => setOpenBinsDialog(false)} />
+      <AssignBinDialog festivalId={festivalId} open={openBinsDialog} onClose={() => setOpenBinsDialog(false)} />
     </div>
   );
 }

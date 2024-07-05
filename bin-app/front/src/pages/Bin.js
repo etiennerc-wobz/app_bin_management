@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBins,getBinTraps } from '../api';
 import CircularProgressWithLabel from '../components/CircularProgressWithLabel/CircularProgressWithLabel';
-import { useMediaQuery } from '@mui/material';
+import { Button, useMediaQuery } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
 import Traps from '../components/Traps/Traps';
 import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
+import { getFreeTraps } from '../api';
 
 const Bin = () => {
     const { id } = useParams();
@@ -17,6 +18,18 @@ const Bin = () => {
     const isSmallScreen = useMediaQuery('(max-width:640px)');
     const [thisStatus, setThisStatus] = useState(false);
     const [binTraps, setBinTraps] = useState([]);
+    const [freeTraps, setFreeTraps] = useState([]);
+    const [addTrapDialogOpen, setAddTrapDialogOpen] = useState(false);
+
+    const fetchFreeTraps = async () => {
+        try {
+            const traps = await getFreeTraps();
+            console.log('traps:', traps);
+            setFreeTraps(traps);
+        } catch (error) {
+            console.error('Error fetching traps:', error);
+        }
+    }
 
     useEffect(() => {
 
@@ -40,6 +53,7 @@ const Bin = () => {
             }
         };
         fetchBins();
+        fetchFreeTraps();
 
     }, [id]);
 
@@ -51,15 +65,20 @@ const Bin = () => {
         return <div>Loading...</div>;
     }
 
+    const handleAddTrapButtonClicked = () => {
+        console.log('Ajouter une bouche');
+        console.log('freeTraps:', freeTraps);
+        setAddTrapDialogOpen(true);
+    }
+
 
 return (
-    <div id="pageBin" className="absolute flex flex-col items-start sm:items-center p-0  h-full w-11/12 sm:pt-20 sm:px-20 overflow-hidden">
+    <div id="pageBin" className="absolute flex flex-col items-start sm:items-center  h-full w-11/12 sm:pt-20 sm:px-20 ">
         <div id="header" className="fixed sm:relative top-0 left-0 flex flex-row justify-between items-center w-full bg-gray-200 sm:bg-white p-4 sm:p-0 z-10">
             <div className="flex flex-col items-start  sm:mr-10 w-48 sm:w-11/12 ">
                 <div className="mb-4">
                     <StatusIndicator isConnected={thisStatus} />
                 </div>
-
                 <div className="text-start">
                     <span className="font-bold text-xl sm:text-5xl">{thisBin.name}</span>
                 </div>
@@ -71,8 +90,17 @@ return (
                 <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
             </div>
         </div>
-        <div id="body" className="relative sm:static top-48 left-4 sm:pt-0 sm:mt-0 w-11/12 ">   
+        <div id="body" className="relative sm:static top-48 flex flex-col items-center left-4 pb-20 sm:pt-0 sm:mt-0 w-11/12 ">   
             <Traps binId={thisBin.id} />
+            <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 
+            text:sm border-8 sm:border-2 border-gray-300 rounded-full cursor-pointer sm:hover:bg-gray-400'
+            onClick={() => handleAddTrapButtonClicked()}>
+            
+                <p>Ajouter une bouche</p>
+                {freeTraps.length > 0 && <p className="text-sm">({freeTraps.length} bouches disponibles)</p>}
+            </div>
+
+            
         </div>
         <div className="fixed bottom-20 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
             <Fab color="success" aria-label="edit">

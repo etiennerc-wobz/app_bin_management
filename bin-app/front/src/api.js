@@ -231,3 +231,13 @@ export const setFestivalBins = async (festivalId, bins) => {
     throw error;
   }
 }
+
+export const getFreeTraps = async () => {
+  try {
+    const response = await api.get('/api/traps/free');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching free traps:', error);
+    throw error;
+  }
+}
