@@ -181,6 +181,7 @@ export const getMyFestivalBins = async (userId) => {
 
 export const getFestivalTraps = async (festivalId) => {
   try {
+    console.log('Fetching festival traps for festival ID:', festivalId);
     const response = await api.get(`/api/festivals/${festivalId}/traps`);
     return response.data;
   } catch (error) {
@@ -258,6 +259,26 @@ export const assignTrapsToFestival = async (festivalId, traps) => {
     return response.data;
   } catch (error) {
     console.error('Error assigning traps to festival:', error);
+    throw error;
+  }
+}
+
+export const assignTrapsToBin = async (binId, traps) => {
+  try {
+    const response = await api.post(`/api/bins/${binId}/traps`, { traps });
+    return response.data;
+  } catch (error) {
+    console.error('Error assigning traps to bin:', error);
+    throw error;
+  }
+}
+
+export const getFreeFestivalTraps = async (festivalId) => {
+  try {
+    const response = await api.get(`/api/festivals/${festivalId}/free-traps`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching free festival traps:', error);
     throw error;
   }
 }

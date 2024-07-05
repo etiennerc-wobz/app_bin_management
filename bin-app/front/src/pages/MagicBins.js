@@ -34,7 +34,7 @@ const MagicBins = () => {
 
   const { user  } = useContext(AuthContext);
   const [FavoriteFestival, setFavoriteFestival] = useState('');
-
+  
 
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const MagicBins = () => {
       try {
         const festival = await getFavoriteFestival(user.id);
         console.log('festival:', festival);
-        setFavoriteFestival(festival.name);
+        setFavoriteFestival(festival);
       } catch (error) {
         console.error('Error fetching favorite festival:', error);
       }
@@ -156,7 +156,7 @@ const MagicBins = () => {
       <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
         <h1 className="text-xl sm:text-3xl w-52 pl-4 sm:w-fit bg-gray-100
         rounded-full shadow-md sm:text-center sm:mx-auto sm:my-4 sm:p-4
-        ">Liste des Bins de :<strong> {FavoriteFestival} </strong></h1>
+        ">Liste des Bins de :<strong> {FavoriteFestival.name} </strong></h1>
         <div className=" flex flex-row items-center sm:pl-56">
           <input
             type="text"
