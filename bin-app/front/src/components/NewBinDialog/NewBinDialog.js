@@ -6,10 +6,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { createBin } from '../../api';
+import { createBin, createBinDEMO } from '../../api';
 
 
-export default function NewBinDialog({open, onClose, onBinAdded}) {
+export default function NewBinDialog({open, onClose, onBinAdded, festivalId}) {
 
   const handleClose = () => {
     onClose();
@@ -18,10 +18,11 @@ export default function NewBinDialog({open, onClose, onBinAdded}) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    formData.append('festival', festivalId);
     const formJson = Object.fromEntries(formData.entries());
-
+    console.log('formJson:', formJson);
     try {
-      const response = await createBin(formJson);
+      const response = await createBinDEMO(formJson);
         console.log('response:', response);
         onBinAdded();
       handleClose();
@@ -67,36 +68,7 @@ export default function NewBinDialog({open, onClose, onBinAdded}) {
             fullWidth
             variant="standard"
           />
-          <TextField
-            required
-            margin="dense"
-            id="lat"
-            name="lat"
-            label="Latitude"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="long"
-            name="long"
-            label="Longitude"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            required
-            margin="dense"
-            id="traps"
-            name="traps"
-            label="Traps"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
+
           <TextField
             required
             margin="dense"
@@ -107,16 +79,7 @@ export default function NewBinDialog({open, onClose, onBinAdded}) {
             fullWidth
             variant="standard"
           />
-          <TextField
-            required
-            margin="dense"
-            id="fillrate"
-            name="fillrate"
-            label="Taux de remplissage"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Annuler</Button>

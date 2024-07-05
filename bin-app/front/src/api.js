@@ -282,3 +282,14 @@ export const getFreeFestivalTraps = async (festivalId) => {
     throw error;
   }
 }
+
+export const createBinDEMO = async (bin) => {
+  try {
+    console.log('Attempting to create bin:', bin);
+    const response = await api.post('/api/createbinDEMO', bin);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating bin:', error);
+    throw error;
+  }
+}

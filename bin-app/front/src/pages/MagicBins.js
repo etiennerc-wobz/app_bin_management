@@ -108,7 +108,7 @@ const MagicBins = () => {
   const handleBinAdded = () => {
     const fetchBins = async () => {
       try {
-        let bins = await getBins();
+        let bins = await getMyFestivalBins(user.id);
         setBins(bins);
         setSnackbarMessage('Bin ajoutée avec succès');
         setOpenSnackbar(true);
@@ -174,7 +174,7 @@ const MagicBins = () => {
       </div>
       <ButtonBinList setDeleteMode={setDeleteMode} onAddBinClick={handleAddBinClick} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
-      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded} />
+      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded} festivalId={FavoriteFestival.id} />
     </>
   );
 };
