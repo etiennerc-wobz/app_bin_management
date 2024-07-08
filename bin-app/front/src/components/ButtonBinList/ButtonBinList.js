@@ -34,7 +34,7 @@ const theme = createTheme({
 
 
 
-export default function ButtonBinList({ setDeleteMode, onAddBinClick }) {
+export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
   const defaultTheme = useTheme(); 
   const isMobile = useMediaQuery(defaultTheme.breakpoints.down('sm'));
 
@@ -43,7 +43,7 @@ export default function ButtonBinList({ setDeleteMode, onAddBinClick }) {
   const handleIconClick = (action) => {
     console.log(action.name);
     if(action.name === 'Supprimer une bin') {
-      setDeleteMode(true);
+      setUnassignMode(true);
     }
     if(action.name === 'Ajouter une bin') {
       console.log('ajouter une bin');

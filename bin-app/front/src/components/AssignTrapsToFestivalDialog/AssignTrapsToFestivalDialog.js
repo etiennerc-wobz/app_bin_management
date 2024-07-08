@@ -18,7 +18,7 @@ import {setFestivalBins} from '../../api';
 import { getFreeTraps } from '../../api';
 import { assignTrapsToFestival } from '../../api';
 
-export default function AssignTrapsDialog({ festivalId, open, onClose, onUpdate }) {
+export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose, onUpdate }) {
 
     const [selectedTraps, setSelectedTraps] = useState([]);
     const [freeTraps, setFreeTraps] = useState([]);

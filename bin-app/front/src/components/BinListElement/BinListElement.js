@@ -24,10 +24,10 @@ const useResizeFont = (ref, containerRef, title) => {
   }, [ref, containerRef, title]); // Ajoutez 'title' aux dépendances
 };
 
-const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, deleteMode }) => {
+const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, unassignMode }) => {
   const baseStyle = "md:w-3/4 p-4 border-b border-gray-200 bg-gray-200 rounded-full mx-auto cursor-pointer flex items-center justify-between";
-  const hoverStyle = deleteMode ? "hover:bg-red-500" : "hover:bg-gray-300";
-  const activeStyle = deleteMode ? "bg-red-200" : "";
+  const hoverStyle = unassignMode ? "hover:bg-red-500" : "hover:bg-gray-300";
+  const activeStyle = unassignMode ? "bg-red-200" : "";
 
   const myStatus = status === "connected";
   

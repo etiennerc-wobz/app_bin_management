@@ -89,13 +89,19 @@ export const getTrap = async (id) => {
   }
 };
 
-export const deleteBin = async (id) => {
+export const unAssignBinFromFestival = async (binId) => {
   try {
-    const response = await api.post('/api/deletebin', null, {
-      params: {
-        id: id
-      }
-    });
+    const response = await api.post(`/api/bins/${binId}/unassign`);
+    return response.data;
+  } catch (error) {
+    console.error('Error unassigning bin from festival:', error);
+    throw error;
+  }
+};
+
+export const deleteBin = async (binId) => {
+  try {
+    const response = await api.post('/api/deletebin', { id: binId });
     return response.data;
   } catch (error) {
     console.error('Error deleting bin:', error);

@@ -6,7 +6,7 @@ import { getBins } from '../api';
 import BinListElement from '../components/BinListElement/BinListElement';
 import SelectInput from '../components/SelectInput/SelectInput';
 import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
-import { deleteBin } from '../api';
+import { unAssignBinFromFestival } from '../api';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 
 import { getMyFestivalBins } from '../api';
@@ -28,7 +28,7 @@ const MagicBins = () => {
 
   const [bins, setBins] = useState([]);
 
-  const [deleteMode, setDeleteMode] = useState(false);
+  const [unassignMode, setUnassignMode] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openAssignBinDialog, setOpenAssignBinDialog] = useState(false);
@@ -77,7 +77,7 @@ const MagicBins = () => {
 
 
   const handleBinClick = (id) => {
-    if (!deleteMode) {
+    if (!unassignMode) {
       navigate(`/magic-bins/${id}`);
     }
     else {
@@ -86,7 +86,7 @@ const MagicBins = () => {
 
         //deleteBin(id);
         console.log('delete bin:', id);
-        deleteBin(id).then(() => {
+        unAssignBinFromFestival(id).then(() => {
           setBins(bins.filter(bin => bin.id !== id));
           setSnackbarMessage('Bin supprimée avec succès');
           setOpenSnackbar(true);
@@ -95,7 +95,7 @@ const MagicBins = () => {
 
       }
     };
-    setDeleteMode(false);
+    setUnassignMode(false);
   }
 
   const handleAddBinClick = () => {
@@ -175,10 +175,10 @@ const MagicBins = () => {
         </div>
         {bins.length === 0 && <h1>Aucune Bin pour ce festival</h1>}
         {bins.filter(bin => bin.name.toLowerCase().includes(search.toLowerCase())).map((bin, index) => (
-          <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} deleteMode={deleteMode} />
+          <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} unassignMode={unassignMode} />
         ))}
       </div>
-      <ButtonBinList setDeleteMode={setDeleteMode} onAddBinClick={handleAddBinClick} />
+      <ButtonBinList setUnassignMode={setUnassignMode} onAddBinClick={handleAddBinClick} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
       <AssignBinDialog festivalId={FavoriteFestival} open={openAssignBinDialog} onClose={() => setOpenAssignBinDialog(false)} onAssignment={handleBinAssignment} />
 

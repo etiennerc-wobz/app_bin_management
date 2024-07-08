@@ -13,7 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import CommitIcon from '@mui/icons-material/Commit';
 import Button from '@mui/material/Button';
-import AssignTrapsDialog from '../AssignTrapsDialog/AssignTrapsDialog';
+import AssignTrapsToFestivalDialog from '../AssignTrapsToFestivalDialog/AssignTrapsToFestivalDialog';
 import { unassignTrapFromFestival } from '../../api';
 
 export default function FestivalTraps({ festivalId, traps, onUpdate }) {
@@ -129,7 +129,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                     </List>
                 </Box>
             )}
-            <AssignTrapsDialog open={dialogOpen} onClose={handleDialogClose} festivalId={festivalId} onUpdate={onUpdate} />
+            <AssignTrapsToFestivalDialog open={dialogOpen} onClose={handleDialogClose} festivalId={festivalId} onUpdate={onUpdate} />
         </Box>
     );
 }
