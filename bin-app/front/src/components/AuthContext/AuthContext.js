@@ -1,6 +1,6 @@
 // AuthContext.js
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { login as apiLogin } from '../../api';
+import { login as apiLogin, register as apiRegister } from '../../api';
 import { setAuthToken } from '../../api';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
 import { Navigate } from 'react-router-dom';
@@ -31,6 +31,23 @@ const AuthProvider = ({ children }) => {
       
     } catch (error) {
       console.error('Error logging in:', error);
+      throw error;
+    }
+  };
+
+  const register = async (username, password) => {
+    try {
+      const data = await apiRegister(username, password);
+      console.log('register response : ', data);
+
+      setUser(data.user);
+      setToken(data.token);
+      setAuthToken(data.token, logout);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+    } catch (error) {
+      console.error('Error registering:', error);
       throw error;
     }
   };
@@ -69,7 +86,7 @@ const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, token,notLogged  }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, token,notLogged , register }}>
       {children}
       <SnackbarAlert
         open={openSnackbar}

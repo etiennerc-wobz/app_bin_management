@@ -1,31 +1,54 @@
-// Login.js
 import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
-import { useNavigate } from 'react-router-dom';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
 
-const Login = ({ history }) => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [loginEvent, setLoginEvent] = useState('success');
+  const [registerMode, setRegisterMode] = useState(false); // State pour basculer entre le mode connexion et inscription
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarColor, setSnackbarColor] = useState('success');
 
-  const { login } = useContext(AuthContext);
+  const { login, register } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res=await login(username, password);
-      
-      setLoginEvent('success');
+      await login(username, password);
+      setSnackbarMessage('Connexion réussie');
+      setSnackbarColor('success');
       setOpenSnackbar(true);
       setTimeout(() => {
         navigate('/');
       }, 1500);
     } catch (error) {
-      setLoginEvent('error');
+      setSnackbarColor('error');
+      setSnackbarMessage('Nom d\'utilisateur ou mot de passe incorrect');
+      setOpenSnackbar(true);
+    }
+  };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await register(username, password);
+      setSnackbarMessage('Inscription réussie');
+      setSnackbarColor('success');
+      setOpenSnackbar(true);
+      await login(username, password);
+      setTimeout(() => {
+        navigate('/');
+      }, 2500);
+    } catch (error) {
+      // Ici, vous pouvez gérer les erreurs d'inscription spécifiques, par exemple si le nom d'utilisateur est déjà pris
+      console.error('Error registering:', error);
+      setSnackbarMessage('Erreur lors de l\'inscription');
+      setSnackbarColor('error');
       setOpenSnackbar(true);
     }
   };
@@ -34,13 +57,22 @@ const Login = ({ history }) => {
     setOpenSnackbar(false);
   };
 
+  const toggleRegisterMode = () => {
+    setRegisterMode(!registerMode); // Bascule entre le mode connexion et le mode inscription
+    setInvalidCredentials(false); // Réinitialise les éventuelles erreurs d'authentification précédentes
+  };
+
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center ">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-          <h2 className="text-2xl font-bold mb-6 text-center">Se connecter</h2>
-          <div className="text-red-500 text-center mb-4">{invalidCredentials ? 'Nom d\'utilisateur ou mot de passe incorrect' : ''}</div>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <h2 className="text-2xl font-bold mb-6 text-center">{registerMode ? 'Inscription' : 'Se connecter'}</h2>
+          {registerMode && (
+            <div className="text-red-500 text-center mb-4">
+              {/* Ici, vous pouvez afficher des messages d'erreur spécifiques à l'inscription si nécessaire */}
+            </div>
+          )}
+          <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">Nom d'utilisateur :</label>
               <input
@@ -50,7 +82,7 @@ const Login = ({ history }) => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                autoComplete='off'
+                autoComplete="off"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
@@ -63,7 +95,7 @@ const Login = ({ history }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete='off'
+                autoComplete="off"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
@@ -72,13 +104,41 @@ const Login = ({ history }) => {
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
-                Se connecter
+                {registerMode ? 'S\'inscrire' : 'Se connecter'}
               </button>
             </div>
           </form>
+          <div className="mt-4 text-sm text-center">
+            {registerMode ? (
+              <p>
+                Déjà inscrit ?{' '}
+                <button
+                  onClick={toggleRegisterMode}
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Connectez-vous ici
+                </button>
+              </p>
+            ) : (
+              <p>
+                Pas encore inscrit ?{' '}
+                <button
+                  onClick={toggleRegisterMode}
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Inscrivez-vous ici
+                </button>
+              </p>
+            )}
+          </div>
         </div>
       </div>
-      <SnackbarAlert open={openSnackbar} onClose={handleCloseSnackbar} message={loginEvent === 'success' ? 'Connexion réussie, vous allez être redirigés' : 'Nom d\'utilisateur ou mot de passe incorrect'} color={loginEvent === 'success' ? 'success' : 'error'} />
+      <SnackbarAlert
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+        message={snackbarMessage}
+        color={snackbarColor}
+      />
     </div>
   );
 };

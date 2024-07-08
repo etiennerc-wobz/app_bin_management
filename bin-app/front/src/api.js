@@ -147,10 +147,20 @@ export const openTrap = async (trapId) => {
 export const login = async (username, password) => {
   try {
     const response = await api.post('/api/login', { username, password });
-    
     return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
+    throw error;
+  }
+};
+
+export const register = async (username, password) => {
+  try {
+    const response = await api.post('/api/register', { username, password });
+    console.log('register response : ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error registering:', error);
     throw error;
   }
 };
