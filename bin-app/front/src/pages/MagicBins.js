@@ -8,13 +8,15 @@ import SelectInput from '../components/SelectInput/SelectInput';
 import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
 import { deleteBin } from '../api';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
-import NewBinDialog from '../components/NewBinDialog/NewBinDialog';
 
 import { getMyFestivalBins } from '../api';
 
 import { AuthContext } from '../components/AuthContext/AuthContext';
 
 import { getFavoriteFestival } from '../api';
+
+import AssignBinDialog from '../components/AssignBinDialog/AssignBinDialog';
+
 
 const MagicBins = () => {
 
@@ -29,35 +31,34 @@ const MagicBins = () => {
   const [deleteMode, setDeleteMode] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [openNewBinDialog, setOpenNewBinDialog] = useState(false);
+  const [openAssignBinDialog, setOpenAssignBinDialog] = useState(false);
   const [search, setSearch] = useState(''); // Nouvel état pour la recherche
 
   const { user  } = useContext(AuthContext);
   const [FavoriteFestival, setFavoriteFestival] = useState('');
   
 
+  const fetchBins = async () => {
+    try {
+      let bins = await getMyFestivalBins(user.id);
+      const triNumber = Number(tri);
+
+      if (triNumber === 10) {
+        bins.sort((a, b) => b.fillrate - a.fillrate);
+      } else if (triNumber === 20) {
+        bins.sort((a, b) => a.zone.localeCompare(b.zone));
+      } else if (triNumber === 30) {
+        bins.sort((a, b) => a.traps.length - b.traps.length);
+      }
+      console.log('bins:', bins);
+
+      setBins(bins);
+    } catch (error) {
+      console.error('Error fetching bins:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchBins = async () => {
-      try {
-        let bins = await getMyFestivalBins(user.id);
-        const triNumber = Number(tri);
-
-        if (triNumber === 10) {
-          bins.sort((a, b) => b.fillrate - a.fillrate);
-        } else if (triNumber === 20) {
-          bins.sort((a, b) => a.zone.localeCompare(b.zone));
-        } else if (triNumber === 30) {
-          bins.sort((a, b) => a.traps.length - b.traps.length);
-        }
-        console.log('bins:', bins);
-
-        setBins(bins);
-      } catch (error) {
-        console.error('Error fetching bins:', error);
-      }
-    };
-
     fetchBins();
 
     const fetchFavoriteFestival = async () => {
@@ -98,12 +99,17 @@ const MagicBins = () => {
   }
 
   const handleAddBinClick = () => {
-    setOpenNewBinDialog(true);
+    setOpenAssignBinDialog(true);
   }
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
   };
+
+  const handleBinAssignment = () => {
+
+    fetchBins();
+  }
 
   const handleBinAdded = () => {
     const fetchBins = async () => {
@@ -174,9 +180,12 @@ const MagicBins = () => {
       </div>
       <ButtonBinList setDeleteMode={setDeleteMode} onAddBinClick={handleAddBinClick} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
-      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded} festivalId={FavoriteFestival.id} />
+      <AssignBinDialog festivalId={FavoriteFestival} open={openAssignBinDialog} onClose={() => setOpenAssignBinDialog(false)} onAssignment={handleBinAssignment} />
+
     </>
   );
 };
+//      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded} festivalId={FavoriteFestival.id} />
+
 
 export default MagicBins;

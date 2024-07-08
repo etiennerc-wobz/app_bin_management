@@ -16,7 +16,7 @@ import { AuthContext } from '../AuthContext/AuthContext';
 import { useContext } from 'react';
 import {setFestivalBins} from '../../api';
 
-export default function AssignBinDialog({ festivalId, open, onClose }) {
+export default function AssignBinDialog({ festivalId, open, onClose, onAssignment }) {
 
     const [bins, setBins] = useState([]);
     const [myFestivalBins, setMyFestivalBins] = useState([]);
@@ -71,8 +71,9 @@ export default function AssignBinDialog({ festivalId, open, onClose }) {
 
         try {
             console.log('Appel API assignment, festivalId:', festivalId, 'selectedBinsIds:', selectedBinsIds);
-            const response= await setFestivalBins(festivalId.festivalId, selectedBinsIds);
+            const response= await setFestivalBins(festivalId.id, selectedBinsIds);
             console.log('response:', response);
+            onAssignment();
             handleClose();
         } catch (error) {
             console.error('Erreur lors de la création du festival:', error);

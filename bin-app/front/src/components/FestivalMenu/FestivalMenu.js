@@ -6,10 +6,8 @@ import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import { FormControl, InputLabel, Select } from '@mui/material';
-import AssignBinDialog from '../AssignBinDialog/AssignBinDialog';
 import MenuIcon from '@mui/icons-material/Menu';
 
 const StyledMenu = styled((props) => (
@@ -68,11 +66,6 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
     setAnchorEl(null);
   };
 
-  const handleAssignBin = () => {
-    console.log('Assigner cassettes');
-    setOpenBinsDialog(true);
-  };
-
   const handleFestivalChange = (event) => {
     setSelectedFestival(event.target.value.id);
     handleValidateChange(event.target.value);
@@ -118,10 +111,7 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
           <EditIcon />
           Renommer festival
         </MenuItem>
-        <MenuItem onClick={handleAssignBin} disableRipple>
-          <DeleteSweepIcon />
-          Assigner Bins
-        </MenuItem>
+
         <Divider sx={{ my: 0.5 }} />
         <MenuItem disableRipple>
           <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }}>
@@ -150,7 +140,6 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
           Plus
         </MenuItem>
       </StyledMenu>
-      <AssignBinDialog festivalId={festivalId} open={openBinsDialog} onClose={() => setOpenBinsDialog(false)} />
     </div>
   );
 }
