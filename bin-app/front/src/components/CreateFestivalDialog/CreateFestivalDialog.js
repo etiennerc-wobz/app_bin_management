@@ -48,8 +48,8 @@ export default function CreateFestivalDialog({ open, onClose, onFestivalCreated 
 
         try {
             const response = await createFestival(formJson);
-            console.log('formJson:', formJson);
-            console.log('response:', response);
+            
+            
             onFestivalCreated();
             handleClose();
         } catch (error) {

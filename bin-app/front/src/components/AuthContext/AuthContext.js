@@ -21,14 +21,14 @@ const AuthProvider = ({ children }) => {
       if (!data || !data.token) {
         throw new Error('Invalid credentials');
       }
-      console.log('data:', data);
-      console.log('data.token:', data.token);
+      
+      
       setUser(data.user);
       setToken(data.token);
       setAuthToken(data.token,logout);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      console.log('localstorage token is : ', localStorage.getItem('token'));
+      
     } catch (error) {
       console.error('Error logging in:', error);
       throw error;

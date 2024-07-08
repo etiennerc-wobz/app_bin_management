@@ -18,7 +18,7 @@ const Login = ({ history }) => {
     e.preventDefault();
     try {
       let res=await login(username, password);
-      console.log('Login successful');
+      
       setLoginEvent('success');
       setOpenSnackbar(true);
       setTimeout(() => {

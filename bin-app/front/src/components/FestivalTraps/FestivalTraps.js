@@ -38,7 +38,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
         if (window.confirm('Voulez-vous vraiment supprimer la trap ' + trapId + ' du festival ?')) {
             try {
                 await unassignTrapFromFestival(trapId);
-                console.log('Trap unassigned:', trapId);
+                
                 onUpdate();
             } catch (error) {
                 console.error('Error unassigning trap:', error);

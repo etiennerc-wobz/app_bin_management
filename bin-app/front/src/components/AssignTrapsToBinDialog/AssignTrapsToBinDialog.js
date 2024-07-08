@@ -33,10 +33,10 @@ export default function AssignTrapsToBinDialog({ traps, binId, open, onClose, on
     }
 
     const fetchThisFestival = async () => {
-        console.log('user.id:', user.id);
+        
         try {
             const festivalReturned = await getFavoriteFestival(user.id);
-            console.log('festival:', festivalReturned);
+            
             setFestival(festivalReturned);
             fetchFestivalTraps(festivalReturned.id)
         } catch (error) {
@@ -48,9 +48,9 @@ export default function AssignTrapsToBinDialog({ traps, binId, open, onClose, on
     const fetchFestivalTraps = async (festivalId) => {
         try {
             const traps = await getFreeFestivalTraps(festivalId);
-            console.log('!!****traps:', traps);
+            
             SetThisFestivalTraps(traps);
-            console.log('thisFestivalTraps:', thisFestivalTraps);
+            
         } catch (error) {
             console.error('Error fetching traps:', error);
         }
@@ -60,10 +60,10 @@ export default function AssignTrapsToBinDialog({ traps, binId, open, onClose, on
 
     const handleCheckboxChange = (event, trapId) => {
         if (event.target.checked) {
-            console.log('checked:', trapId);
+            
             setSelectedTraps([...selectedTraps, trapId]);
         } else {
-            console.log('unchecked:', trapId);
+            
             setSelectedTraps(selectedTraps.filter(id => id !== trapId));
         }
     }
@@ -72,8 +72,8 @@ export default function AssignTrapsToBinDialog({ traps, binId, open, onClose, on
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('selectedTraps:', selectedTraps);
-        console.log('binId:', binId);
+        
+        
         try {
             await assignTrapsToBin(binId, selectedTraps);
             onUpdate();

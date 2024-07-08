@@ -20,10 +20,10 @@ export default function NewBinDialog({open, onClose, onBinAdded, festivalId}) {
     const formData = new FormData(event.currentTarget);
     formData.append('festival', festivalId);
     const formJson = Object.fromEntries(formData.entries());
-    console.log('formJson:', formJson);
+    
     try {
       const response = await createBinDEMO(formJson);
-        console.log('response:', response);
+        
         onBinAdded();
       handleClose();
     } catch (error) {

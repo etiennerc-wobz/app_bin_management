@@ -33,10 +33,10 @@ const Bin = () => {
     const { user } = useContext(AuthContext);
 
     const fetchThisFestival = async () => {
-        console.log('user.id:', user.id);
+        
         try {
             const festivalReturned = await getFavoriteFestival(user.id);
-            console.log('festival:', festivalReturned);
+            
             SetThisFestivalTraps(festivalReturned);
             fetchFestivalTraps(festivalReturned.id)
         } catch (error) {
@@ -48,7 +48,7 @@ const Bin = () => {
     const fetchFestivalTraps = async (festivalId) => {
         try {
             const traps = await getFreeFestivalTraps(festivalId);
-            console.log('!!****traps:', traps);
+            
             SetThisFestivalTraps(traps);
         } catch (error) {
             console.error('Error fetching traps:', error);
@@ -60,16 +60,16 @@ const Bin = () => {
             fetchThisFestival();
             const bins = await getBins();
             setBins(bins);
-            console.log('bins:', bins);
-            console.log('id:', id);
+            
+            
             const bin = bins.find(bin => String(bin.id) === String(id));
             if (!bin) {
                 setError('Aucune bin avec cet ID n\'a été trouvée.');
             } else {
                 setThisBin(bin);
                 setThisStatus(bin.status === "connected" ? true : false);
-                console.log('thisBin:', thisBin);
-                console.log('thisStatus:', thisStatus);
+                
+                
             }
         } catch (error) {
             console.error('Error fetching bins:', error);
@@ -90,7 +90,7 @@ const Bin = () => {
     }
 
     const handleAddTrapButtonClicked = () => {
-        console.log('Ajouter une bouche');
+        
         setAddTrapDialogOpen(true);
     }
 

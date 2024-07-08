@@ -31,7 +31,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
     const fetchBins = async () => {
         try {
             const bins = await getBins();
-            console.log('Bins:', bins);
+            
             setBins(bins);
         } catch (error) {
             console.error('Error fetching bins:', error);
@@ -40,7 +40,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
     const fetchMyFestivalBins = async () => {
         try {
             const bins = await getMyFestivalBins(user.id);
-            console.log('MyFestivalBins:', bins);
+            
             setMyFestivalBins(bins);
             setSelectedBins(bins.map(bin => bin.id));
         } catch (error) {
@@ -50,10 +50,10 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
 
     const handleCheckboxChange = (event, binId) => {
         if (event.target.checked) {
-            console.log('checked:', binId);
+            
             setSelectedBins([...selectedBins, binId]);
         } else {
-            console.log('unchecked:', binId);
+            
             setSelectedBins(selectedBins.filter(id => id !== binId));
         }
     }
@@ -70,9 +70,9 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
         const selectedBinsIds = selectedBins.map(id => ({ bin_id: id }));
 
         try {
-            console.log('Appel API assignment, festivalId:', festivalId, 'selectedBinsIds:', selectedBinsIds);
+            
             const response= await setFestivalBins(festivalId.id, selectedBinsIds);
-            console.log('response:', response);
+            
             onAssignment();
             handleClose();
         } catch (error) {

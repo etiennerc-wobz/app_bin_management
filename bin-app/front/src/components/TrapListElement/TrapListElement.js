@@ -23,7 +23,7 @@ const TrapListElement = ({ trap, onUpdateTrap }) => {
             } else {
                 newTrap = await openTrap(trapId);
             }
-            console.log('newTrap:', newTrap);
+            
             setThisTrap(newTrap);
             onUpdateTrap(newTrap);  // Appel de la fonction de rappel pour mettre à jour l'état du parent
         } catch (error) {

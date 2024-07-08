@@ -13,7 +13,7 @@ let logoutFunction = null;
 
 // Fonction pour définir le token JWT dans les en-têtes des requêtes Axios
 export const setAuthToken = (token,logout) => {
-  console.log('Setting token:', token);
+  
   if (token) {
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   } else {
@@ -111,7 +111,7 @@ export const deleteBin = async (binId) => {
 
 export const createBin = async (bin) => {
   try {
-    console.log('Attempting to create bin:', bin);
+    
     const response = await api.post('/api/createbin', bin);
     return response.data;
   } catch (error) {
@@ -122,9 +122,9 @@ export const createBin = async (bin) => {
 
 export const closeTrap = async (trapId) => {
   try {
-    console.log('Attempting to close trap:', trapId);
+    
     const response = await api.post('/api/closetrap', { id: trapId });
-    console.log('Response:', response);
+    
     return response.data;
   } catch (error) {
     console.error('Error closing trap:', error);
@@ -134,9 +134,9 @@ export const closeTrap = async (trapId) => {
 
 export const openTrap = async (trapId) => {
   try {
-    console.log('Attempting to open trap:', trapId);
+    
     const response = await api.post('/api/opentrap', { id: trapId });
-    console.log('Response:', response);
+    
     return response.data;
   } catch (error) {
     console.error('Error opening trap:', error);
@@ -147,7 +147,7 @@ export const openTrap = async (trapId) => {
 export const login = async (username, password) => {
   try {
     const response = await api.post('/api/login', { username, password });
-    console.log('Response:', response.data);
+    
     return response.data;
   } catch (error) {
     console.error('Error logging in:', error);
@@ -187,7 +187,7 @@ export const getMyFestivalBins = async (userId) => {
 
 export const getFestivalTraps = async (festivalId) => {
   try {
-    console.log('Fetching festival traps for festival ID:', festivalId);
+    
     const response = await api.get(`/api/festivals/${festivalId}/traps`);
     return response.data;
   } catch (error) {
@@ -218,7 +218,7 @@ export const changeFavoriteFestival = async (userId, festivalId) => {
 
 export const createFestival = async (festival) => {
   try {
-    console.log('Attempting to create festival:', festival);
+    
     const response = await api.post('/api/festivals', festival);
     return response.data;
   } catch (error) {
@@ -229,8 +229,8 @@ export const createFestival = async (festival) => {
 
 export const setFestivalBins = async (festivalId, bins) => {
   try {
-    console.log('Attempting to set festival bins:', bins);
-    console.log('Festival ID:', festivalId);
+    
+    
     const response = await api.post(`/api/festivals/${festivalId}/bins`, { bins });
     return response.data;
   } catch (error) {
@@ -291,7 +291,7 @@ export const getFreeFestivalTraps = async (festivalId) => {
 
 export const createBinDEMO = async (bin) => {
   try {
-    console.log('Attempting to create bin:', bin);
+    
     const response = await api.post('/api/createbinDEMO', bin);
     return response.data;
   } catch (error) {
@@ -302,7 +302,7 @@ export const createBinDEMO = async (bin) => {
 
 export const editBinInformations = async (name,zone,binId) => {
   try {
-    console.log('Attempting to edit bin:', binId);
+    
     const response = await api.post('/api/editbin', { name, zone, binId });
     return response.data;
   } catch (error) {

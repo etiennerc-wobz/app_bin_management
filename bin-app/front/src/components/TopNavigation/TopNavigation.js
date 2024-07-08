@@ -29,7 +29,7 @@ function ResponsiveAppBar() {
     const { user } = useContext(AuthContext);
 
     const handlePageClick = (page) => {
-        console.log('page:', page);
+        
         if (page === 'Festival') page = '';
         if (page === 'Carte') page = 'map';
 
@@ -38,7 +38,7 @@ function ResponsiveAppBar() {
     };
 
     const handleSettingsButton = (setting) => {
-        console.log('setting:', setting.target.innerText);
+        
         if (setting.target.innerText === 'Déconnexion') {
             logout();
             return;

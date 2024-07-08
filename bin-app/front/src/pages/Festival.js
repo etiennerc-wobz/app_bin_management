@@ -27,7 +27,7 @@ const Festival = () => {
     try {
       const festivals = await getFestivals(token);
       setFestivals(festivals);
-      console.log('Festivals:', festivals);
+      
     } catch (error) {
       console.error('Error fetching festivals:', error);
     }
@@ -37,7 +37,7 @@ const Festival = () => {
     try {
       if (user) {
         const festival = await getFavoriteFestival(user.id, token);
-        console.log('Festival favori:', festival);
+        
         setFavoriteFestival(festival);
       }
     } catch (error) {
@@ -54,7 +54,7 @@ const Festival = () => {
       if (favoriteFestival) {
         const traps = await getFestivalTraps(favoriteFestival.id, token);
         setTraps(traps);
-        console.log('Traps du festival:', favoriteFestival.name, traps);
+        
       }
     } catch (error) {
       console.error('Error fetching festival traps:', error);
@@ -78,7 +78,7 @@ const Festival = () => {
   // Handle festival change
   const handleFestivalChange = (festivalId) => {
     if (festivalId) {
-      console.log('Modification de festival favori pour user', user.id, 'festival id : ', festivalId);
+      
       changeFavoriteFestival(user.id, festivalId, token).then(() => {
         setFavoriteFestival(festivals.find(festival => festival.id === festivalId));
         setSnackbarMessage('Festival favori modifié');
@@ -91,13 +91,13 @@ const Festival = () => {
 
   // Open the dialog to create a new festival
   const handleCreateButton = () => {
-    console.log('Création d\'un nouveau festival');
+    
     setOpenCreateDialog(true);
   };
 
   // Refresh the festival list when a new festival is created
   const handleFestivalCreated = (festival) => {
-    console.log('Festival créé :', festival);
+    
     fetchFestivals();
   };
 

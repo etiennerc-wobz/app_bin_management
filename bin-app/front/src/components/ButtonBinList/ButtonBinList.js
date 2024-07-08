@@ -41,12 +41,12 @@ export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
 
 
   const handleIconClick = (action) => {
-    console.log(action.name);
+    
     if(action.name === 'Supprimer une bin') {
       setUnassignMode(true);
     }
     if(action.name === 'Ajouter une bin') {
-      console.log('ajouter une bin');
+      
       onAddBinClick(); 
     }
   };

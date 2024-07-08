@@ -14,7 +14,7 @@ const Map = () => {
   const fetchMyFestivalBins = async () => {
     try {
       const bins = await getMyFestivalBins(user.id);
-      console.log('MyFestivalBins:', bins);
+      
       setBins(bins);
     } catch (error) {
       console.error('Error fetching bins:', error);
@@ -55,7 +55,7 @@ const Map = () => {
 
     // Trigger the geolocation control once the map is loaded
     map.on('load', () => {
-      console.log('bins:', bins);
+      
       map.loadImage('https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png', (error, image) => {
         if (error) throw error;
         map.addImage('custom-marker', image);

@@ -50,7 +50,7 @@ const MagicBins = () => {
       } else if (triNumber === 30) {
         bins.sort((a, b) => a.traps.length - b.traps.length);
       }
-      console.log('bins:', bins);
+      
 
       setBins(bins);
     } catch (error) {
@@ -64,7 +64,7 @@ const MagicBins = () => {
     const fetchFavoriteFestival = async () => {
       try {
         const festival = await getFavoriteFestival(user.id);
-        console.log('festival:', festival);
+        
         setFavoriteFestival(festival);
       } catch (error) {
         console.error('Error fetching favorite festival:', error);
@@ -85,7 +85,7 @@ const MagicBins = () => {
       if (window.confirm('Voulez-vous supprimer la Bin : ' + binName + ' ?')) {
 
         //deleteBin(id);
-        console.log('delete bin:', id);
+        
         unAssignBinFromFestival(id).then(() => {
           setBins(bins.filter(bin => bin.id !== id));
           setSnackbarMessage('Bin supprimée avec succès');

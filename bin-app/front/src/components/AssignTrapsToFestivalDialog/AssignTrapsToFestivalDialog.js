@@ -38,7 +38,7 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
     const fetchFreeTraps = async () => {
         try {
             const traps = await getFreeTraps();
-            console.log('traps:', traps);
+            
             setFreeTraps(traps);
         } catch (error) {
             console.error('Error fetching traps:', error);
@@ -49,10 +49,10 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
 
     const handleCheckboxChange = (event, trapId) => {
         if (event.target.checked) {
-            console.log('checked:', trapId);
+            
             setSelectedTraps([...selectedTraps, trapId]);
         } else {
-            console.log('unchecked:', trapId);
+            
             setSelectedTraps(selectedTraps.filter(id => id !== trapId));
         }
     }
@@ -64,7 +64,7 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            console.log('selectedTraps:', selectedTraps);
+            
             await assignTrapsToFestival(festivalId, selectedTraps);
             onUpdate();
             onClose();
