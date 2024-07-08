@@ -1,22 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { getBins } from '../api';
+import { getBins, getMyFestivalBins } from '../api';
+import { AuthContext } from '../components/AuthContext/AuthContext';
+import { getFavoriteFestival } from '../api';
 
 const Map = () => {
 
   const [bins, setBins] = useState([]);
+  const [festivalId, setFestivalId] = useState(0);
+  const { user } = useContext(AuthContext);
+
+
+  const fetchMyFestivalBins = async () => {
+    try {
+      const bins = await getMyFestivalBins(user.id);
+      console.log('MyFestivalBins:', bins);
+      setBins(bins);
+    } catch (error) {
+      console.error('Error fetching bins:', error);
+    }
+  }
 
   useEffect(() => {
-    const fetchBins = async () => {
-      try {
-        const bins = await getBins();
-        setBins(bins);
-      } catch (error) {
-        console.error('Error fetching bins:', error);
-      }
-    };
-    fetchBins();
+    fetchMyFestivalBins();
   }, []);
+
+
+
 
   useEffect(() => {
 
