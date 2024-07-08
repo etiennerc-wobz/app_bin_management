@@ -89,7 +89,7 @@ const Bin = () => {
 
 
     return (
-        <div id="pageBin" className="absolute flex flex-col items-start sm:items-center  h-full w-11/12 sm:pt-20 sm:px-20 ">
+        <div id="pageBin" className="absolute flex flex-col items-start sm:items-center  h-full w-11/12 sm:pt-20 sm:px-10 ">
             <div id="header" className="fixed sm:relative top-0 left-0 flex flex-row justify-between items-center w-full bg-gray-200 sm:bg-white p-4 sm:p-0 z-10">
                 <div className="flex flex-col items-start  sm:mr-10 w-48 sm:w-11/12 ">
                     <div className="mb-4">

@@ -100,14 +100,14 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
                     </DialogContentText>
 
                     <FormGroup>
-                    {bins.map((bin, index) => (
+                    {bins.filter(bin => !myFestivalBins.some(festivalBin => festivalBin.id === bin.id)).map((bin, index) => (
                         <FormControlLabel
                         control={
                             <Checkbox 
                             onChange={(event) => handleCheckboxChange(event, bin.id)}
                             />
                         }
-                        label={ "Bin " + bin.id + " - " + bin.name }
+                        label={ "Bin " + bin.id + " (" + bin.name+ ")"}
                         key={index}
                         checked={selectedBins.includes(bin.id)}
                         />
