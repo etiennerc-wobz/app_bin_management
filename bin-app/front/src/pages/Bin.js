@@ -11,6 +11,7 @@ import { getFreeTraps } from '../api';
 import AssignTrapsToBinDialog from '../components/AssignTrapsToBinDialog/AssignTrapsToBinDialog';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
+import EditBinDialog from '../components/EditBinDialog/EditBinDialog';
 
 const Bin = () => {
     const { id } = useParams();
@@ -26,6 +27,8 @@ const Bin = () => {
     const [updateTraps, setUpdateTraps] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
+
+    const [openEditBinDialog, setOpenEditBinDialog] = useState(false);
 
     const { user } = useContext(AuthContext);
 
@@ -97,6 +100,11 @@ const Bin = () => {
         setUpdateTraps(true);
     }
 
+    const handleBinEdited = () => {
+        setOpenSnackbar(true);
+        setSnackbarMessage('Bin modifiée avec succès');        
+        fetchBins();
+    }
 
     return (
         <div id="pageBin" className="absolute flex flex-col items-start sm:items-center  h-full w-11/12 sm:pt-20 sm:px-10 ">
@@ -129,9 +137,11 @@ const Bin = () => {
 
             </div>
 
-            <AssignTrapsToBinDialog traps={thisFestivalTraps} binId={thisBin.id} festivalId={user.festivalId} binId={thisBin.id} open={addTrapDialogOpen} onClose={() => setAddTrapDialogOpen(false)} onUpdate={handleTrapsUpdate} />
+            <AssignTrapsToBinDialog traps={thisFestivalTraps} binId={thisBin.id} festivalId={user.festivalId} open={addTrapDialogOpen} onClose={() => setAddTrapDialogOpen(false)} onUpdate={handleTrapsUpdate} />
 
-            <div className="fixed bottom-20 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
+            <EditBinDialog bin={thisBin} open={openEditBinDialog} onClose={() => setOpenEditBinDialog(false)} onBinEdited={handleBinEdited} />
+
+            <div className="fixed bottom-20 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0" onClick={() => setOpenEditBinDialog(true)}>
                 <Fab color="success" aria-label="edit">
                     <EditIcon />
                 </Fab>

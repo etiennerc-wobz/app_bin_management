@@ -46,6 +46,14 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
         }
     };
 
+    if(festivalId === null) {
+        return (
+            null
+        );
+    }
+        
+
+
     return (
         <Box
             sx={{

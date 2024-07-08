@@ -138,6 +138,7 @@ const Festival = () => {
             </>
           )}
         </div>
+        
         <div >
           <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
         </div>

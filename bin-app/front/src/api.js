@@ -299,3 +299,14 @@ export const createBinDEMO = async (bin) => {
     throw error;
   }
 }
+
+export const editBinInformations = async (name,zone,binId) => {
+  try {
+    console.log('Attempting to edit bin:', binId);
+    const response = await api.post('/api/editbin', { name, zone, binId });
+    return response.data;
+  } catch (error) {
+    console.error('Error editing bin:', error);
+    throw error;
+  }
+}
