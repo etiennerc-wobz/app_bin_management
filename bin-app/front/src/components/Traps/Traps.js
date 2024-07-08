@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import TrapListElement from '../TrapListElement/TrapListElement';
 import { getBinTraps } from '../../api';
+import Slide from '@mui/material/Slide';
 
-const Traps = ({ binId,update }) => {
+const Traps = ({ binId, update }) => {
     const [traps, setTraps] = useState([]);
 
     const fetchBinTraps = async (binId) => {
@@ -16,30 +17,31 @@ const Traps = ({ binId,update }) => {
     useEffect(() => {
         fetchBinTraps(binId);
     }
-    , [binId]);
+        , [binId]);
 
     useEffect(() => {
         fetchBinTraps(binId);
-      }, [update]);
-    
+    }, [update]);
 
-    const updateTrap =() => {
+
+    const updateTrap = () => {
         fetchBinTraps(binId);
     }
 
 
     return (
-    <>
-        <p className="text-2xl sm:text-4xl text-start pl-4">{traps.length>0 ? 'Bouches : ' : 'Aucune bouche'}</p>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 pb-4">
-            {traps.map((trap, index) => (
-                <div key={index} className="p-1.5">
-                    <TrapListElement trap={trap} onUpdateTrap={updateTrap} />
-                </div>
-            ))}
-        </div>
-    </>
+        <>
+            <p className="text-2xl sm:text-4xl text-start pl-4">{traps.length > 0 ? 'Bouches : ' : 'Aucune bouche'}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 pb-4">
+                {traps.map((trap, index) => (
+                    <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={100+index*100}>
+                        <div key={index} className="p-1.5">
+                            <TrapListElement trap={trap} onUpdateTrap={updateTrap} />
+                        </div>
+                    </Slide>
+                ))}
+            </div >
+        </>
     );
 };
 

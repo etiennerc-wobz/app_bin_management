@@ -17,6 +17,7 @@ import { getFavoriteFestival } from '../api';
 
 import AssignBinDialog from '../components/AssignBinDialog/AssignBinDialog';
 
+import Slide from '@mui/material/Slide';
 
 const MagicBins = () => {
 
@@ -34,9 +35,9 @@ const MagicBins = () => {
   const [openAssignBinDialog, setOpenAssignBinDialog] = useState(false);
   const [search, setSearch] = useState(''); // Nouvel état pour la recherche
 
-  const { user  } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [FavoriteFestival, setFavoriteFestival] = useState('');
-  
+
 
   const fetchBins = async () => {
     try {
@@ -50,7 +51,7 @@ const MagicBins = () => {
       } else if (triNumber === 30) {
         bins.sort((a, b) => a.traps.length - b.traps.length);
       }
-      
+
 
       setBins(bins);
     } catch (error) {
@@ -64,7 +65,7 @@ const MagicBins = () => {
     const fetchFavoriteFestival = async () => {
       try {
         const festival = await getFavoriteFestival(user.id);
-        
+
         setFavoriteFestival(festival);
       } catch (error) {
         console.error('Error fetching favorite festival:', error);
@@ -85,7 +86,7 @@ const MagicBins = () => {
       if (window.confirm('Voulez-vous supprimer la Bin : ' + binName + ' ?')) {
 
         //deleteBin(id);
-        
+
         unAssignBinFromFestival(id).then(() => {
           setBins(bins.filter(bin => bin.id !== id));
           setSnackbarMessage('Bin supprimée avec succès');
@@ -135,7 +136,7 @@ const MagicBins = () => {
 
   };
 
-  if(!FavoriteFestival){
+  if (!FavoriteFestival) {
     return (
       <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
         <h1 className="text-xl sm:text-3xl w-52 pl-4 sm:w-fit bg-gray-100
@@ -174,8 +175,21 @@ const MagicBins = () => {
           <SelectInput onTriChange={handleTriChange} />
         </div>
         {bins.length === 0 && <h1>Aucune Bin pour ce festival</h1>}
-        {bins.filter(bin => bin.name.toLowerCase().includes(search.toLowerCase())).map((bin, index) => (
-          <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} unassignMode={unassignMode} />
+        {bins
+        .filter(bin => bin.name.toLowerCase().includes(search.toLowerCase()))
+        .map((bin, index) => (
+          <Slide 
+            key={index}
+            in={true}
+            direction='right'
+            timeout={100+index*100}
+            mountOnEnter  
+            unmountOnExit
+            >
+            <div>
+              <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} unassignMode={unassignMode} />
+            </div>
+          </Slide>
         ))}
       </div>
       <ButtonBinList setUnassignMode={setUnassignMode} onAddBinClick={handleAddBinClick} />

@@ -12,6 +12,7 @@ import AssignTrapsToBinDialog from '../components/AssignTrapsToBinDialog/AssignT
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import EditBinDialog from '../components/EditBinDialog/EditBinDialog';
+import Slide from '@mui/material/Slide';
 
 const Bin = () => {
     const { id } = useParams();
@@ -124,7 +125,9 @@ const Bin = () => {
                     <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
                 </div>
             </div>
-            <div id="body" className="relative sm:static top-48 flex flex-col items-center left-4 pb-20 sm:pt-0 sm:mt-0 w-11/12 ">
+            <div id="body" className="relative sm:static bottom-[-8rem] 
+            flex flex-col items-center left-4 pb-20 sm:pt-0 sm:mt-0 w-11/12 ">
+                
                 <Traps binId={thisBin.id} update={updateTraps} />
                 <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 
             text:sm border-8 sm:border-2 border-gray-300 rounded-full cursor-pointer sm:hover:bg-gray-400'

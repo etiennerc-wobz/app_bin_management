@@ -15,6 +15,7 @@ import CommitIcon from '@mui/icons-material/Commit';
 import Button from '@mui/material/Button';
 import AssignTrapsToFestivalDialog from '../AssignTrapsToFestivalDialog/AssignTrapsToFestivalDialog';
 import { unassignTrapFromFestival } from '../../api';
+import Collapse from '@mui/material/Collapse';
 
 export default function FestivalTraps({ festivalId, traps, onUpdate }) {
     const [open, setOpen] = React.useState(false);
@@ -38,7 +39,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
         if (window.confirm('Voulez-vous vraiment supprimer la trap ' + trapId + ' du festival ?')) {
             try {
                 await unassignTrapFromFestival(trapId);
-                
+
                 onUpdate();
             } catch (error) {
                 console.error('Error unassigning trap:', error);
@@ -46,20 +47,22 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
         }
     };
 
-    if(festivalId === null) {
+    if (festivalId === null) {
         return (
             null
         );
     }
-        
+
 
 
     return (
         <Box
             sx={{
-                bgcolor: open ? 'rgba(71, 98, 130, 0.2)' : null,
-                pb: open ? 2 : 0,
+                bgcolor: open ? 'rgba(17, 110, 83, 0.2)' : null,
+                pb: open ? 0 : 0,
                 transition: 'background-color 0.3s ease',
+                width: '20rem',
+                borderRadius: '18px',
             }}
         >
             <ListItemButton
@@ -68,12 +71,12 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                 sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: open ? 0 : 2.5,
-                    '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.08)' },
+                    pb: open ? 2 : 2.5,
+                    '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.09)', borderRadius: '18px' },
                     '@media (max-width: 600px)': {
                         px: 2,
                         pt: 2,
-                        pb: open ? 0 : 2,
+                        pb: 2,
                     },
                 }}
             >
@@ -85,14 +88,15 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                         lineHeight: '20px',
                         mb: '2px',
                     }}
-                    secondary={open ? null : traps.length+' traps associées'}
+                    secondary={open ? null : traps.length + ' traps associées'}
                     secondaryTypographyProps={{
                         noWrap: true,
                         fontSize: 12,
                         lineHeight: '16px',
                         color: open ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.6)',
                     }}
-                    sx={{ my: 0 }}
+                    sx={{ my: 0 ,
+                    }}
                 />
                 <KeyboardArrowDown
                     sx={{
@@ -102,41 +106,40 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                     }}
                 />
             </ListItemButton>
-            {open && (
-                <Box>
-
-                    <List dense={dense} style={{ maxHeight: '270px', overflowY: 'scroll' }}>
-                        <Button
-                            variant="contained"
-                            color="success"
-                            onClick={handleDialogOpen}
-                            sx={{ mx: 2, my: 1 }}
-                        >
-                            Ajouter traps au festival
-                        </Button>
-                        {traps.map((trap, index) => (
-                            <ListItem
-                                key={index}
-                                secondaryAction={
-                                    <IconButton edge="end" aria-label="delete" onClick={handleUnassignTrap(trap.id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                }
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Box>
+                        <List dense={dense} style={{ maxHeight: '270px', overflowY: 'scroll' }}>
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={handleDialogOpen}
+                                sx={{ mx: 2, my: 1 }}
                             >
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <CommitIcon />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={'Trap ' + trap.id}
-                                    secondary={secondary ? 'Secondary text' : null}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
-            )}
+                                Ajouter traps au festival
+                            </Button>
+                            {traps.map((trap, index) => (
+                                <ListItem
+                                    key={index}
+                                    secondaryAction={
+                                        <IconButton edge="end" aria-label="delete" onClick={handleUnassignTrap(trap.id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    }
+                                >
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <CommitIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary={'Trap ' + trap.id}
+                                        secondary={secondary ? 'Secondary text' : null}
+                                    />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Box>
+                </Collapse>
             <AssignTrapsToFestivalDialog open={dialogOpen} onClose={handleDialogClose} festivalId={festivalId} onUpdate={onUpdate} />
         </Box>
     );
