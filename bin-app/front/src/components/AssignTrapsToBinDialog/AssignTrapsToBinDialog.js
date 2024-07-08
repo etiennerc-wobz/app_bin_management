@@ -100,15 +100,17 @@ export default function AssignTrapsToBinDialog({ traps, binId, open, onClose, on
                 PaperProps={{
                     component: 'form',
                     onSubmit: handleSubmit,
-
                 }}
             >
-                <DialogTitle>Traps</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        Liste des traps disponibles pour ce festival:
-                    </DialogContentText>
+                <DialogContentText className='pb-2'>
+                    Liste des traps disponibles pour ce festival: 
+                </DialogContentText>
 
+                {thisFestivalTraps.length === 0 ? (
+                    <p>Aucun trap disponible pour ce festival. <br/> 
+                        Veuillez en ajouter depuis la page <strong>Festival</strong>.</p>
+                ) : (
                     <FormGroup>
                     {thisFestivalTraps.map((trap, index) => (
                         <FormControlLabel
@@ -123,12 +125,11 @@ export default function AssignTrapsToBinDialog({ traps, binId, open, onClose, on
                         />
                     ))}
                     </FormGroup>
-
-
+                )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel}>Annuler</Button>
-                    <Button type="submit">Enregistrer</Button>
+                    <Button sx={{color: '#2A0000'}} onClick={handleCancel}>Annuler</Button>
+                    <Button sx={{color: '#0D5200'}} type="submit">Valider</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

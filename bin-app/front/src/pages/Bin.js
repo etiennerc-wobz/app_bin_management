@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { getFreeTraps } from '../api';
 import AssignTrapsToBinDialog from '../components/AssignTrapsToBinDialog/AssignTrapsToBinDialog';
 import { AuthContext } from '../components/AuthContext/AuthContext';
+import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 
 const Bin = () => {
     const { id } = useParams();
@@ -22,8 +23,11 @@ const Bin = () => {
     const [binTraps, setBinTraps] = useState([]);
     const [thisFestivalTraps, SetThisFestivalTraps] = useState([]);
     const [addTrapDialogOpen, setAddTrapDialogOpen] = useState(false);
+    const [updateTraps, setUpdateTraps] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     const fetchThisFestival = async () => {
         console.log('user.id:', user.id);
@@ -40,7 +44,7 @@ const Bin = () => {
 
     const fetchFestivalTraps = async (festivalId) => {
         try {
-            const traps = await getFreeFestivalTraps(   festivalId);
+            const traps = await getFreeFestivalTraps(festivalId);
             console.log('!!****traps:', traps);
             SetThisFestivalTraps(traps);
         } catch (error) {
@@ -87,6 +91,12 @@ const Bin = () => {
         setAddTrapDialogOpen(true);
     }
 
+    const handleTrapsUpdate = () => {
+        setOpenSnackbar(true);
+        setSnackbarMessage('Bouches ajoutées avec succès');
+        setUpdateTraps(true);
+    }
+
 
     return (
         <div id="pageBin" className="absolute flex flex-col items-start sm:items-center  h-full w-11/12 sm:pt-20 sm:px-10 ">
@@ -107,7 +117,7 @@ const Bin = () => {
                 </div>
             </div>
             <div id="body" className="relative sm:static top-48 flex flex-col items-center left-4 pb-20 sm:pt-0 sm:mt-0 w-11/12 ">
-                <Traps binId={thisBin.id} />
+                <Traps binId={thisBin.id} update={updateTraps} />
                 <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 
             text:sm border-8 sm:border-2 border-gray-300 rounded-full cursor-pointer sm:hover:bg-gray-400'
                     onClick={() => handleAddTrapButtonClicked()}>
@@ -119,13 +129,14 @@ const Bin = () => {
 
             </div>
 
-            <AssignTrapsToBinDialog traps={thisFestivalTraps} binId={thisBin.id} festivalId={user.festivalId} binId={thisBin.id} open={addTrapDialogOpen} onClose={() => setAddTrapDialogOpen(false)} onUpdate={() => fetchBins()} />
+            <AssignTrapsToBinDialog traps={thisFestivalTraps} binId={thisBin.id} festivalId={user.festivalId} binId={thisBin.id} open={addTrapDialogOpen} onClose={() => setAddTrapDialogOpen(false)} onUpdate={handleTrapsUpdate} />
 
             <div className="fixed bottom-20 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
                 <Fab color="success" aria-label="edit">
                     <EditIcon />
                 </Fab>
             </div>
+            <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
         </div>
     );
 }

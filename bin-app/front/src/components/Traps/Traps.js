@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TrapListElement from '../TrapListElement/TrapListElement';
 import { getBinTraps } from '../../api';
 
-const Traps = ({ binId }) => {
+const Traps = ({ binId,update }) => {
     const [traps, setTraps] = useState([]);
 
     const fetchBinTraps = async (binId) => {
@@ -17,6 +17,10 @@ const Traps = ({ binId }) => {
         fetchBinTraps(binId);
     }
     , [binId]);
+
+    useEffect(() => {
+        fetchBinTraps(binId);
+      }, [update]);
     
 
     const updateTrap =() => {
