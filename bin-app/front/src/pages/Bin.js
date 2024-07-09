@@ -99,7 +99,7 @@ const Bin = () => {
   }
 
   return (
-    <div id="pageBin" className="flex flex-col items-start sm:items-center w-full h-full sm:pt-12">
+    <div id="pageBin" className="flex flex-col items-start sm:items-center w-full h-full sm:pt-20">
       <div id="header" className="w-full bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-row justify-between items-center sm:w-11/12">
         <div className="flex flex-col items-start sm:mr-10 w-48 sm:w-11/12">
           <div className="mb-4">

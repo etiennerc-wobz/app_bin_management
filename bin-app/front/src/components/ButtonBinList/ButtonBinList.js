@@ -6,9 +6,10 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { createTheme } from '@mui/material';
-import { ThemeProvider, useTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Tooltip from '@mui/material/Tooltip';
 
 const actions = [
   { icon: <SwapVertIcon />, name: 'Changer ordre' },
@@ -35,19 +36,19 @@ const theme = createTheme({
 
 
 export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
-  const defaultTheme = useTheme(); 
+  const defaultTheme = useTheme();
   const isMobile = useMediaQuery(defaultTheme.breakpoints.down('sm'));
 
 
 
   const handleIconClick = (action) => {
-    
-    if(action.name === 'Supprimer une bin') {
+
+    if (action.name === 'Supprimer une bin') {
       setUnassignMode(true);
     }
-    if(action.name === 'Ajouter une bin') {
-      
-      onAddBinClick(); 
+    if (action.name === 'Ajouter une bin') {
+
+      onAddBinClick();
     }
   };
 
@@ -72,15 +73,16 @@ export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
             position: 'fixed',
             right: 0,
             bottom: isMobile ? 'auto' : 0,
-            transform: isMobile ? 'scale(0.7)' : 'scale(1.2)', 
+            transform: isMobile ? 'scale(0.7)' : 'scale(1.2)',
             '& .MuiSpeedDial-fab': {
-              width: 80, 
+              width: 80,
               height: 80,
             },
             '& .MuiSpeedDialAction-fab': {
-              width: 60, 
+              width: 60,
               height: 60,
             },
+
             marginTop: isMobile ? -6 : 0,
 
 

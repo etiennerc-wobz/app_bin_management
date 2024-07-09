@@ -22,6 +22,7 @@ const Festival = () => {
   }, [user, token]);
 
   const fetchFestivals = async () => {
+    setLoading(true); 
     try {
       const festivals = await getFestivals(token);
       setFestivals(festivals);
@@ -31,7 +32,6 @@ const Festival = () => {
   };
 
   const fetchFavoriteFestival = async () => {
-    setLoading(true); 
     try {
       if (user) {
         const festival = await getFavoriteFestival(user.id, token);
@@ -39,9 +39,7 @@ const Festival = () => {
       }
     } catch (error) {
       console.error('Error fetching favorite festival:', error);
-    } finally {
-      setLoading(false); 
-    }
+    } 
   };
 
   useEffect(() => {
@@ -56,7 +54,10 @@ const Festival = () => {
       }
     } catch (error) {
       console.error('Error fetching festival traps:', error);
-    }
+    } 
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
   };
 
   useEffect(() => {
