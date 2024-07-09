@@ -31,7 +31,7 @@ const Traps = ({ binId, update }) => {
 
     return (
         <>
-            <p className="text-2xl sm:text-4xl text-start pl-4">{traps.length > 0 ? 'Bouches : ' : 'Aucune bouche'}</p>
+            <p className="text-2xl sm:text-4xl text-start pl-4">{traps.length > 0 ? 'Traps : ' : 'Aucune trap'}</p>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 pb-4">
                 {traps.map((trap, index) => (
                     <Slide direction="right" in={true} mountOnEnter unmountOnExit timeout={100+index*100}>

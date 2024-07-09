@@ -97,7 +97,7 @@ const Bin = () => {
 
     const handleTrapsUpdate = () => {
         setOpenSnackbar(true);
-        setSnackbarMessage('Bouches ajoutées avec succès');
+        setSnackbarMessage('Traps ajoutées avec succès');
         setUpdateTraps(true);
     }
 
@@ -133,8 +133,8 @@ const Bin = () => {
             text:sm border-8 sm:border-2 border-gray-300 rounded-full cursor-pointer sm:hover:bg-gray-400'
                     onClick={() => handleAddTrapButtonClicked()}>
 
-                    <p>Ajouter une bouche</p>
-                    {thisFestivalTraps.length > 0 && <p className="text-sm">({thisFestivalTraps.length} bouches disponibles)</p>}
+                    <p>Ajouter une trap</p>
+                    {thisFestivalTraps.length > 0 && <p className="text-sm">({thisFestivalTraps.length} trap disponibles)</p>}
                 </div>
 
 

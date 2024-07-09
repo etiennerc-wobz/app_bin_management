@@ -46,7 +46,7 @@ const TrapListElement = ({ trap, onUpdateTrap }) => {
                         <p className="text-lg sm:text-2xl ">{myMode}</p>
                     </div>
                     <div className="mt-2">
-                        <Tooltip title={currentMode === "open" ? "Fermer la bouche" : "Ouvrir la bouche"} placement="bottom">
+                        <Tooltip title={currentMode === "open" ? "Fermer la trap" : "Ouvrir la trap"} placement="bottom">
                             <Button
                                 variant="contained"
                                 size="small"

@@ -113,7 +113,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                                 variant="contained"
                                 color="success"
                                 onClick={handleDialogOpen}
-                                sx={{ mx: 2, my: 1 }}
+                                sx={{ mx: 1, my: 1 }}
                             >
                                 Ajouter traps au festival
                             </Button>

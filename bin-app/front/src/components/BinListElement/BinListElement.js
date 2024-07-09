@@ -70,7 +70,7 @@ const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, una
       </div>
       <div className="text-right text-xs sm:text-base mr-2 sm:mr-10">
         <p className="text-gray-600">Zone : <span className="font-bold">{zone}</span></p>
-        <p className="text-gray-600">Bouches : <span className="font-bold">{binTraps ? binTraps.length : '...'}</span></p>
+        <p className="text-gray-600">Traps : <span className="font-bold">{binTraps ? binTraps.length : '...'}</span></p>
       </div>
     </div>
   );
