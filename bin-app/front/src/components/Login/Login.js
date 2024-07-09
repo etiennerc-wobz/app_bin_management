@@ -79,7 +79,7 @@ const Login = () => {
           <h2 className="text-2xl font-bold mb-4 text-center">{registerMode ? 'Inscription' : 'Se connecter'}</h2>
 
           {!loading ? (
-            <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6 w-9/12 sm:w-3/12">
+            <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6 w-9/12 md:w-[50%]">
                 <label htmlFor="username" className="block text-sm font-medium text-gray-700"></label>
                 <input
                   id="username"
@@ -108,7 +108,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 top-1.5 cursor-pointer hover:text-gray-400"
+                  className="absolute right-2 top-2 sm:top-1.5 cursor-pointer hover:text-gray-400"
                 >
                   {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </button>

@@ -12,6 +12,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { AuthContext } from '../AuthContext/AuthContext';
 import { useContext } from 'react';
+import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
+
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -61,6 +63,9 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
   const open = Boolean(anchorEl);
   const [openBinsDialog, setOpenBinsDialog] = React.useState(false);
   const [selectedFestival, setSelectedFestival] = React.useState('');
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = React.useState(false);
+  const [confirmationDialogMessage, setConfirmationDialogMessage] = React.useState('');
+  const [dialogAnswer, setDialogAnswer] = React.useState(false);
 
   const { logout } = useContext(AuthContext);
 
@@ -72,21 +77,22 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
   };
 
   const handleFestivalChange = (event) => {
-    setSelectedFestival(event.target.value.id);
-    handleValidateChange(event.target.value);
+    const selected = event.target.value;
+    setSelectedFestival(selected.id);
+    setConfirmationDialogMessage(`Voulez-vous vraiment changer de festival pour ${selected.name || 'aucun'} ?`);
+    setConfirmationDialogOpen(true);
   };
 
-  const handleValidateChange = (selectedFestival) => {
-    if(selectedFestival===-1) {
-      if(window.confirm('Voulez-vous vraiment changer de festival pour aucun ?')) {
-        onChangeFestival(-1);
-      }
-    } 
-    if(window.confirm('Voulez-vous vraiment changer de festival pour ' + selectedFestival.name + ' ?')) {
-      onChangeFestival(selectedFestival.id);
+  const handleDialogClose = (answer) => {
+    setConfirmationDialogOpen(false);
+    setDialogAnswer(answer);
+
+    if (answer) {
+      onChangeFestival(selectedFestival);
     }
-    setAnchorEl(null);
   };
+    
+
 
   const handleLogout = () => {
     setTimeout(() => {
@@ -95,6 +101,7 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
     return;
   }
 
+  
   return (
     <div>
       <Button
@@ -106,7 +113,7 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
         disableElevation
         onClick={handleClick}
         endIcon={<MenuIcon />}
-        sx = {{ borderRadius: 10 ,backgroundColor: '#08852E', color: 'white', '&:hover': { backgroundColor: '#388e3c' } }}
+        sx={{ borderRadius: 10, backgroundColor: '#08852E', color: 'white', '&:hover': { backgroundColor: '#388e3c' } }}
       >
         Menu
       </Button>
@@ -135,7 +142,7 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
               onChange={handleFestivalChange}
             >
               {festivalId && (
-                <MenuItem value={-1} sx={{ color: 'red' }} >
+                <MenuItem value={{ id: -1, name: 'aucun' }} sx={{ color: 'red' }}>
                   <em>Aucun festival</em>
                 </MenuItem>
               )}
@@ -156,6 +163,11 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
           Plus
         </MenuItem>
       </StyledMenu>
+      <ConfirmationDialog
+        open={confirmationDialogOpen}
+        onClose={handleDialogClose}
+        message={confirmationDialogMessage}
+      />
     </div>
   );
 }

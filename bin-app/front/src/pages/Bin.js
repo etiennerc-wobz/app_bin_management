@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBins, getBinTraps, getFavoriteFestival, getFreeFestivalTraps } from '../api';
 import CircularProgressWithLabel from '../components/CircularProgressWithLabel/CircularProgressWithLabel';
-import {  CircularProgress, useMediaQuery } from '@mui/material';
+import { CircularProgress, Menu, useMediaQuery } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
 import Traps from '../components/Traps/Traps';
 import Fab from '@mui/material/Fab';
@@ -12,6 +12,9 @@ import { AuthContext } from '../components/AuthContext/AuthContext';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import EditBinDialog from '../components/EditBinDialog/EditBinDialog';
 import ShareLocationIcon from '@mui/icons-material/ShareLocation';
+import BinDrawer from '../components/BinDrawer/BinDrawer';
+import MenuIcon from '@mui/icons-material/Menu';
+import Button from '@mui/material/Button';
 
 const Bin = () => {
   const { id } = useParams();
@@ -29,8 +32,11 @@ const Bin = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [openEditBinDialog, setOpenEditBinDialog] = useState(false);
-
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [action, setAction] = useState('');
   const { user } = useContext(AuthContext);
+
+  const isMobile = useMediaQuery('(max-width:640px)');
 
   const fetchThisFestival = async () => {
     try {
@@ -79,9 +85,9 @@ const Bin = () => {
 
   if (!thisBin || !binTraps) {
     return (
-    <div className='pt-20'>
+      <div className='pt-20'>
         <CircularProgress />
-    </div>);
+      </div>);
   }
 
   const handleAddTrapButtonClicked = () => {
@@ -97,27 +103,45 @@ const Bin = () => {
 
   const handleBinEdited = () => {
     setOpenSnackbar(true);
-    setSnackbarMessage('Bin modifiée avec succès');        
+    setSnackbarMessage('Bin modifiée avec succès');
     fetchBins();
+  }
+
+  const handleAction = (action) => {
+    console.log('vamos', action);
   }
 
   return (
     <div id="pageBin" className="flex flex-col items-start sm:items-center w-full h-full sm:pt-20">
       <div id="header" className="w-full bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-row justify-between items-center sm:w-11/12">
         <div className="flex flex-col items-start sm:mr-10 w-48 sm:w-11/12">
-          <div className="mb-4">
-            <StatusIndicator isConnected={thisStatus} />
-          </div>
+          <Button onClick={() => setOpenDrawer(true)} sx={{ marginBottom: { xs: 2, sm: 4 }, color: 'green' }}
+          >
+            <MenuIcon />
+          </Button>
+          {!isMobile && (
+            <div className="mb-4">
+              <StatusIndicator isConnected={thisStatus} />
+            </div>
+          )}
+
           <div className="text-start">
             <span className="font-bold text-xl sm:text-5xl">{thisBin.name}</span>
           </div>
           <div className="text-2xl sm:text-4xl text-start mt-4">
             <ShareLocationIcon className="mr-1 mb-1" style={{ fontSize: 32 }} />
-             : <span className="font-bold text-2xl sm:text-4xl">{thisBin.zone}</span>
+            : <span className="font-bold text-2xl sm:text-4xl">{thisBin.zone}</span>
           </div>
         </div>
-        <div className="mt-4 sm:mt-0">
-          <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
+        <div className='flex flex-col items-center sm:items-start sm:mr-10 sm:w-1/4'>
+          {isMobile && (
+            <div className="mb-4">
+              <StatusIndicator isConnected={thisStatus} />
+            </div>
+          )}
+          <div className="mt-4 sm:mt-0">
+            <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
+          </div>
         </div>
       </div>
       <div id="body" className="flex flex-col items-center w-full p-4 pb-32 sm:p-0 sm:mt-4">
@@ -134,7 +158,11 @@ const Bin = () => {
           <EditIcon />
         </Fab>
       </div>
+
+
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
+
+      <BinDrawer open={openDrawer} setOpen={setOpenDrawer} action={action} onAction={handleAction} />
     </div>
   );
 }

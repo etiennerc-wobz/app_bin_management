@@ -3,28 +3,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { getBins } from '../api';
+import { getBins, getMyFestivalBins, unAssignBinFromFestival, getFavoriteFestival } from '../api';
 import BinListElement from '../components/BinListElement/BinListElement';
 import SelectInput from '../components/SelectInput/SelectInput';
 import ButtonBinList from '../components/ButtonBinList/ButtonBinList';
-import { unAssignBinFromFestival } from '../api';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
-
-import { getMyFestivalBins } from '../api';
-
-import { AuthContext } from '../components/AuthContext/AuthContext';
-
-import { getFavoriteFestival } from '../api';
-
 import AssignBinDialog from '../components/AssignBinDialog/AssignBinDialog';
-
 import Slide from '@mui/material/Slide';
-
 import { CircularProgress } from '@mui/material';
-
+import { AuthContext } from '../components/AuthContext/AuthContext';
+import ConfirmationDialog from '../components/ConfirmationDialog/ConfirmationDialog';
 
 const MagicBins = () => {
-
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -32,18 +22,18 @@ const MagicBins = () => {
   const [tri, setTri] = useState(sort || '');
 
   const [bins, setBins] = useState([]);
-
   const [unassignMode, setUnassignMode] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [openAssignBinDialog, setOpenAssignBinDialog] = useState(false);
   const [search, setSearch] = useState('');
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+  const [confirmationDialogMessage, setConfirmationDialogMessage] = useState('');
+  const [binToUnassign, setBinToUnassign] = useState(null);
 
   const { user } = useContext(AuthContext);
   const [FavoriteFestival, setFavoriteFestival] = useState('');
-
   const [loading, setLoading] = useState(true);
-
 
   const fetchBins = async () => {
     try {
@@ -76,43 +66,45 @@ const MagicBins = () => {
     const fetchFavoriteFestival = async () => {
       try {
         const festival = await getFavoriteFestival(user.id);
-
         setFavoriteFestival(festival);
       } catch (error) {
         console.error('Error fetching favorite festival:', error);
       }
-    }
+    };
     fetchFavoriteFestival();
   }, [tri]);
-
-
-
 
   const handleBinClick = (id) => {
     if (!unassignMode) {
       navigate(`/magic-bins/${id}`);
+    } else {
+      const bin = bins.find((bin) => bin.id === id);
+      setBinToUnassign(bin);
+      setConfirmationDialogMessage(`Voulez-vous supprimer la Bin : ${bin.name} ?`);
+      setConfirmationDialogOpen(true);
     }
-    else {
-      const binName = bins.find(bin => bin.id === id).name;
-      if (window.confirm('Voulez-vous supprimer la Bin : ' + binName + ' ?')) {
+  };
 
-        //deleteBin(id);
+  const handleDialogClose = async (answer) => {
+    setConfirmationDialogOpen(false);
 
-        unAssignBinFromFestival(id).then(() => {
-          setBins(bins.filter(bin => bin.id !== id));
-          setSnackbarMessage('Bin supprimée avec succès');
-          setOpenSnackbar(true);
-        }
-        );
-
+    if (answer && binToUnassign) {
+      try {
+        await unAssignBinFromFestival(binToUnassign.id);
+        setBins(bins.filter((bin) => bin.id !== binToUnassign.id));
+        setSnackbarMessage('Bin supprimée avec succès');
+        setOpenSnackbar(true);
+      } catch (error) {
+        console.error('Error unassigning bin:', error);
       }
-    };
+    }
+    setBinToUnassign(null);
     setUnassignMode(false);
-  }
+  };
 
   const handleAddBinClick = () => {
     setOpenAssignBinDialog(true);
-  }
+  };
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
@@ -120,40 +112,39 @@ const MagicBins = () => {
 
   const handleBinAssignment = () => {
     fetchBins();
-  }
-
-
+  };
 
   const handleTriChange = (newTri) => {
     setTri(newTri);
     navigate(`/magic-bins?sort=${newTri}`);
     setSnackbarMessage('Tri effectué avec succès');
     setOpenSnackbar(true);
-
   };
-
-
-
 
   return (
     <>
       {loading ? (
-        <div className='pt-40'>
+        <div className="pt-40">
           <CircularProgress />
         </div>
       ) : (
         <>
           {!FavoriteFestival ? (
             <div className="w-full flex flex-col items-center max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
-              <h1 className="text-xl sm:text-3xl w-52 sm:w-fit text-center my-12 sm:mx-auto sm:my-12 p-2 sm:p-4 font-bold
-              ">Aucun festival favori</h1>
-              <h1>Veuillez sélectionner un festival dans l'onglet <Link to="/" className="text-green-800 font-bold underline">Festival</Link></h1>
+              <h1 className="text-xl sm:text-3xl w-52 sm:w-fit text-center my-12 sm:mx-auto sm:my-12 p-2 sm:p-4 font-bold">
+                Aucun festival favori
+              </h1>
+              <h1>
+                Veuillez sélectionner un festival dans l'onglet{' '}
+                <Link to="/" className="text-green-800 font-bold underline">
+                  Festival
+                </Link>
+              </h1>
             </div>
           ) : (
             <>
               <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
-
-                <div className=" flex flex-row items-center sm:pl-56">
+                <div className="flex flex-row items-center sm:pl-56">
                   <input
                     type="text"
                     placeholder="Rechercher"
@@ -163,36 +154,50 @@ const MagicBins = () => {
                   />
                   <SelectInput onTriChange={handleTriChange} />
                 </div>
-                {bins.length === 0 && <h1 className='pt-20 sm:text-4xl'>Aucune Bin assignée à <strong>{FavoriteFestival.name}</strong></h1>}
+                {bins.length === 0 && (
+                  <h1 className="pt-20 sm:text-4xl">
+                    Aucune Bin assignée à <strong>{FavoriteFestival.name}</strong>
+                  </h1>
+                )}
                 {bins
-                  .filter(bin => bin.name.toLowerCase().includes(search.toLowerCase()))
+                  .filter((bin) => bin.name.toLowerCase().includes(search.toLowerCase()))
                   .map((bin, index) => (
-                    <Slide
-                      key={index}
-                      in={true}
-                      direction='right'
-                      timeout={100 + index * 100}
-                      mountOnEnter
-                      unmountOnExit
-                    >
+                    <Slide key={index} in={true} direction="right" timeout={100 + index * 100} mountOnEnter unmountOnExit>
                       <div>
-                        <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} unassignMode={unassignMode} />
+                        <BinListElement
+                          key={index}
+                          title={bin.name}
+                          zone={bin.zone}
+                          traps={bin.traps}
+                          id={bin.id}
+                          fillrate={bin.fillrate}
+                          status={bin.status}
+                          onClick={() => handleBinClick(bin.id)}
+                          unassignMode={unassignMode}
+                        />
                       </div>
                     </Slide>
                   ))}
               </div>
               <ButtonBinList setUnassignMode={setUnassignMode} onAddBinClick={handleAddBinClick} />
               <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
-              <AssignBinDialog festivalId={FavoriteFestival} open={openAssignBinDialog} onClose={() => setOpenAssignBinDialog(false)} onAssignment={handleBinAssignment} />
-
+              <AssignBinDialog
+                festivalId={FavoriteFestival}
+                open={openAssignBinDialog}
+                onClose={() => setOpenAssignBinDialog(false)}
+                onAssignment={handleBinAssignment}
+              />
+              <ConfirmationDialog
+                open={confirmationDialogOpen}
+                onClose={handleDialogClose}
+                message={confirmationDialogMessage}
+              />
             </>
-          )
-          }
+          )}
         </>
       )}
     </>
   );
-}
-
+};
 
 export default MagicBins;

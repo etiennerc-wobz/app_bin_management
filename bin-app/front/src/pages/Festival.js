@@ -6,6 +6,7 @@ import CreateFestivalDialog from '../components/CreateFestivalDialog/CreateFesti
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import FestivalMenu from '../components/FestivalMenu/FestivalMenu';
 import FestivalTraps from '../components/FestivalTraps/FestivalTraps';
+import TodayIcon from '@mui/icons-material/Today';
 
 const Festival = () => {
   const { user, token } = useContext(AuthContext);
@@ -125,9 +126,12 @@ const Festival = () => {
                 <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full '>
 
                   <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
-                  <p className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
-                  <h3 className='text-md sm:text-xl pt-2'>
-                    Dates : {new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
+                  <p id='festival-name'
+                  className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
+                  <h3 id="date"
+                  className='text-md sm:text-xl pt-8'>
+                    <TodayIcon className='inline-block mr-2
+                    ' />{new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
                   </h3>
                   {traps.length > 0 ? (
                     null
