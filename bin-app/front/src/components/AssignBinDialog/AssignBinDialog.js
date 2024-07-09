@@ -15,6 +15,7 @@ import { getMyFestivalBins } from '../../api';
 import { AuthContext } from '../AuthContext/AuthContext';
 import { useContext } from 'react';
 import {setFestivalBins} from '../../api';
+import { getFreeBins } from '../../api';
 
 export default function AssignBinDialog({ festivalId, open, onClose, onAssignment }) {
 
@@ -22,6 +23,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
     const [myFestivalBins, setMyFestivalBins] = useState([]);
     const [selectedBins, setSelectedBins] = useState([]);
     const {user} = useContext(AuthContext);
+    const [freeBins, setFreeBins] = useState([]);
 
     const handleClose = () => {
         onClose();
@@ -37,6 +39,15 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
             console.error('Error fetching bins:', error);
         }
     }
+    const fetchFreeBins = async () => {
+        try {
+            const freeBins = await getFreeBins();
+            setFreeBins(freeBins);
+        } catch (error) {
+            console.error('Error fetching free bins:', error);
+        }
+    }
+
     const fetchMyFestivalBins = async () => {
         try {
             const bins = await getMyFestivalBins(user.id);
@@ -60,6 +71,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
 
     React.useEffect(() => {
         fetchBins();
+        fetchFreeBins();
         fetchMyFestivalBins();
     }, []);
 
@@ -100,7 +112,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
                     </DialogContentText>
 
                     <FormGroup>
-                    {bins.filter(bin => !myFestivalBins.some(festivalBin => festivalBin.id === bin.id)).map((bin, index) => (
+                    {freeBins.filter(bin => !myFestivalBins.some(festivalBin => festivalBin.id === bin.id)).map((bin, index) => (
                         <FormControlLabel
                         control={
                             <Checkbox 

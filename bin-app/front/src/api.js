@@ -259,6 +259,16 @@ export const getFreeTraps = async () => {
   }
 }
 
+export const getFreeBins = async () => {
+  try {
+    const response = await api.get('/api/bins/free');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching free bins:', error);
+    throw error;
+  }
+}
+
 export const unassignTrapFromFestival = async (trapId) => {
   try {
     const response = await api.post(`/api/traps/${trapId}/unassign`);

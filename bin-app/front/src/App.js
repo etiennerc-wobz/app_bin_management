@@ -34,22 +34,16 @@ const App = () => {
   return (
     <Router className="overflow-hidden">
       {isMobile ? <SimpleBottomNavigation /> : <ResponsiveAppBar />}
-
-      <div className="App flex items-center justify-center min-h-screen  overflow-hidden">
-
+      <div className="App flex flex-col min-h-screen">
         <Routes>
-
           <Route path="/" element={<PrivateRoute><Festival /></PrivateRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/magic-bins" element={<PrivateRoute><MagicBins /></PrivateRoute>} />
           <Route path="/map" element={<PrivateRoute><Map /></PrivateRoute>} />
           <Route path="/magic-bins/:id" element={<PrivateRoute><Bin /></PrivateRoute>} />
           <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
-
         </Routes>
-
       </div>
-
     </Router>
   );
 };

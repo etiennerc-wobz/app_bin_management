@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getBins } from '../api';
 import BinListElement from '../components/BinListElement/BinListElement';
 import SelectInput from '../components/SelectInput/SelectInput';
@@ -18,6 +19,7 @@ import { getFavoriteFestival } from '../api';
 import AssignBinDialog from '../components/AssignBinDialog/AssignBinDialog';
 
 import Slide from '@mui/material/Slide';
+
 
 const MagicBins = () => {
 
@@ -42,16 +44,20 @@ const MagicBins = () => {
   const fetchBins = async () => {
     try {
       let bins = await getMyFestivalBins(user.id);
-      const triNumber = Number(tri);
 
-      if (triNumber === 10) {
-        bins.sort((a, b) => b.fillrate - a.fillrate);
-      } else if (triNumber === 20) {
-        bins.sort((a, b) => a.zone.localeCompare(b.zone));
-      } else if (triNumber === 30) {
-        bins.sort((a, b) => a.traps.length - b.traps.length);
+      if (!tri) {
+        bins.sort((a, b) => a.name.localeCompare(b.name));
+      } else {
+        const triNumber = Number(tri);
+
+        if (triNumber === 10) {
+          bins.sort((a, b) => b.fillrate - a.fillrate);
+        } else if (triNumber === 20) {
+          bins.sort((a, b) => a.zone.localeCompare(b.zone));
+        } else if (triNumber === 30) {
+          bins.sort((a, b) => a.traps.length - b.traps.length);
+        }
       }
-
 
       setBins(bins);
     } catch (error) {
@@ -152,7 +158,7 @@ const MagicBins = () => {
           />
           <SelectInput onTriChange={handleTriChange} />
         </div>
-        <h1>Veuillez sélectionner un festival dans l'onglet Festival...</h1>
+        <h1>Veuillez sélectionner un festival dans l'onglet <Link to="/" className="text-green-800 font-bold underline">Festival</Link></h1>
       </div>
     );
   }
@@ -174,21 +180,21 @@ const MagicBins = () => {
         </div>
         {bins.length === 0 && <h1>Aucune Bin pour ce festival</h1>}
         {bins
-        .filter(bin => bin.name.toLowerCase().includes(search.toLowerCase()))
-        .map((bin, index) => (
-          <Slide 
-            key={index}
-            in={true}
-            direction='right'
-            timeout={100+index*100}
-            mountOnEnter  
-            unmountOnExit
+          .filter(bin => bin.name.toLowerCase().includes(search.toLowerCase()))
+          .map((bin, index) => (
+            <Slide
+              key={index}
+              in={true}
+              direction='right'
+              timeout={100 + index * 100}
+              mountOnEnter
+              unmountOnExit
             >
-            <div>
-              <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} unassignMode={unassignMode} />
-            </div>
-          </Slide>
-        ))}
+              <div>
+                <BinListElement key={index} title={bin.name} zone={bin.zone} traps={bin.traps} id={bin.id} fillrate={bin.fillrate} status={bin.status} onClick={() => handleBinClick(bin.id)} unassignMode={unassignMode} />
+              </div>
+            </Slide>
+          ))}
       </div>
       <ButtonBinList setUnassignMode={setUnassignMode} onAddBinClick={handleAddBinClick} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
@@ -197,7 +203,6 @@ const MagicBins = () => {
     </>
   );
 };
-//      <NewBinDialog open={openNewBinDialog} onClose={() => setOpenNewBinDialog(false)} onBinAdded={handleBinAdded} festivalId={FavoriteFestival.id} />
 
 
 export default MagicBins;
