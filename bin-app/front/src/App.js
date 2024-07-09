@@ -27,9 +27,6 @@ const App = () => {
   if(loading) {
     return <div>Loading...</div>;
   }
-  //<Route path="/magic-bins" element={<MagicBins />} />
-  //<Route path="/map" element={<Map />} />
-  //<Route path="/magic-bins/:id" element={<Bin />} />
 
   return (
     <Router className="overflow-hidden">

@@ -9,6 +9,9 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import { FormControl, InputLabel, Select } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { AuthContext } from '../AuthContext/AuthContext';
+import { useContext } from 'react';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -59,6 +62,8 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
   const [openBinsDialog, setOpenBinsDialog] = React.useState(false);
   const [selectedFestival, setSelectedFestival] = React.useState('');
 
+  const { logout } = useContext(AuthContext);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -82,6 +87,13 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
     }
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    setTimeout(() => {
+      logout();
+    }, 200);
+    return;
+  }
 
   return (
     <div>
@@ -134,6 +146,10 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
               ))}
             </Select>
           </FormControl>
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <LogoutIcon />
+          Se déconnecter
         </MenuItem>
         <MenuItem onClick={handleClose} disableRipple>
           <MoreHorizIcon />

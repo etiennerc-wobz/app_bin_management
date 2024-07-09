@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
 import { CircularProgress } from '@mui/material';
-
+import UserIcon from '@mui/icons-material/Person';
+import KeyIcon from '@mui/icons-material/Key';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -77,12 +78,13 @@ const Login = () => {
           {!loading ? (
             <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">Nom d'utilisateur :</label>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700"></label>
               <input
                 id="username"
                 name="username"
                 type="text"
                 value={username}
+                placeholder="Nom d'utilisateur"
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 autoComplete="off"
@@ -90,12 +92,13 @@ const Login = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe :</label>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700"></label>
               <input
                 id="password"
                 name="password"
                 type="password"
                 value={password}
+                placeholder="Mot de passe"
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="off"
@@ -105,7 +108,7 @@ const Login = () => {
             <div>
             <button
               type="submit"
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${registerMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-green-900 hover:bg-green-1000'} focus:outline-none focus:ring-2 focus:ring-offset-2 ${registerMode ? 'focus:ring-indigo-500' : 'focus:ring-green-500'}`}
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${registerMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-green-900 hover:bg-green-1000'} focus:outline-none focus:ring-2 focus:ring-offset-2 ${registerMode ? 'focus:ring-indigo-500' : 'focus:ring-green-800'}`}
             >
               {registerMode ? 'S\'inscrire' : 'Se connecter'}
             </button>

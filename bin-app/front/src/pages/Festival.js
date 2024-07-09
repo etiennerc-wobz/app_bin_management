@@ -15,14 +15,14 @@ const Festival = () => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchFavoriteFestival();
   }, [user, token]);
 
   const fetchFestivals = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const festivals = await getFestivals(token);
       setFestivals(festivals);
@@ -39,7 +39,7 @@ const Festival = () => {
       }
     } catch (error) {
       console.error('Error fetching favorite festival:', error);
-    } 
+    }
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const Festival = () => {
       }
     } catch (error) {
       console.error('Error fetching festival traps:', error);
-    } 
+    }
     setTimeout(() => {
       setLoading(false);
     }, 200);
@@ -110,16 +110,20 @@ const Festival = () => {
             onChangeFestival={handleFestivalChange}
           />
           <div className='flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 sm:h-52'>
-            <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full sm:w-2/3'>
-              {!favoriteFestival ? (
-                <>
+            {!favoriteFestival ? (
+              <>
+                <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full '>
+
                   <h1 className='text-lg sm:text-2xl'>Vous n'avez pas de festival favori</h1>
                   <Button variant="contained" color="success" onClick={handleCreateButton} sx={{ marginTop: 4, borderRadius: 10 }}>
                     Créer un festival
                   </Button>
-                </>
-              ) : (
-                <>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full '>
+
                   <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
                   <p className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
                   <h3 className='text-md sm:text-xl pt-2'>
@@ -130,12 +134,13 @@ const Festival = () => {
                   ) : (
                     <h2 className='pt-10 text-md sm:text-lg'>Aucune trap pour ce festival</h2>
                   )}
-                </>
-              )}
-            </div>
-            <div className='w-full sm:w-2/3'>
-              <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
-            </div>
+                </div>
+                <div className='w-full sm:w-2/3'>
+                  <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
+                </div>
+              </>
+            )}
+
           </div>
         </>
       )}
