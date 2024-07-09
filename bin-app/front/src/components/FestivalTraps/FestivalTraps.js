@@ -77,6 +77,8 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                         px: 2,
                         pt: 2,
                         pb: 2,
+                        borderRadius: '18px',
+
                     },
                 }}
             >
@@ -87,6 +89,8 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                         fontWeight: 'medium',
                         lineHeight: '20px',
                         mb: '2px',
+                        borderRadius: '18px',
+
                     }}
                     secondary={open ? null : traps.length + ' traps associées'}
                     secondaryTypographyProps={{

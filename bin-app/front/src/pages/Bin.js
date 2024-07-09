@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBins, getBinTraps, getFavoriteFestival, getFreeFestivalTraps } from '../api';
 import CircularProgressWithLabel from '../components/CircularProgressWithLabel/CircularProgressWithLabel';
-import {  useMediaQuery } from '@mui/material';
+import {  CircularProgress, useMediaQuery } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
 import Traps from '../components/Traps/Traps';
 import Fab from '@mui/material/Fab';
@@ -78,7 +78,10 @@ const Bin = () => {
   }
 
   if (!thisBin || !binTraps) {
-    return <div>Loading...</div>;
+    return (
+    <div className='pt-20'>
+        <CircularProgress />
+    </div>);
   }
 
   const handleAddTrapButtonClicked = () => {
