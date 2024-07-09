@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
+import { CircularProgress } from '@mui/material';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +13,7 @@ const Login = () => {
   const [registerMode, setRegisterMode] = useState(false); // State pour basculer entre le mode connexion et inscription
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarColor, setSnackbarColor] = useState('success');
+  const [loading, setLoading] = useState(false);
 
   const { login, register } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -58,8 +60,12 @@ const Login = () => {
   };
 
   const toggleRegisterMode = () => {
-    setRegisterMode(!registerMode); // Bascule entre le mode connexion et le mode inscription
-    setInvalidCredentials(false); // Réinitialise les éventuelles erreurs d'authentification précédentes
+    setLoading(true);
+    setTimeout(() => { //temps de chargement factice
+      setLoading(false);
+      setRegisterMode(!registerMode); 
+      setInvalidCredentials(false);     
+    }, 800);
   };
 
   return (
@@ -67,12 +73,9 @@ const Login = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
           <h2 className="text-2xl font-bold mb-6 text-center">{registerMode ? 'Inscription' : 'Se connecter'}</h2>
-          {registerMode && (
-            <div className="text-red-500 text-center mb-4">
-              {/* Ici, vous pouvez afficher des messages d'erreur spécifiques à l'inscription si nécessaire */}
-            </div>
-          )}
-          <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6">
+
+          {!loading ? (
+            <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">Nom d'utilisateur :</label>
               <input
@@ -108,6 +111,12 @@ const Login = () => {
               </button>
             </div>
           </form>
+          ) : (
+            <div className="flex justify-center">
+              <CircularProgress />
+            </div>
+          )}
+          
           <div className="mt-4 text-sm text-center">
             {registerMode ? (
               <p>

@@ -30,7 +30,7 @@ const UserProfile = () => {
 
 
     return (
-        <div>
+        <div className='pt-40'>
             <h1>Vous êtes :</h1>
             <p className='text-2xl sm:text-4xl mb-8'>{loading ? 'Loading...' : user ? user.name : 'Not logged in'}</p>
             <h2>Votre festival est :</h2>

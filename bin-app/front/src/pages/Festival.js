@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import { getFavoriteFestival, getFestivalTraps, getFestivals, changeFavoriteFestival } from '../api';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import CreateFestivalDialog from '../components/CreateFestivalDialog/CreateFestivalDialog';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import FestivalMenu from '../components/FestivalMenu/FestivalMenu';
@@ -15,6 +15,7 @@ const Festival = () => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     fetchFavoriteFestival();
@@ -30,6 +31,7 @@ const Festival = () => {
   };
 
   const fetchFavoriteFestival = async () => {
+    setLoading(true); 
     try {
       if (user) {
         const festival = await getFavoriteFestival(user.id, token);
@@ -37,6 +39,8 @@ const Festival = () => {
       }
     } catch (error) {
       console.error('Error fetching favorite festival:', error);
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -95,39 +99,45 @@ const Festival = () => {
 
   return (
     <div className='min-h-screen flex flex-col items-center p-4 sm:p-10 sm:pt-28 space-y-10'>
-      <FestivalMenu
-        festivalId={favoriteFestival ? favoriteFestival.id : null}
-        festivals={festivals}
-        onChangeFestival={handleFestivalChange}
-      />
-      <div className='flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 sm:h-52'>
-        <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full sm:w-2/3'>
-          {!favoriteFestival ? (
-            <>
-              <h1 className='text-lg sm:text-2xl'>Vous n'avez pas de festival favori</h1>
-              <Button variant="contained" color="success" onClick={handleCreateButton} sx={{ marginTop: 4, borderRadius: 10 }}>
-                Créer un festival
-              </Button>
-            </>
-          ) : (
-            <>
-              <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
-              <p className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
-              <h3 className='text-md sm:text-xl pt-2'>
-                Dates : {new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
-              </h3>
-              {traps.length > 0 ? (
-                null
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <FestivalMenu
+            festivalId={favoriteFestival ? favoriteFestival.id : null}
+            festivals={festivals}
+            onChangeFestival={handleFestivalChange}
+          />
+          <div className='flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 sm:h-52'>
+            <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full sm:w-2/3'>
+              {!favoriteFestival ? (
+                <>
+                  <h1 className='text-lg sm:text-2xl'>Vous n'avez pas de festival favori</h1>
+                  <Button variant="contained" color="success" onClick={handleCreateButton} sx={{ marginTop: 4, borderRadius: 10 }}>
+                    Créer un festival
+                  </Button>
+                </>
               ) : (
-                <h2 className='pt-10 text-md sm:text-lg'>Aucune cassette pour ce festival</h2>
+                <>
+                  <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
+                  <p className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
+                  <h3 className='text-md sm:text-xl pt-2'>
+                    Dates : {new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
+                  </h3>
+                  {traps.length > 0 ? (
+                    null
+                  ) : (
+                    <h2 className='pt-10 text-md sm:text-lg'>Aucune trap pour ce festival</h2>
+                  )}
+                </>
               )}
-            </>
-          )}
-        </div>
-        <div className='w-full sm:w-2/3'>
-          <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
-        </div>
-      </div>
+            </div>
+            <div className='w-full sm:w-2/3'>
+              <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
+            </div>
+          </div>
+        </>
+      )}
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={handleFestivalCreated} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color='success' />
     </div>

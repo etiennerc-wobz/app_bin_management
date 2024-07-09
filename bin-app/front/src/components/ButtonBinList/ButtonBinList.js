@@ -55,20 +55,38 @@ export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
-          height: 10,
+          width: 20,
+          height: 20,
+
           transform: 'translateZ(0px)',
           flexGrow: 1,
           position: 'fixed',
           top: { xs: 20, sm: 'auto' },
-          bottom: { xs: 'auto', sm: 70 },
-          right: 20,
+          bottom: { xs: 'auto', sm: 48 },
+          right: { xs: 2, sm: 48 },
         }}
       >
         <SpeedDial
           ariaLabel="SpeedDial"
-          sx={{ position: 'fixed', right: 4 }}
+          sx={{
+            position: 'fixed',
+            right: 0,
+            bottom: isMobile ? 'auto' : 0,
+            transform: isMobile ? 'scale(0.7)' : 'scale(1.2)', 
+            '& .MuiSpeedDial-fab': {
+              width: 80, 
+              height: 80,
+            },
+            '& .MuiSpeedDialAction-fab': {
+              width: 60, 
+              height: 60,
+            },
+            marginTop: isMobile ? -6 : 0,
+
+
+          }}
           icon={<SpeedDialIcon />}
-          direction={isMobile ? 'down' : 'left'}
+          direction={isMobile ? 'down' : 'up'}
         >
           {actions.map((action) => (
             <SpeedDialAction
