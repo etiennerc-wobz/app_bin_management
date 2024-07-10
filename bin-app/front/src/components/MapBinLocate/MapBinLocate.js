@@ -21,7 +21,7 @@ const MapBinLocate = ({ open, bin, onClose, locationPicked }) => {
 
     useEffect(() => {
         console.log("location", location);
-      }, [location]); 
+    }, [location]);
 
     useEffect(() => {
         if (!open) return;
@@ -84,27 +84,16 @@ const MapBinLocate = ({ open, bin, onClose, locationPicked }) => {
                         "icon-allow-overlap": true,
                         "text-allow-overlap": true,
                         'icon-image': 'custom-marker',
+                        'icon-size': 0.8,
+                        'icon-anchor': 'bottom',
                         'text-field': ['get', 'title'],
                         'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-                        'text-offset': [0, 1.25],
+                        'text-offset': [0, 0],
                         'text-anchor': 'top'
                     }
                 });
 
-                // Add a popup to the bins
-                map.on('click', 'points', function (e) {
-                    new mapboxgl.Popup()
-                        .setLngLat(e.features[0].geometry.coordinates)
-                        .setHTML(`<a href="/magic-bins/${e.features[0].properties.id}">${e.features[0].properties.title}</a>
-    <style>
-    a {
-      padding: 5px;
-      color: black;
-      font-weight: bold;
-    }
-    `)
-                        .addTo(map);
-                });
+
 
             }
             );
@@ -160,16 +149,36 @@ const MapBinLocate = ({ open, bin, onClose, locationPicked }) => {
             </div>
             <div className="mt-4 flex justify-center space-x-4">
                 <Button
-                    sx={{ zIndex: 1000, backgroundColor: 'green', color: 'white', borderRadius: '50%' }}
+                    sx={{
+                        zIndex: 1000,
+                        backgroundColor: 'green',
+                        color: 'white',
+                        borderRadius: '20%',
+                        '&:hover': {
+                            backgroundColor: 'darkgreen',
+                            transform: 'scale(1.1)',
+                        }
+                    }}
                     onClick={() => handleValidate()}
                 >
                     <WhereToVoteIcon />
+                    <span className="sm:inline hidden">Valider</span>
                 </Button>
                 <Button
-                    sx={{ zIndex: 1000, backgroundColor: 'red', color: 'white', borderRadius: '50%' }}
+                    sx={{
+                        zIndex: 1000,
+                        backgroundColor: 'red',
+                        color: 'white',
+                        borderRadius: '20%',
+                        '&:hover': {
+                            backgroundColor: 'darkred',
+                            transform: 'scale(1.1)',
+                        }
+                    }}
                     onClick={() => handleClose()}
                 >
                     <CloseIcon />
+                    <span className="sm:inline hidden">Annuler</span>
                 </Button>
             </div>
         </div>

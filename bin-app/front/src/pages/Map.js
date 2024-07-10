@@ -3,6 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { getBins, getMyFestivalBins } from '../api';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import { getFavoriteFestival } from '../api';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const Map = () => {
 
@@ -71,7 +72,8 @@ const Map = () => {
               },
               'properties': {
                 'title': bin.name,
-                'id': bin.id
+                'id': bin.id,
+                'zone'  : bin.zone
               }
             }))
           }
@@ -95,8 +97,14 @@ const Map = () => {
         map.on('click', 'points', function (e) {
           new mapboxgl.Popup()
             .setLngLat(e.features[0].geometry.coordinates)
-            .setHTML(`<a href="/magic-bins/${e.features[0].properties.id}">${e.features[0].properties.title}</a>
+            .setHTML(`<a 
+            href="/magic-bins/${e.features[0].properties.id}">
+            <img src="https://cdn.icon-icons.com/icons2/1863/PNG/512/open-in-new_118850.png" alt="Open in new" style="width: 20px; height: 20px;"/>
+            ${e.features[0].properties.title}<br/>
+            Zone : ${e.features[0].properties.zone}
+            </a>
     <style>
+    padding: 5px;
     a {
       padding: 5px;
       color: black;

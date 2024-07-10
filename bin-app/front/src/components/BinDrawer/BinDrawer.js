@@ -11,6 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import EditLocationIcon from '@mui/icons-material/EditLocation';
+import LockIcon from '@mui/icons-material/Lock';
 
 export default function BinDrawer({ open, setOpen, onAction }) {
 
@@ -33,54 +34,54 @@ export default function BinDrawer({ open, setOpen, onAction }) {
           paddingTop: { xs: 4, sm: 12 },
         }}
       >
-          <ListItem disablePadding onClick={() => handleAction('elements1')}>
-            <ListItemButton >
-              <ListItemIcon>
-                <MailIcon />
-              </ListItemIcon>
-              <ListItemText primary="Elements1" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding onClick={() => handleAction('gps')}>
-            <ListItemButton >
-              <ListItemIcon>
-                <EditLocationIcon />
-              </ListItemIcon>
-              <ListItemText primary="Changer position" />
-            </ListItemButton>
-          </ListItem>
+
+        <ListItem disablePadding onClick={() => handleAction('gps')}>
+          <ListItemButton >
+            <ListItemIcon>
+              <EditLocationIcon />
+            </ListItemIcon>
+            <ListItemText primary="Changer position" />
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
       <List>
-        {['Elements2'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding onClick={() => handleAction('closeLeftDoor')}>
+          <ListItemButton >
+            <ListItemIcon>
+              <LockIcon />
+            </ListItemIcon>
+            <ListItemText primary="Verrouiller porte Gauche" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => handleAction('closeRightDoor')}>
+          <ListItemButton >
+            <ListItemIcon>
+              <LockIcon />
+            </ListItemIcon>
+            <ListItemText primary="Verrouiller porte Droite" />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
 
   return (
     <div>
-      <Drawer 
-      open={open} 
-      onClose={toggleDrawer(false)}
-      sx={{ zIndex: 2,
-        '& .MuiDrawer-paper': { 
-          width: 250,
-          boxSizing: 'border-box',
-          backgroundColor: '#f0f0f0',
-          color: 'black',
-          border: 'none',
-          boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.75)',
-        },
-       }}
+      <Drawer
+        open={open}
+        onClose={toggleDrawer(false)}
+        sx={{
+          zIndex: 2,
+          '& .MuiDrawer-paper': {
+            width: 250,
+            boxSizing: 'border-box',
+            backgroundColor: '#f0f0f0',
+            color: 'black',
+            border: 'none',
+            boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.75)',
+          },
+        }}
       >
         {DrawerList}
       </Drawer>
