@@ -5,10 +5,11 @@ import StatusIndicator from '../StatusIndicator/StatusIndicator';
 import { openTrap, closeTrap } from '../../api';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-
+import { CircularProgress } from '@mui/material';
 const TrapListElement = ({ trap, onUpdateTrap }) => {
     const [thisTrap, setThisTrap] = useState(trap);
     const [currentMode, setCurrentMode] = useState(trap.mode);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setThisTrap(trap);
@@ -16,6 +17,7 @@ const TrapListElement = ({ trap, onUpdateTrap }) => {
     }, [trap]);
 
     const handleTrapClick = async (trapId) => {
+        setLoading(true);
         try {
             let newTrap = {};
             if (currentMode === "open") {
@@ -29,6 +31,10 @@ const TrapListElement = ({ trap, onUpdateTrap }) => {
         } catch (error) {
             console.error("Failed to update trap", error);
         }
+        setTimeout(() => {
+        setLoading(false);
+        }
+        , 200);
     };
 
     const myStatus = thisTrap.status === "connected";
@@ -42,8 +48,13 @@ const TrapListElement = ({ trap, onUpdateTrap }) => {
                 </p>
 
                 <div className="flex flex-col items-center pl-4 sm:pl-10 pr-8">
-                    <div className="">
-                        <p className="text-lg sm:text-2xl ">{myMode}</p>
+                    <div className="h-auto">
+                        {loading ? 
+                        <CircularProgress  size="1.2rem" />
+                        : 
+                        <p className="text-lg sm:text-2xl ">{myMode}</p> 
+                        }
+                        
                     </div>
                     <div className="mt-2">
                         <Tooltip title={currentMode === "open" ? "Fermer la trap" : "Ouvrir la trap"} placement="bottom">

@@ -79,7 +79,7 @@ const Login = () => {
           <h2 className="text-2xl font-bold mb-4 text-center">{registerMode ? 'Inscription' : 'Se connecter'}</h2>
 
           {!loading ? (
-            <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6 w-9/12 md:w-[50%]">
+            <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6 w-9/12 md:w-[20rem]">
                 <label htmlFor="username" className="block text-sm font-medium text-gray-700"></label>
                 <input
                   id="username"
