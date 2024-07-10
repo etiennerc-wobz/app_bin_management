@@ -49,8 +49,7 @@ export default function CreateFestivalDialog({ open, onClose, onFestivalCreated 
         try {
             const response = await createFestival(formJson);
             
-            
-            onFestivalCreated();
+            onFestivalCreated(response.festivalId);
             handleClose();
         } catch (error) {
             console.error('Erreur lors de la création du festival:', error);
@@ -74,16 +73,7 @@ export default function CreateFestivalDialog({ open, onClose, onFestivalCreated 
                         Veuillez entrer les informations du Festival
                     </DialogContentText>
 
-                    <TextField
-                        required
-                        margin="dense"
-                        id="id"
-                        name="id"
-                        label="ID"
-                        type="text"
-                        fullWidth
-                        variant="standard"
-                    />
+
                     <TextField
                         required
                         margin="dense"

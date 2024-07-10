@@ -4,6 +4,7 @@ import { getBins, getMyFestivalBins } from '../api';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import { getFavoriteFestival } from '../api';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import PlaceIcon from '@mui/icons-material/Place';
 
 const Map = () => {
 
@@ -57,7 +58,7 @@ const Map = () => {
     // Trigger the geolocation control once the map is loaded
     map.on('load', () => {
 
-      map.loadImage('https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png', (error, image) => {
+      map.loadImage('https://cdn-icons-png.flaticon.com/512/484/484167.png', (error, image) => {
         if (error) throw error;
         map.addImage('custom-marker', image);
         map.addSource('points', {
@@ -73,7 +74,8 @@ const Map = () => {
               'properties': {
                 'title': bin.name,
                 'id': bin.id,
-                'zone'  : bin.zone
+                'zone'  : bin.zone,
+                'fillrate' : bin.fillrate
               }
             }))
           }
@@ -83,6 +85,7 @@ const Map = () => {
           'type': 'symbol',
           'source': 'points',
           layout: {
+            'icon-size': 0.07,
             "icon-allow-overlap": true,
             "text-allow-overlap": true,
             'icon-image': 'custom-marker',

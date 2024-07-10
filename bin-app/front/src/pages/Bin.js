@@ -118,6 +118,9 @@ const Bin = () => {
       console.log('La bin', thisBin.id, 'veut changer sa pos');
       setOpenMap(true);
     }
+    if (action === 'edit') {
+      setOpenEditBinDialog(true);
+    }
   }
 
   const handleBinMoved = (location) => {
@@ -174,7 +177,7 @@ const Bin = () => {
       </div>
       <div id="body" className="flex flex-col items-center w-full p-4 pb-32 sm:p-0 sm:mt-4">
         <Traps binId={thisBin.id} update={updateTraps} />
-        <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 text:sm border-8 sm:border-2 border-gray-300 rounded-full cursor-pointer sm:hover:bg-gray-400' onClick={() => handleAddTrapButtonClicked()}>
+        <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 text:sm border-4 sm:border-2 border-gray-400 rounded-full cursor-pointer sm:hover:bg-gray-400' onClick={() => handleAddTrapButtonClicked()}>
           <p>Ajouter une trap</p>
           {thisFestivalTraps.length > 0 && <p className="text-sm">({thisFestivalTraps.length} trap disponibles)</p>}
         </div>

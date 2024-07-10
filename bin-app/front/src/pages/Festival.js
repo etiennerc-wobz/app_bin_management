@@ -22,6 +22,10 @@ const Festival = () => {
     fetchFavoriteFestival();
   }, [user, token]);
 
+  useEffect(() => {
+    setFestivals(festivals);
+  }, [festivals]);
+
   const fetchFestivals = async () => {
     setLoading(true);
     try {
@@ -89,9 +93,16 @@ const Festival = () => {
     setOpenCreateDialog(true);
   };
 
-  const handleFestivalCreated = (festival) => {
-    fetchFestivals();
-  };
+const handleFestivalCreated = (newFestivalId) => {
+  fetchFestivals().then(() => {
+    changeFavoriteFestival(user.id, newFestivalId, token).then(() => {
+      setFavoriteFestival(festivals.find(festival => festival.id === newFestivalId));
+      setSnackbarMessage('Festival créé et défini comme favori');
+      setOpenSnackbar(true);
+      fetchFavoriteFestival();
+    });
+  });
+}
 
   const handleTrapsUpdate = () => {
     fetchFestivalTraps();
@@ -148,7 +159,7 @@ const Festival = () => {
           </div>
         </>
       )}
-      <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={handleFestivalCreated} />
+      <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color='success' />
     </div>
   );

@@ -20,9 +20,7 @@ import { useTheme } from '@mui/material/styles';
 const App = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const {  loading } = useContext(AuthContext);
-
-
+  const { loading, user, token } = useContext(AuthContext);
 
   if(loading) {
     return <div>Loading...</div>;
@@ -30,7 +28,7 @@ const App = () => {
 
   return (
     <Router className="overflow-hidden">
-      {isMobile ? <SimpleBottomNavigation /> : <ResponsiveAppBar />}
+      {user && token && (isMobile ? <SimpleBottomNavigation /> : <ResponsiveAppBar />)}
       <div className="App flex flex-col min-h-screen">
         <Routes>
           <Route path="/" element={<PrivateRoute><Festival /></PrivateRoute>} />
