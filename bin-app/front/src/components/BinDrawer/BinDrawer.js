@@ -10,6 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import EditLocationIcon from '@mui/icons-material/EditLocation';
 
 export default function BinDrawer({ open, setOpen, onAction }) {
 
@@ -38,6 +39,14 @@ export default function BinDrawer({ open, setOpen, onAction }) {
                 <MailIcon />
               </ListItemIcon>
               <ListItemText primary="Elements1" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding onClick={() => handleAction('gps')}>
+            <ListItemButton >
+              <ListItemIcon>
+                <EditLocationIcon />
+              </ListItemIcon>
+              <ListItemText primary="Changer position" />
             </ListItemButton>
           </ListItem>
       </List>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { getBins, getMyFestivalBins } from '../api';
 import { AuthContext } from '../components/AuthContext/AuthContext';
@@ -14,7 +14,7 @@ const Map = () => {
   const fetchMyFestivalBins = async () => {
     try {
       const bins = await getMyFestivalBins(user.id);
-      
+
       setBins(bins);
     } catch (error) {
       console.error('Error fetching bins:', error);
@@ -55,7 +55,7 @@ const Map = () => {
 
     // Trigger the geolocation control once the map is loaded
     map.on('load', () => {
-      
+
       map.loadImage('https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png', (error, image) => {
         if (error) throw error;
         map.addImage('custom-marker', image);
@@ -111,10 +111,17 @@ const Map = () => {
 
 
 
-    });
-  }, [bins]);
 
-    return <div id="map" className="w-full h-[100vh] sm:h-[90vh] mt-0 sm:mt-16 relative z-0" />;
+    });
+
+
+
+
+  }, [bins]);
+  
+
+
+  return <div id="map" className="w-full h-[100vh] sm:h-[90vh] mt-0 sm:mt-16 relative z-0" />;
 };
 
 export default Map;

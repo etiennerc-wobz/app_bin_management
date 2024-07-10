@@ -330,3 +330,13 @@ export const editBinInformations = async (name,zone,binId) => {
     throw error;
   }
 }
+
+export const editBinLocation = async (lat,lon,binId) => {
+  try {
+    const response = await api.post('/api/editbinlocation', { lat, lon, binId });
+    return response.data;
+  } catch (error) {
+    console.error('Error editing bin:', error);
+    throw error;
+  }
+}

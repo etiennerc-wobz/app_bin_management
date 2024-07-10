@@ -15,7 +15,9 @@ import ShareLocationIcon from '@mui/icons-material/ShareLocation';
 import BinDrawer from '../components/BinDrawer/BinDrawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
+import MapBinLocate from '../components/MapBinLocate/MapBinLocate';
 
+import { editBinLocation } from '../api';
 
 const Bin = () => {
   const { id } = useParams();
@@ -34,6 +36,7 @@ const Bin = () => {
 
   const [openEditBinDialog, setOpenEditBinDialog] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [openMap, setOpenMap] = useState(false);
   const [action, setAction] = useState('');
   const { user } = useContext(AuthContext);
 
@@ -111,7 +114,26 @@ const Bin = () => {
   }
 
   const handleAction = (action) => {
-    console.log('vamos', action);
+    if (action === 'gps') {
+      console.log('La bin', thisBin.id, 'veut changer sa pos');
+      setOpenMap(true);
+    }
+  }
+
+  const handleBinMoved = (location) => {
+    console.log('La bin', thisBin.id, 'a été déplacée à', location);
+    
+    editBinLocation(location[1], location[0],thisBin.id)
+      .then(() => {
+        setOpenSnackbar(true);
+        setSnackbarMessage('Bin déplacée avec succès');
+        fetchBins();
+      })
+      .catch((error) => {
+        console.error('Error moving bin:', error);
+        setOpenSnackbar(true);
+        setSnackbarMessage('Erreur lors du déplacement de la bin');
+      });
   }
 
   return (
@@ -168,6 +190,7 @@ const Bin = () => {
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
 
       <BinDrawer open={openDrawer} setOpen={setOpenDrawer} action={action} onAction={handleAction} />
+      <MapBinLocate open={openMap} bin={thisBin} onClose={() => setOpenMap(false)} locationPicked={location => handleBinMoved(location)} />
     </div>
   );
 }
