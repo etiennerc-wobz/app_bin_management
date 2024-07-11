@@ -82,6 +82,14 @@ const Bin = () => {
     fetchBins();
   }, [id]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchBins();
+    }, 5000); // Appelle fetchBins toutes les 5 secondes
+  
+    return () => clearInterval(intervalId); // Nettoie l'intervalle lorsque le composant est démonté
+  }, [id]);
+
   if (error) {
     return <div>{error}</div>;
   }
