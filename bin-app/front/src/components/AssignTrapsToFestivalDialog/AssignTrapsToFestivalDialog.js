@@ -14,7 +14,7 @@ import { getBins } from '../../api';
 import { getMyFestivalBins } from '../../api';
 import { AuthContext } from '../AuthContext/AuthContext';
 import { useContext } from 'react';
-import {setFestivalBins} from '../../api';
+import { setFestivalBins } from '../../api';
 import { getFreeTraps } from '../../api';
 import { assignTrapsToFestival } from '../../api';
 
@@ -23,7 +23,7 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
     const [selectedTraps, setSelectedTraps] = useState([]);
     const [freeTraps, setFreeTraps] = useState([]);
     const [myFestivalBins, setMyFestivalBins] = useState([]);
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
 
     const handleClose = () => {
@@ -38,21 +38,21 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
     const fetchFreeTraps = async () => {
         try {
             const traps = await getFreeTraps();
-            
+
             setFreeTraps(traps);
         } catch (error) {
             console.error('Error fetching traps:', error);
         }
     }
 
-    
+
 
     const handleCheckboxChange = (event, trapId) => {
         if (event.target.checked) {
-            
+
             setSelectedTraps([...selectedTraps, trapId]);
         } else {
-            
+
             setSelectedTraps(selectedTraps.filter(id => id !== trapId));
         }
     }
@@ -64,7 +64,7 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            
+
             await assignTrapsToFestival(festivalId, selectedTraps);
             onUpdate();
             onClose();
@@ -95,25 +95,34 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
                     </DialogContentText>
 
                     <FormGroup>
-                    {freeTraps.map((trap, index) => (
-                        <FormControlLabel
-                        control={
-                            <Checkbox 
-                            onChange={(event) => handleCheckboxChange(event, trap.id)}
+                        {freeTraps.map((trap, index) => (
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        onChange={(event) => handleCheckboxChange(event, trap.id)}
+                                        sx={{
+                                            color: '#0D5200',
+                                            '&.Mui-checked': {
+                                                color: '#0D5200',
+                                            },
+                                        }}
+                                    />
+                                }
+                                label={"Trap " + trap.id}
+                                key={index}
+                                checked={selectedTraps.includes(trap.id)}
                             />
-                        }
-                        label={ "Trap " + trap.id  }
-                        key={index}
-                        checked={selectedTraps.includes(trap.id)}
-                        />
-                    ))}
+                        ))}
                     </FormGroup>
 
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel}>Annuler</Button>
-                    <Button type="submit">Enregistrer</Button>
+                    <Button onClick={handleCancel} sx={{ color: '#2A0000' }}
+                    >Annuler
+                    </Button>
+                    <Button type="submit" sx={{ color: '#0D5200' }}
+                    >Enregistrer</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

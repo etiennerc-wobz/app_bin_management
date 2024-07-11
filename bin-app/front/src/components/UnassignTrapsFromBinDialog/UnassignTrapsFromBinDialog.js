@@ -4,42 +4,33 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { getFreeFestivalTraps, getFavoriteFestival, assignTrapsToBin } from '../../api';
-import { useState, useContext, useEffect } from 'react';
+import { getBinTraps, unassignTrapsFromBin } from '../../api';
+import { useState, useEffect } from 'react';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
-import { AuthContext } from '../AuthContext/AuthContext';
-import { Link } from 'react-router-dom';
 
-export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate }) {
+export default function UnassignTrapsFromBinDialog({ binId, open, onClose, onUpdate }) {
     const [selectedTraps, setSelectedTraps] = useState([]);
-    const [thisFestivalTraps, setThisFestivalTraps] = useState([]);
-    const { user } = useContext(AuthContext);
+    const [thisBinTraps, setThisBinTraps] = useState([]);
 
-    useEffect(() => {
-        if (open) {
-            const fetchThisFestival = async () => {
-                try {
-                    const festivalReturned = await getFavoriteFestival(user.id);
-                    fetchFestivalTraps(festivalReturned.id);
-                } catch (error) {
-                    console.error('Error fetching favorite festival:', error);
-                }
-            };
+    const handleClose = () => {
+        onClose();
+    };
 
-            const fetchFestivalTraps = async (festivalId) => {
-                try {
-                    const traps = await getFreeFestivalTraps(festivalId);
-                    setThisFestivalTraps(traps);
-                } catch (error) {
-                    console.error('Error fetching traps:', error);
-                }
-            };
+    const handleCancel = () => {
+        setSelectedTraps([]);
+        onClose();
+    };
 
-            fetchThisFestival();
-        } else {
-            setSelectedTraps([]);
+    const fetchBinTraps = async (binId) => {
+        try {
+            console.log('Fetching traps for bin:', binId);
+            const returnedTraps = await getBinTraps(binId);
+            console.log('Traps:', returnedTraps);
+            setThisBinTraps(returnedTraps);
+        } catch (error) {
+            console.error('Error fetching traps:', error);
         }
-    }, [open, user.id]);
+    };
 
     const handleCheckboxChange = (event, trapId) => {
         if (event.target.checked) {
@@ -56,14 +47,23 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
             return;
         }
         try {
-            await assignTrapsToBin(binId, selectedTraps);
-            onUpdate();
+            await unassignTrapsFromBin(binId, selectedTraps);
+            onUpdate(); // Ensure onUpdate is called to trigger Bin component update
+            fetchBinTraps(binId); // Fetch updated traps after unassignment
             onClose();
-            console.log('Traps assigned to bin:', selectedTraps);
+            console.log('Traps unassigned from bin:', selectedTraps);
         } catch (error) {
-            console.error('Error assigning traps to bin:', error);
+            console.error('Error unassigning traps from bin:', error);
         }
     };
+
+    useEffect(() => {
+        if (open) {
+            fetchBinTraps(binId);
+        } else {
+            setSelectedTraps([]);
+        }
+    }, [open, binId]);
 
     return (
         <React.Fragment>
@@ -78,17 +78,16 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
             >
                 <DialogContent>
                     <DialogContentText className='pb-4 text-xl font-semibold text-gray-800'>
-                        Liste des traps disponibles pour ce festival:
+                        Traps associées à cette bin:
                     </DialogContentText>
 
-                    {thisFestivalTraps.length === 0 ? (
+                    {thisBinTraps.length === 0 ? (
                         <p className='text-base text-gray-700'>
-                            Aucun trap disponible pour ce festival. <br />
-                            Veuillez en ajouter depuis la page <strong><Link to="/" style={{ textDecoration: 'underline', color: '#0D5200' }}>Festival</Link></strong>.
+                            Aucun trap associée.
                         </p>
                     ) : (
                         <FormGroup>
-                            {thisFestivalTraps.map((trap, index) => (
+                            {thisBinTraps.map((trap, index) => (
                                 <FormControlLabel
                                     control={
                                         <Checkbox
@@ -121,7 +120,7 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
                                     type="submit"
                                     className='px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
                                 >
-                                    Valider
+                                    Désassigner
                                 </Button>
                             </DialogActions>
                         </FormGroup>

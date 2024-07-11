@@ -74,8 +74,8 @@ const Map = () => {
               'properties': {
                 'title': bin.name,
                 'id': bin.id,
-                'zone'  : bin.zone,
-                'fillrate' : bin.fillrate
+                'zone': bin.zone,
+                'fillrate': bin.fillrate?.toFixed(2)*100 || -1
               }
             }))
           }
@@ -104,7 +104,8 @@ const Map = () => {
             href="/magic-bins/${e.features[0].properties.id}">
             <img src="https://cdn.icon-icons.com/icons2/1863/PNG/512/open-in-new_118850.png" alt="Open in new" style="width: 20px; height: 20px;"/>
             ${e.features[0].properties.title}<br/>
-            Zone : ${e.features[0].properties.zone}
+            Zone : ${e.features[0].properties.zone} <br/>
+            Remplissage : ${e.features[0].properties.fillrate}%
             </a>
     <style>
     padding: 5px;
@@ -129,7 +130,7 @@ const Map = () => {
 
 
   }, [bins]);
-  
+
 
 
   return <div id="map" className="w-full h-[100vh] sm:h-[90vh] mt-0 sm:mt-16 relative z-0" />;

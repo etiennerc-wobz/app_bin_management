@@ -10,6 +10,8 @@ import ListItemText from '@mui/material/ListItemText';
 import EditLocationIcon from '@mui/icons-material/EditLocation';
 import LockIcon from '@mui/icons-material/Lock';
 import SpellcheckIcon from '@mui/icons-material/Spellcheck';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+
 import { useMediaQuery } from '@mui/material';
 
 export default function BinDrawer({ open, setOpen, onAction }) {
@@ -29,8 +31,8 @@ export default function BinDrawer({ open, setOpen, onAction }) {
   }
 
   const DrawerList = (
-    <Box sx={ { width: isMobile ? 240 : 290 } }
-     role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: isMobile ? 240 : 290 }}
+      role="presentation" onClick={toggleDrawer(false)}>
       <List
         sx={{
           paddingTop: { xs: 0, sm: 2 },
@@ -51,6 +53,14 @@ export default function BinDrawer({ open, setOpen, onAction }) {
               <SpellcheckIcon />
             </ListItemIcon>
             <ListItemText primary="Renommer nom/zone" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding onClick={() => handleAction('unassigntraps')}>
+          <ListItemButton >
+            <ListItemIcon>
+              <PlaylistRemoveIcon />
+            </ListItemIcon>
+            <ListItemText primary="Retirer traps" />
           </ListItemButton>
         </ListItem>
       </List>

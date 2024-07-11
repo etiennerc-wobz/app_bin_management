@@ -14,7 +14,7 @@ import { getBins } from '../../api';
 import { getMyFestivalBins } from '../../api';
 import { AuthContext } from '../AuthContext/AuthContext';
 import { useContext } from 'react';
-import {setFestivalBins} from '../../api';
+import { setFestivalBins } from '../../api';
 import { getFreeBins } from '../../api';
 
 export default function AssignBinDialog({ festivalId, open, onClose, onAssignment }) {
@@ -22,7 +22,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
     const [bins, setBins] = useState([]);
     const [myFestivalBins, setMyFestivalBins] = useState([]);
     const [selectedBins, setSelectedBins] = useState([]);
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [freeBins, setFreeBins] = useState([]);
 
     const handleClose = () => {
@@ -33,7 +33,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
     const fetchBins = async () => {
         try {
             const bins = await getBins();
-            
+
             setBins(bins);
         } catch (error) {
             console.error('Error fetching bins:', error);
@@ -51,7 +51,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
     const fetchMyFestivalBins = async () => {
         try {
             const bins = await getMyFestivalBins(user.id);
-            
+
             setMyFestivalBins(bins);
             setSelectedBins(bins.map(bin => bin.id));
         } catch (error) {
@@ -61,10 +61,10 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
 
     const handleCheckboxChange = (event, binId) => {
         if (event.target.checked) {
-            
+
             setSelectedBins([...selectedBins, binId]);
         } else {
-            
+
             setSelectedBins(selectedBins.filter(id => id !== binId));
         }
     }
@@ -82,9 +82,9 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
         const selectedBinsIds = selectedBins.map(id => ({ bin_id: id }));
 
         try {
-            
-            const response= await setFestivalBins(festivalId.id, selectedBinsIds);
-            
+
+            const response = await setFestivalBins(festivalId.id, selectedBinsIds);
+
             onAssignment();
             handleClose();
         } catch (error) {
@@ -112,25 +112,31 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
                     </DialogContentText>
 
                     <FormGroup>
-                    {freeBins.filter(bin => !myFestivalBins.some(festivalBin => festivalBin.id === bin.id)).map((bin, index) => (
-                        <FormControlLabel
-                        control={
-                            <Checkbox 
-                            onChange={(event) => handleCheckboxChange(event, bin.id)}
+                        {freeBins.filter(bin => !myFestivalBins.some(festivalBin => festivalBin.id === bin.id)).map((bin, index) => (
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        onChange={(event) => handleCheckboxChange(event, bin.id)}
+                                        sx={{
+                                            color: '#0D5200',
+                                            '&.Mui-checked': {
+                                                color: '#0D5200',
+                                            },
+                                        }}
+                                    />
+                                }
+                                label={"Bin " + bin.id + " (" + bin.name + ")"}
+                                key={index}
+                                checked={selectedBins.includes(bin.id)}
                             />
-                        }
-                        label={ "Bin " + bin.id + " (" + bin.name+ ")"}
-                        key={index}
-                        checked={selectedBins.includes(bin.id)}
-                        />
-                    ))}
+                        ))}
                     </FormGroup>
 
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Annuler</Button>
-                    <Button type="submit">Enregistrer</Button>
+                    <Button onClick={handleClose} sx={{ color: '#2A0000' }}>Annuler</Button>
+                    <Button type="submit" sx={{ color: '#0D5200' }}>Enregistrer</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
