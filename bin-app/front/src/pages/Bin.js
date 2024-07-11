@@ -142,14 +142,27 @@ const Bin = () => {
   return (
     <div id="pageBin" className="flex flex-col items-start sm:items-center w-full h-full sm:pt-20">
       <div id="header" className="w-full bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-row justify-between items-center sm:w-11/12">
-        <div className="flex flex-col items-start sm:mr-10 w-[16em] sm:w-11/12" ref={containerRef}>
-          <Button onClick={() => setOpenDrawer(true)} sx={{
-            marginBottom: { xs: 2, sm: 4 }, color: 'green', backgroundColor: 'lightgreen'
-            , border: '1px solid green', borderRadius: '14px'
-          }}
+        <div className="flex flex-col items-start sm:mr-10 w-[16em] sm:w-11/12" >
+        <div className="fixed bottom-16 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
+          <Button
+            onClick={() => setOpenDrawer(true)}
+            sx={{
+              color: 'white',
+              backgroundColor: '#06580A',
+              border: '2px solid #053B0B',
+              borderRadius: '50%',
+              minWidth: 'auto',
+              width: isMobile ? '50px' : '80px',
+              height: isMobile ? '50px' : '80px',
+              '&:hover': {
+                backgroundColor: '#0A6914',
+              },
+            }}
           >
             <MenuIcon />
           </Button>
+        </div>
+
           {!isMobile && (
             <div className="mb-4">
               <StatusIndicator isConnected={thisStatus} />
@@ -175,7 +188,7 @@ const Bin = () => {
           </div>
         </div>
       </div>
-      <div id="body" className="flex flex-col items-center w-full p-4 pb-32 sm:p-0 sm:mt-4">
+      <div id="body" className="flex flex-col items-center w-full p-4 pb-32 sm:p-0 sm:pb-8 sm:mt-4">
         <Traps binId={thisBin.id} update={updateTraps} />
         <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 text:sm border-4 sm:border-2 border-gray-400 rounded-full cursor-pointer sm:hover:bg-gray-400' onClick={() => handleAddTrapButtonClicked()}>
           <p>Ajouter une trap</p>
@@ -184,11 +197,6 @@ const Bin = () => {
       </div>
       <AssignTrapsToBinDialog traps={thisFestivalTraps} binId={thisBin.id} festivalId={user.festivalId} open={addTrapDialogOpen} onClose={() => setAddTrapDialogOpen(false)} onUpdate={handleTrapsUpdate} />
       <EditBinDialog bin={thisBin} open={openEditBinDialog} onClose={() => setOpenEditBinDialog(false)} onBinEdited={handleBinEdited} />
-      <div className="fixed bottom-20 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0" onClick={() => setOpenEditBinDialog(true)}>
-        <Fab color="success" aria-label="edit">
-          <EditIcon />
-        </Fab>
-      </div>
 
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
 

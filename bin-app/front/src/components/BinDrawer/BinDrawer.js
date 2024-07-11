@@ -10,8 +10,11 @@ import ListItemText from '@mui/material/ListItemText';
 import EditLocationIcon from '@mui/icons-material/EditLocation';
 import LockIcon from '@mui/icons-material/Lock';
 import SpellcheckIcon from '@mui/icons-material/Spellcheck';
+import { useMediaQuery } from '@mui/material';
 
 export default function BinDrawer({ open, setOpen, onAction }) {
+
+  const isMobile = useMediaQuery('(max-width:640px)');
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -26,10 +29,11 @@ export default function BinDrawer({ open, setOpen, onAction }) {
   }
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={ { width: isMobile ? 240 : 290 } }
+     role="presentation" onClick={toggleDrawer(false)}>
       <List
         sx={{
-          paddingTop: { xs: 4, sm: 12 },
+          paddingTop: { xs: 0, sm: 2 },
         }}
       >
 
@@ -80,7 +84,7 @@ export default function BinDrawer({ open, setOpen, onAction }) {
         sx={{
           zIndex: 2,
           '& .MuiDrawer-paper': {
-            width: 250,
+            width: isMobile ? 240 : 290,
             boxSizing: 'border-box',
             backgroundColor: '#f0f0f0',
             color: 'black',
@@ -88,9 +92,14 @@ export default function BinDrawer({ open, setOpen, onAction }) {
             boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.75)',
           },
         }}
+        anchor='right'
       >
+        <div className="text-white p-4 text-center bg-green-800 mb-2 sm:mt-16">
+          Menu Bin
+        </div>
         {DrawerList}
       </Drawer>
     </div>
   );
+
 }
