@@ -17,10 +17,15 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import { frFR } from '@mui/x-date-pickers/locales';
 
+import { useContext } from 'react';
+import { AuthContext } from '../AuthContext/AuthContext';
+
 export default function CreateFestivalDialog({ open, onClose, onFestivalCreated }) {
 
     const [startDate, setStartDate] = useState(dayjs());
     const [endDate, setEndDate] = useState(dayjs());
+
+    const {user} = useContext(AuthContext);
 
     const handleClose = () => {
         onClose();
@@ -48,6 +53,8 @@ export default function CreateFestivalDialog({ open, onClose, onFestivalCreated 
             return;
         }
         
+        formJson.userId = user.id;
+
 
         formJson.startDate = startDate.toISOString();
         formJson.endDate = endDate.toISOString();

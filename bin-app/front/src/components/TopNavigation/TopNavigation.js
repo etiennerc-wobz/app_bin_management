@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
 
 const pages = ['Festival', 'Magic-Bins', 'Carte'];
-const settings = ['Profile','Déconnexion'];
+const settings = ['Profil','Déconnexion'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -43,7 +43,7 @@ function ResponsiveAppBar() {
             logout();
             return;
         }
-        if (setting.target.innerText === 'Profile') {
+        if (setting.target.innerText === 'Profil') {
             navigate('/profile');
         }
         handleCloseUserMenu();

@@ -226,10 +226,10 @@ export const changeFavoriteFestival = async (userId, festivalId) => {
   }
 }
 
-export const createFestival = async (festival) => {
+export const createFestival = async (data) => {
   try {
-
-    const response = await api.post('/api/festivals', festival);
+    console.log('data : ', data);
+    const response = await api.post('/api/festivals', data);
     return response.data;
   } catch (error) {
     console.error('Error creating festival:', error);
@@ -358,6 +358,46 @@ export const editBinLocation = async (lat, lon, binId) => {
     return response.data;
   } catch (error) {
     console.error('Error editing bin:', error);
+    throw error;
+  }
+}
+
+export const getFestivalOwner = async (festivalId) => {
+  try {
+    const response = await api.get(`/api/festivals/${festivalId}/owner`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching festival owner:', error);
+    throw error;
+  }
+}
+
+export const getMyFestivals = async (userId) => {
+  try {
+    const response = await api.get(`/api/users/${userId}/festivals`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching my festivals:', error);
+    throw error;
+  }
+}
+
+export const getUsers = async () => {
+  try {
+    const response = await api.get('/api/users');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+}
+
+export const addUsersToFestival = async (festivalId, users) => {
+  try {
+    const response = await api.post(`/api/festivals/${festivalId}/users`, { users });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding users to festival:', error);
     throw error;
   }
 }

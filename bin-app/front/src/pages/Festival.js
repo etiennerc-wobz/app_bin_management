@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext/AuthContext';
-import { getFavoriteFestival, getFestivalTraps, getFestivals, changeFavoriteFestival } from '../api';
+import { getFavoriteFestival, getFestivalTraps, getFestivals, getMyFestivals, changeFavoriteFestival } from '../api';
 import { Button, CircularProgress } from '@mui/material';
 import CreateFestivalDialog from '../components/CreateFestivalDialog/CreateFestivalDialog';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
@@ -29,7 +29,7 @@ const Festival = () => {
   const fetchFestivals = async () => {
     setLoading(true);
     try {
-      const festivals = await getFestivals(token);
+      const festivals = await getMyFestivals(user.id);
       setFestivals(festivals);
     } catch (error) {
       console.error('Error fetching festivals:', error);
@@ -93,16 +93,16 @@ const Festival = () => {
     setOpenCreateDialog(true);
   };
 
-const handleFestivalCreated = (newFestivalId) => {
-  fetchFestivals().then(() => {
-    changeFavoriteFestival(user.id, newFestivalId, token).then(() => {
-      setFavoriteFestival(festivals.find(festival => festival.id === newFestivalId));
-      setSnackbarMessage('Festival créé et défini comme favori');
-      setOpenSnackbar(true);
-      fetchFavoriteFestival();
+  const handleFestivalCreated = (newFestivalId) => {
+    fetchFestivals().then(() => {
+      changeFavoriteFestival(user.id, newFestivalId, token).then(() => {
+        setFavoriteFestival(festivals.find(festival => festival.id === newFestivalId));
+        setSnackbarMessage('Festival créé et défini comme favori');
+        setOpenSnackbar(true);
+        fetchFavoriteFestival();
+      });
     });
-  });
-}
+  }
 
   const handleTrapsUpdate = () => {
     fetchFestivalTraps();
@@ -136,16 +136,15 @@ const handleFestivalCreated = (newFestivalId) => {
 
                   <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
                   <p id='festival-name'
-                  className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
-  <h3 id="date" className='text-md sm:text-xl pt-8'>
-    <TodayIcon className='inline-block mr-2' />
-    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
-    {new Date().getFullYear() !== new Date(favoriteFestival.start_date).getFullYear() ? ` ${new Date(favoriteFestival.start_date).getFullYear()}` : ''}
-    <span> - </span>
-    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.end_date))}
-    {new Date().getFullYear() !== new Date(favoriteFestival.end_date).getFullYear() ? ` ${new Date(favoriteFestival.end_date).getFullYear()}` : ''}
-  </h3>
-
+                    className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
+                  <h3 id="date" className='text-md sm:text-xl pt-8'>
+                    <TodayIcon className='inline-block mr-2' />
+                    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
+                    {new Date().getFullYear() !== new Date(favoriteFestival.start_date).getFullYear() ? ` ${new Date(favoriteFestival.start_date).getFullYear()}` : ''}
+                    <span> - </span>
+                    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.end_date))}
+                    {new Date().getFullYear() !== new Date(favoriteFestival.end_date).getFullYear() ? ` ${new Date(favoriteFestival.end_date).getFullYear()}` : ''}
+                  </h3>
                   {traps.length > 0 ? (
                     null
                   ) : (
