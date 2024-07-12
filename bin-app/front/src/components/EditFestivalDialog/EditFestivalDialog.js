@@ -20,8 +20,8 @@ import { frFR } from '@mui/x-date-pickers/locales';
 
 export default function EditFestivalDialog({ festival, open, onClose, onFestivalEdited }) {
 
-    console.log('stdate',festival.start_date);
-    console.log('dayjsstdate',dayjs(festival.start_date));
+    console.log('stdate', festival.start_date);
+    console.log('dayjsstdate', dayjs(festival.start_date));
     const [startDate, setStartDate] = useState(dayjs(festival.start_date));
     const [endDate, setEndDate] = useState(dayjs(festival.end_date));
 
@@ -53,18 +53,18 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
         end_Date.locale('fr', frFR);
 
 
-        if(!startDate || !endDate) {
+        if (!startDate || !endDate) {
             alert("Veuillez renseigner les dates");
             return;
         }
-        if(startDate.isAfter(endDate)) {
+        if (startDate.isAfter(endDate)) {
             alert("La date de fin ne peut pas être avant la date de début");
             return;
         }
-            const dates= {
-                start: start_Date.format(),
-                end: end_Date.format()
-            }
+        const dates = {
+            start: start_Date.format(),
+            end: end_Date.format()
+        }
         try {
             await editFestivalInformations(name, dates, festival.id);
             onFestivalEdited(festival.id);
@@ -74,20 +74,20 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
         }
     }
 
-
-
-    return (
-        <React.Fragment>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="form-dialog-title"
-            >
-                <DialogTitle id="form-dialog-title">Modifier les infos du Festival</DialogTitle>
-                <DialogContent>
-                    <DialogContentText className="pb-4">
-                        Nom
-                        </DialogContentText>
+    console.log('festival', festival);
+    console.log('fes id', festival.id);
+    if (festival.id === -1) {
+        return null;
+    } else {
+        return (
+            <React.Fragment>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="form-dialog-title"
+                >
+                    <DialogTitle id="form-dialog-title">Modifier les infos du Festival</DialogTitle>
+                    <DialogContent>
 
                         <TextField
                             autoFocus
@@ -97,6 +97,7 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
                             type="Nom"
                             fullWidth
                             autoComplete='off'
+                            sx={{ mb: 2 }}
                         />
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -117,17 +118,19 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
                             />
                         </LocalizationProvider>
 
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="secondary">
-                        Annuler
-                    </Button>
-                    <Button onClick={handleSubmit} color="success">
-                        Enregistrer
-                    </Button>
-                </DialogActions>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="secondary">
+                            Annuler
+                        </Button>
+                        <Button onClick={handleSubmit} color="success">
+                            Enregistrer
+                        </Button>
+                    </DialogActions>
 
-            </Dialog>
-        </React.Fragment>
-    );
+                </Dialog>
+            </React.Fragment>
+        );
+    }
+
 }

@@ -70,7 +70,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   const [dialogAnswer, setDialogAnswer] = React.useState(false);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openEditFestivalDialog, setOpenEditFestivalDialog] = useState(false);
-  const festivalId = festival.id;
+  const [festivalId, setFestivalId] = React.useState(festival ? festival.id : null);
 
   const { logout } = useContext(AuthContext);
 
@@ -80,6 +80,8 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
 
   const handleFestivalChange = (event) => {
     const selected = event.target.value;
@@ -199,7 +201,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
       />
 
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
-      <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={(festivalId) => handleFestivalEdited(festivalId)} />
+      {festivalId ? <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={(festivalId) => handleFestivalEdited(festivalId)} /> : null} 
 
     </>
   );

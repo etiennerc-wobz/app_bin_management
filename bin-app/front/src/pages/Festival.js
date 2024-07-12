@@ -137,11 +137,15 @@ const handleFestivalCreated = (newFestivalId) => {
                   <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
                   <p id='festival-name'
                   className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
-                  <h3 id="date"
-                  className='text-md sm:text-xl pt-8'>
-                    <TodayIcon className='inline-block mr-2
-                    ' />{new Date(favoriteFestival.start_date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.end_date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
-                  </h3>
+  <h3 id="date" className='text-md sm:text-xl pt-8'>
+    <TodayIcon className='inline-block mr-2' />
+    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
+    {new Date().getFullYear() !== new Date(favoriteFestival.start_date).getFullYear() ? ` ${new Date(favoriteFestival.start_date).getFullYear()}` : ''}
+    <span> - </span>
+    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.end_date))}
+    {new Date().getFullYear() !== new Date(favoriteFestival.end_date).getFullYear() ? ` ${new Date(favoriteFestival.end_date).getFullYear()}` : ''}
+  </h3>
+
                   {traps.length > 0 ? (
                     null
                   ) : (

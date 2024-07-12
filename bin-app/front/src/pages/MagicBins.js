@@ -39,10 +39,10 @@ const MagicBins = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchBins();
-    }, 5000); // Appelle fetchBins toutes les 5 secondes
+    }, 5000); 
   
-    return () => clearInterval(intervalId); // Nettoie l'intervalle lorsque le composant est démonté
-  }, []);
+    return () => clearInterval(intervalId); 
+  }, [tri]); 
 
   const fetchBins = async () => {
     try {
