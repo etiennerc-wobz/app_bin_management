@@ -161,9 +161,13 @@ const Festival = () => {
             
 
           </div>
-          <div className='flex flex-col justify-center items-center w-full sm:w-1/3'>
-              <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} />
+          {favoriteFestival ? (
+            <div className='flex flex-col justify-center items-center w-full sm:w-1/3'>
+            <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} />
             </div>
+          ) : null}
+          
+          
         </>
       )}
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />

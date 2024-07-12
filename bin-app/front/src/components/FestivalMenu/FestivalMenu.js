@@ -18,6 +18,7 @@ import CreateFestivalDialog from '../CreateFestivalDialog/CreateFestivalDialog';
 import { useState } from 'react';
 import EditFestivalDialog from '../EditFestivalDialog/EditFestivalDialog';
 import AddUsersToFestival from '../AddUsersToFestival/AddUsersToFestival';
+import PeopleIcon from '@mui/icons-material/People';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -100,7 +101,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
       onChangeFestival(selectedFestival);
     }
   };
-    
+
   const handleFestivalCreated = (festivalId) => {
     setSelectedFestival(festivalId);
     onChangeFestival(festivalId);
@@ -126,7 +127,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   }
 
 
-  
+
   return (
     <>
       <Button
@@ -138,7 +139,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
         disableElevation
         onClick={handleClick}
         endIcon={<MenuIcon />}
-        sx={{ borderRadius: 10,  backgroundColor: '#08852E', color: 'white', '&:hover': { backgroundColor: '#388e3c' } }}
+        sx={{ borderRadius: 10, backgroundColor: '#08852E', color: 'white', '&:hover': { backgroundColor: '#388e3c' } }}
       >
         Menu
       </Button>
@@ -150,19 +151,19 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        
+
       >
-  {festivalId ? [
-    <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
-      <EditIcon />
-      Modifier infos festival
-    </MenuItem>,
-    <MenuItem onClick={() => setOpenEditUsersDialog(true)} key="users">
-    <EditIcon />
-    Gérer participants
-    </MenuItem>,
-    <Divider sx={{ my: 0.5 }} key="divider" />
-  ] : null}
+        {festivalId ? [
+          <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
+            <EditIcon />
+            Modifier infos festival
+          </MenuItem>,
+          <MenuItem onClick={() => setOpenEditUsersDialog(true)} key="users">
+            <PeopleIcon />
+            Gérer participants
+          </MenuItem>,
+          <Divider sx={{ my: 0.5 }} key="divider" />
+        ] : null}
 
         <MenuItem disableRipple>
           <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }}>
@@ -212,8 +213,10 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
       />
 
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
-      {festivalId ? <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={(festivalId) => handleFestivalEdited(festivalId)} /> : null} 
-      <AddUsersToFestival festivalId={festivalId} open={openEditUsersDialog} onClose={() => setOpenEditUsersDialog(false)} onUsersAdded={handleUsersAdded} />
-    </>
+      {festivalId ? <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={(festivalId) => handleFestivalEdited(festivalId)} /> : null}
+      {festivalId &&
+        <AddUsersToFestival festivalId={festivalId} open={openEditUsersDialog} onClose={() => setOpenEditUsersDialog(false)} onUsersAdded={handleUsersAdded} />
+      }
+      </>
   );
 }
