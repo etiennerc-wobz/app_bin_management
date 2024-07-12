@@ -127,9 +127,7 @@ const handleFestivalCreated = (newFestivalId) => {
                 <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full '>
 
                   <h1 className='text-lg sm:text-2xl'>Vous n'avez pas de festival favori</h1>
-                  <Button variant="contained" color="success" onClick={handleCreateButton} sx={{ marginTop: 4, borderRadius: 10 }}>
-                    Créer un festival
-                  </Button>
+                  <h2 className='text-md sm:text-lg pt-8'>Veuillez en sélectionner un dans le menu.</h2>
                 </div>
               </>
             ) : (

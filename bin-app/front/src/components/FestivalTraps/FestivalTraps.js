@@ -126,6 +126,12 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
             >
               Ajouter traps au festival
             </Button>
+            {traps.length === 0 && (
+              <h4 style={{ textAlign: 'center', color: 'rgba(0,0,0,0.6)', margin: '1rem 0' }}>
+                Aucune trap associée
+              </h4>
+            ) 
+            }
             {traps.map((trap, index) => (
               <ListItem
                 key={index}

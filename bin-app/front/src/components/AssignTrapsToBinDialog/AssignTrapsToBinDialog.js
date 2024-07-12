@@ -77,54 +77,58 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
                 }}
             >
                 <DialogContent>
-                    <DialogContentText className='pb-4 text-xl font-semibold text-gray-800'>
-                        Liste des traps disponibles pour ce festival:
-                    </DialogContentText>
+
 
                     {thisFestivalTraps.length === 0 ? (
                         <p className='text-base text-gray-700'>
-                            Aucun trap disponible pour ce festival. <br />
-                            Veuillez en ajouter depuis la page <strong><Link to="/" style={{ textDecoration: 'underline', color: '#0D5200' }}>Festival</Link></strong>.
+                            Aucun trap disponible associée à ce festival. <br />
+                            Veuillez en associer depuis la page <strong><Link to="/" style={{ textDecoration: 'underline', color: '#0D5200' }}>Festival</Link></strong>.
                         </p>
                     ) : (
-                        <FormGroup>
-                            {thisFestivalTraps.map((trap, index) => (
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            onChange={(event) => handleCheckboxChange(event, trap.id)}
-                                            sx={{
-                                                color: '#0D5200',
-                                                '&.Mui-checked': {
+                        <>
+                            <DialogContentText className='pb-4 text-xl font-semibold text-gray-800'>
+                                Liste des traps disponibles associées à ce festival:
+                            </DialogContentText>
+                            <FormGroup>
+                                {thisFestivalTraps.map((trap, index) => (
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                onChange={(event) => handleCheckboxChange(event, trap.id)}
+                                                sx={{
                                                     color: '#0D5200',
-                                                },
-                                            }}
-                                        />
-                                    }
-                                    label={`Trap ${trap.id}`}
-                                    key={index}
-                                    checked={selectedTraps.includes(trap.id)}
-                                    className='text-gray-700'
-                                />
-                            ))}
+                                                    '&.Mui-checked': {
+                                                        color: '#0D5200',
+                                                    },
+                                                }}
+                                            />
+                                        }
+                                        label={`Trap ${trap.id}`}
+                                        key={index}
+                                        checked={selectedTraps.includes(trap.id)}
+                                        className='text-gray-700'
+                                    />
+                                ))}
 
-                            <DialogActions>
-                                <Button
-                                    sx={{ color: '#2A0000' }}
-                                    onClick={onClose}
-                                    className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-                                >
-                                    Annuler
-                                </Button>
-                                <Button
-                                    sx={{ color: '#0D5200' }}
-                                    type="submit"
-                                    className='px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
-                                >
-                                    Valider
-                                </Button>
-                            </DialogActions>
-                        </FormGroup>
+                                <DialogActions>
+                                    <Button
+                                        sx={{ color: '#2A0000' }}
+                                        onClick={onClose}
+                                        className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                                    >
+                                        Annuler
+                                    </Button>
+                                    <Button
+                                        sx={{ color: '#0D5200' }}
+                                        type="submit"
+                                        className='px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                                    >
+                                        Valider
+                                    </Button>
+                                </DialogActions>
+                            </FormGroup>
+
+                        </>
                     )}
                 </DialogContent>
             </Dialog>

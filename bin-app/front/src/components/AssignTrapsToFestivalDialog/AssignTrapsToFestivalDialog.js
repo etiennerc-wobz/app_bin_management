@@ -91,7 +91,7 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
                 <DialogTitle>Traps</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Liste des traps connectés :
+                        Liste des traps disponibles :
                     </DialogContentText>
 
                     <FormGroup>

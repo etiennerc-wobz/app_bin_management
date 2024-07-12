@@ -43,9 +43,15 @@ export default function CreateFestivalDialog({ open, onClose, onFestivalCreated 
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
 
+        if(startDate.isAfter(endDate)) {
+            alert("La date de fin ne peut pas être avant la date de début");
+            return;
+        }
+        
+
         formJson.startDate = startDate.toISOString();
         formJson.endDate = endDate.toISOString();
-
+        
         try {
             const response = await createFestival(formJson);
             
