@@ -392,12 +392,22 @@ export const getUsers = async () => {
   }
 }
 
-export const addUsersToFestival = async (festivalId, users) => {
+export const addUsersToFestival = async (festivalId, usersIds) => {
   try {
-    const response = await api.post(`/api/festivals/${festivalId}/users`, { users });
+    const response = await api.post(`/api/festivals/${festivalId}/users`, { usersIds });
     return response.data;
   } catch (error) {
     console.error('Error adding users to festival:', error);
+    throw error;
+  }
+}
+
+export const getFestivalUsers = async (festivalId) => {
+  try {
+    const response = await api.get(`/api/festivals/${festivalId}/users`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching festival users:', error);
     throw error;
   }
 }

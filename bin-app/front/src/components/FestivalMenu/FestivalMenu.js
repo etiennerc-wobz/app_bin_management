@@ -17,6 +17,7 @@ import AddHomeIcon from '@mui/icons-material/AddHome';
 import CreateFestivalDialog from '../CreateFestivalDialog/CreateFestivalDialog';
 import { useState } from 'react';
 import EditFestivalDialog from '../EditFestivalDialog/EditFestivalDialog';
+import AddUsersToFestival from '../AddUsersToFestival/AddUsersToFestival';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -71,6 +72,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openEditFestivalDialog, setOpenEditFestivalDialog] = useState(false);
   const [festivalId, setFestivalId] = React.useState(festival ? festival.id : null);
+  const [openEditUsersDialog, setOpenEditUsersDialog] = useState(false);
 
   const { logout } = useContext(AuthContext);
 
@@ -119,6 +121,11 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
     setOpenCreateDialog(true);
   }
 
+  const handleUsersAdded = () => {
+    onChangeFestival(festivalId);
+  }
+
+
   
   return (
     <>
@@ -149,6 +156,10 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
     <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
       <EditIcon />
       Modifier infos festival
+    </MenuItem>,
+    <MenuItem onClick={() => setOpenEditUsersDialog(true)} key="users">
+    <EditIcon />
+    Gérer participants
     </MenuItem>,
     <Divider sx={{ my: 0.5 }} key="divider" />
   ] : null}
@@ -202,7 +213,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
 
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
       {festivalId ? <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={(festivalId) => handleFestivalEdited(festivalId)} /> : null} 
-
+      <AddUsersToFestival festivalId={festivalId} open={openEditUsersDialog} onClose={() => setOpenEditUsersDialog(false)} onUsersAdded={handleUsersAdded} />
     </>
   );
 }

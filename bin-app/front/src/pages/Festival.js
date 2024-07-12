@@ -7,6 +7,7 @@ import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
 import FestivalMenu from '../components/FestivalMenu/FestivalMenu';
 import FestivalTraps from '../components/FestivalTraps/FestivalTraps';
 import TodayIcon from '@mui/icons-material/Today';
+import FestivalUsers from '../components/FestivalUsers/FestivalUsers';
 
 const Festival = () => {
   const { user, token } = useContext(AuthContext);
@@ -157,7 +158,12 @@ const Festival = () => {
               </>
             )}
 
+            
+
           </div>
+          <div className='flex flex-col justify-center items-center w-full sm:w-1/3'>
+              <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} />
+            </div>
         </>
       )}
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
