@@ -331,6 +331,16 @@ export const createBinDEMO = async (bin) => {
   }
 }
 
+export const editFestivalInformations = async (name, dates, festivalId) => {
+  try {
+    const response = await api.post('/api/editfestival', { name, dates, festivalId });
+    return response.data;
+  } catch (error) {
+    console.error('Error editing festival:', error);
+    throw error;
+  }
+}
+
 export const editBinInformations = async (name, zone, binId) => {
   try {
 

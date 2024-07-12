@@ -16,6 +16,7 @@ import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import CreateFestivalDialog from '../CreateFestivalDialog/CreateFestivalDialog';
 import { useState } from 'react';
+import EditFestivalDialog from '../EditFestivalDialog/EditFestivalDialog';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -60,7 +61,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function FestivalMenu({ festivalId, festivals, onChangeFestival }) {
+export default function FestivalMenu({ festival, festivals, onChangeFestival }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [selectedFestival, setSelectedFestival] = React.useState('');
@@ -68,6 +69,8 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
   const [confirmationDialogMessage, setConfirmationDialogMessage] = React.useState('');
   const [dialogAnswer, setDialogAnswer] = React.useState(false);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [openEditFestivalDialog, setOpenEditFestivalDialog] = useState(false);
+  const festivalId = festival.id;
 
   const { logout } = useContext(AuthContext);
 
@@ -99,6 +102,10 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
     onChangeFestival(festivalId);
   };
 
+  const handleFestivalEdited = (festivalId) => {
+    setSelectedFestival(festivalId);
+    onChangeFestival(festivalId);
+  }
 
   const handleLogout = () => {
     setTimeout(() => {
@@ -112,7 +119,7 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
 
   
   return (
-    <div>
+    <>
       <Button
         id="demo-customized-button"
         aria-controls={open ? 'demo-customized-menu' : undefined}
@@ -136,15 +143,13 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
         onClose={handleClose}
         
       >
-        {festivalId && (
-          <>
-          <MenuItem onClick={handleClose} disableRipple>
-            <EditIcon />
-            Renommer festival
-          </MenuItem>
-          <Divider sx={{ my: 0.5 }} />
-          </>
-        )}
+  {festivalId ? [
+    <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
+      <EditIcon />
+      Modifier infos festival
+    </MenuItem>,
+    <Divider sx={{ my: 0.5 }} key="divider" />
+  ] : null}
 
         <MenuItem disableRipple>
           <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }}>
@@ -160,11 +165,11 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
                   <em>Aucun festival</em>
                 </MenuItem>
               )}
-              {festivals.map((festival) => {
-                if (festival.id !== festivalId) {
+              {festivals.map((mapFest) => {
+                if (mapFest.id !== festivalId) {
                   return (
-                    <MenuItem key={festival.id} value={festival}>
-                      {festival.name}
+                    <MenuItem key={mapFest.id} value={mapFest}>
+                      {mapFest.name}
                     </MenuItem>
                   );
                 }
@@ -192,8 +197,10 @@ export default function FestivalMenu({ festivalId, festivals, onChangeFestival }
         onClose={handleDialogClose}
         message={confirmationDialogMessage}
       />
-      <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
 
-    </div>
+      <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
+      <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={(festivalId) => handleFestivalEdited(festivalId)} />
+
+    </>
   );
 }

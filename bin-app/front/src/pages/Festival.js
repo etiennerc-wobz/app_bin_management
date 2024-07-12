@@ -117,7 +117,7 @@ const handleFestivalCreated = (newFestivalId) => {
       ) : (
         <>
           <FestivalMenu
-            festivalId={favoriteFestival ? favoriteFestival.id : null}
+            festival={favoriteFestival ? favoriteFestival : null}
             festivals={festivals}
             onChangeFestival={handleFestivalChange}
           />
@@ -140,7 +140,7 @@ const handleFestivalCreated = (newFestivalId) => {
                   <h3 id="date"
                   className='text-md sm:text-xl pt-8'>
                     <TodayIcon className='inline-block mr-2
-                    ' />{new Date(favoriteFestival.debut).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.fin).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
+                    ' />{new Date(favoriteFestival.start_date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })} - {new Date(favoriteFestival.end_date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}
                   </h3>
                   {traps.length > 0 ? (
                     null
