@@ -36,7 +36,15 @@ const Bin = () => {
   const isMobile = useMediaQuery('(max-width:640px)');
   const [unassignTrapDialogOpen, setUnassignTrapDialogOpen] = useState(false);
 
-
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if(!openMap) {
+      fetchBins();
+      }
+    }, 5000); 
+  
+    return () => clearInterval(intervalId); 
+  }, [id, openMap]);
 
 
   const fetchThisFestival = async () => {
@@ -80,14 +88,6 @@ const Bin = () => {
 
   useEffect(() => {
     fetchBins();
-  }, [id]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      fetchBins();
-    }, 5000); // Appelle fetchBins toutes les 5 secondes
-  
-    return () => clearInterval(intervalId); // Nettoie l'intervalle lorsque le composant est démonté
   }, [id]);
 
   if (error) {

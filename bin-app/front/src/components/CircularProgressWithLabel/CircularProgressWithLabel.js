@@ -33,7 +33,13 @@ export default function CircularProgressWithLabel(props) {
 
   return (
     <Box sx={{ position: 'relative', display: 'inline-flex' ,marginTop: '10px'}}>
-      <CircularProgress size={sizeProgress} variant="determinate" value={value} sx={{color: getColor(value)}} />
+      <CircularProgress 
+        size={sizeProgress} 
+        variant="determinate" 
+        value={value >= 100 ? 100 : value} 
+        sx={{color: getColor(value)}} 
+        className={value >= 90 ? 'animate-blink' : ''} 
+      />       
       <Box
         sx={{
           top: 0,

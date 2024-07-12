@@ -89,9 +89,10 @@ const Map = () => {
             "icon-allow-overlap": true,
             "text-allow-overlap": true,
             'icon-image': 'custom-marker',
+            'icon-anchor': 'bottom',
             'text-field': ['get', 'title'],
             'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-            'text-offset': [0, 1.25],
+            'text-offset': [0, 0.1],
             'text-anchor': 'top'
           }
         });

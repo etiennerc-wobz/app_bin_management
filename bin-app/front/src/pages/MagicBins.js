@@ -15,6 +15,7 @@ import { AuthContext } from '../components/AuthContext/AuthContext';
 import ConfirmationDialog from '../components/ConfirmationDialog/ConfirmationDialog';
 
 const MagicBins = () => {
+
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -34,6 +35,14 @@ const MagicBins = () => {
   const { user } = useContext(AuthContext);
   const [FavoriteFestival, setFavoriteFestival] = useState('');
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchBins();
+    }, 5000); // Appelle fetchBins toutes les 5 secondes
+  
+    return () => clearInterval(intervalId); // Nettoie l'intervalle lorsque le composant est démonté
+  }, []);
 
   const fetchBins = async () => {
     try {
