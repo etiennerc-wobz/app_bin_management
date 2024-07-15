@@ -24,7 +24,6 @@ function ResponsiveAppBar() {
     const navigate = useNavigate();
     const location = useLocation();
     const { logout } = useContext(AuthContext);
-    const [openSnackbar, setOpenSnackbar] = React.useState(false);
 
     const { user } = useContext(AuthContext);
 
@@ -65,7 +64,7 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="fixed" sx={{ backgroundColor: '#116e53' }}>
+        <AppBar position="fixed" sx={{ backgroundColor: user.iswobzadmin ? '#141714' : '#116e53' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -157,7 +156,7 @@ function ResponsiveAppBar() {
                                         marginRight: '20px',
                                         color: 'white',
                                         display: 'block',
-                                        backgroundColor: isActive ? '#3db492' : 'transparent',
+                                        backgroundColor: isActive ? '#32924B' : 'transparent',
                                         '&:hover': {
                                             backgroundColor: '#094735',
                                             cursor: 'pointer',
@@ -169,8 +168,11 @@ function ResponsiveAppBar() {
                             );
                         })}
                     </Box>
-
+                    <p style={{ color: 'white', textAlign: 'center', fontSize: '12px', marginBottom: '0',paddingRight:'12px' }}>
+                        {user.iswobzadmin ? 'WOBZ ADMIN' : ''}
+                    </p>
                     <Box sx={{ flexGrow: 0 }}>
+                        
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt={user? user.name : '?'}
@@ -199,8 +201,11 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                             ))}
                         </Menu>
+                        
                     </Box>
+                    
                 </Toolbar>
+
             </Container>
         </AppBar>
     );

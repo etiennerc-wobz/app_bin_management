@@ -188,7 +188,11 @@ const MagicBins = () => {
                     </Slide>
                   ))}
               </div>
-              <ButtonBinList setUnassignMode={setUnassignMode} onAddBinClick={handleAddBinClick} />
+              {user.iswobzadmin && (
+                <ButtonBinList setUnassignMode={setUnassignMode} onAddBinClick={handleAddBinClick} />
+              )
+              }
+
               <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
               <AssignBinDialog
                 festivalId={FavoriteFestival}

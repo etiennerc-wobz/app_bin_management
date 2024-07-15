@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { getBins, getFavoriteFestival, getFreeFestivalTraps, editBinLocation } from '../api';
+import { getBins, getFavoriteFestival, getFreeFestivalTraps, editBinLocation, getUserRole } from '../api';
 import CircularProgressWithLabel from '../components/CircularProgressWithLabel/CircularProgressWithLabel';
 import { CircularProgress, Menu, useMediaQuery, Button } from '@mui/material';
 import StatusIndicator from '../components/StatusIndicator/StatusIndicator';
@@ -35,6 +35,8 @@ const Bin = () => {
   const { user } = useContext(AuthContext);
   const isMobile = useMediaQuery('(max-width:640px)');
   const [unassignTrapDialogOpen, setUnassignTrapDialogOpen] = useState(false);
+  const [thisFestival, setThisFestival] = useState(null);
+  const [myRole, setMyRole] = useState('');
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -50,7 +52,7 @@ const Bin = () => {
   const fetchThisFestival = async () => {
     try {
       const festivalReturned = await getFavoriteFestival(user.id);
-      setThisFestivalTraps(festivalReturned);
+      setThisFestival(festivalReturned);
       fetchFestivalTraps(festivalReturned.id);
     } catch (error) {
       console.error('Error fetching favorite festival:', error);
@@ -90,16 +92,34 @@ const Bin = () => {
     fetchBins();
   }, [id]);
 
+
+  const fetchMyRole = async () => {
+    try {
+      const role = await getUserRole(user.id, thisFestival.id);
+      setMyRole(role);
+      console.log('Role:', role);
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyRole();
+  }, [thisFestival, user]);
+
+
   if (error) {
     return <div>{error}</div>;
   }
 
-  if (!thisBin || !binTraps) {
+  if (!thisBin || !binTraps || !myRole) {
     return (
       <div className='pt-20'>
         <CircularProgress />
       </div>
     );
+  }else{
+    console.log('myrole:', myRole.role);
   }
 
   const handleAddTrapButtonClicked = () => {
@@ -206,10 +226,16 @@ const Bin = () => {
       </div>
       <div id="body" className="flex flex-col items-center w-full p-4 pb-32 sm:p-0 sm:pb-8 sm:mt-4">
         <Traps binId={thisBin.id} update={addTrapDialogOpen || unassignTrapDialogOpen} />
-        <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 text:sm border-4 sm:border-2 border-gray-400 rounded-full cursor-pointer sm:hover:bg-gray-400' onClick={handleAddTrapButtonClicked}>
+        {(myRole.role === 'admin' || user.iswobzadmin) && 
+        (
+          <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 text:sm border-4 sm:border-2 border-gray-400 rounded-full cursor-pointer sm:hover:bg-gray-400' onClick={handleAddTrapButtonClicked}>
           <p>Ajouter une trap</p>
           {thisFestivalTraps.length > 0 && <p className="text-sm">({thisFestivalTraps.length} trap disponibles)</p>}
         </div>
+        )  
+        }
+        
+
       </div>
       <AssignTrapsToBinDialog traps={thisFestivalTraps} binId={thisBin.id} festivalId={user.festivalId} open={addTrapDialogOpen} onClose={() => setAddTrapDialogOpen(false)} onUpdate={handleTrapsUpdate} />
       <EditBinDialog bin={thisBin} open={openEditBinDialog} onClose={() => setOpenEditBinDialog(false)} onBinEdited={handleBinEdited} />

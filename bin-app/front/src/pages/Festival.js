@@ -149,7 +149,7 @@ const Festival = () => {
                 </div>
 
               </div>
-              <div className='flex flex-col items-center'>
+              <div className='flex flex-col items-center space-y-10 w-full sm:w-1/3'>
               <div className='w-full rounded-lg'>
                 <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} onUsersChanged={() => fetchFestivalTraps()} />
               </div>

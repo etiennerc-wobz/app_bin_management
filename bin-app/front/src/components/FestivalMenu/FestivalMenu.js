@@ -76,6 +76,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   const [openEditUsersDialog, setOpenEditUsersDialog] = useState(false);
 
   const { logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -192,10 +193,16 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
             </Select>
           </FormControl>
         </MenuItem>
-        <MenuItem onClick={handleCreateClick}>
-          <AddHomeIcon />
-          Créer un festival
-        </MenuItem>
+
+        {user.iswobzadmin && 
+        (
+          <MenuItem onClick={handleCreateClick}>
+            <AddHomeIcon />
+            Créer un festival
+          </MenuItem>
+        )
+        }
+
         <Divider sx={{ my: 0.5 }} />
         <MenuItem onClick={handleLogout}>
           <LogoutIcon />
@@ -217,6 +224,6 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
       {festivalId &&
         <AddUsersToFestival festivalId={festivalId} open={openEditUsersDialog} onClose={() => setOpenEditUsersDialog(false)} onUsersAdded={handleUsersAdded} />
       }
-      </>
+    </>
   );
 }

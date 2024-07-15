@@ -15,6 +15,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AssignTrapsToFestivalDialog from '../AssignTrapsToFestivalDialog/AssignTrapsToFestivalDialog';
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import { unassignTrapFromFestival } from '../../api';
+import { useContext } from 'react';
+import { AuthContext } from '../AuthContext/AuthContext';
 
 export default function FestivalTraps({ festivalId, traps, onUpdate }) {
   const [open, setOpen] = React.useState(false);
@@ -24,6 +26,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
   const [confirmationDialogOpen, setConfirmationDialogOpen] = React.useState(false);
   const [confirmationDialogMessage, setConfirmationDialogMessage] = React.useState('');
   const [trapToUnassign, setTrapToUnassign] = React.useState(null);
+  const { user } = useContext(AuthContext);
 
   const handleClick = () => {
     setOpen(!open);
@@ -118,27 +121,30 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box>
           <List dense={dense} style={{ maxHeight: '270px', overflowY: 'scroll' }}>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={handleDialogOpen}
-              sx={{ mx: 1, my: 1 }}
-            >
-              Ajouter traps au festival
-            </Button>
+            {user.iswobzadmin && (
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleDialogOpen}
+                sx={{ mx: 1, my: 1 }}
+              >
+                Ajouter traps au festival
+              </Button>
+            )}
             {traps.length === 0 && (
               <h4 style={{ textAlign: 'center', color: 'rgba(0,0,0,0.6)', margin: '1rem 0' }}>
                 Aucune trap associée
               </h4>
-            ) 
-            }
+            )}
             {traps.map((trap, index) => (
               <ListItem
                 key={index}
                 secondaryAction={
-                  <IconButton edge="end" aria-label="delete" onClick={handleUnassignTrap(trap.id)}>
-                    <DeleteIcon />
-                  </IconButton>
+                  user.iswobzadmin && (
+                    <IconButton edge="end" aria-label="delete" onClick={handleUnassignTrap(trap.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  )
                 }
               >
                 <ListItemAvatar>

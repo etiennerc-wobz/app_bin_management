@@ -425,7 +425,6 @@ export const getUserRole = async (userId, festivalId) => {
 
 export const changeUserRole = async (userId, festivalId, role) => {
   try {
-    console.log('going to change user role userid : ', userId, ' festivalId : ', festivalId, ' role : ', role);
     const response = await api.post(`/api/users/${userId}/role`, { festivalId, role });
     return response.data;
   } catch (error) {

@@ -18,7 +18,7 @@ import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import ListItemButton from '@mui/material/ListItemButton';
 
-import { getFestivalUsers, getFestivalOwner, changeUserRole, getUserRole, removeUserFromFestival } from '../../api';
+import { getFestivalUsers, getUserRole, changeUserRole, removeUserFromFestival } from '../../api';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../AuthContext/AuthContext';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
@@ -97,6 +97,8 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
     setListOpen(!listOpen);
   };
 
+  const hasAdminRights = user?.iswobzadmin || users.some(u => u.id === user.id && u.role.role === 'admin');
+
   return (
     <Box
       sx={{
@@ -155,7 +157,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
             {users.map((mapUser, index) => (
               <ListItem
                 key={index}
-                className="hover:bg-green-800 hover:bg-opacity-10 rounded-2xl cursor-pointer"
+                className={hasAdminRights ? "hover:bg-green-800 hover:bg-opacity-10 rounded-2xl cursor-pointer" : ""}
                 onClick={() => handleClickOpen(mapUser)}
               >
                 <ListItemAvatar>
@@ -175,6 +177,8 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
               </ListItem>
             ))}
           </List>
+
+          {hasAdminRights && (
 
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{selectedUser?.name}</DialogTitle>
@@ -203,6 +207,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
               </Button>
             </DialogActions>
           </Dialog>
+          )}
           <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color={snackbarColor} />
         </Box>
       </Collapse>
