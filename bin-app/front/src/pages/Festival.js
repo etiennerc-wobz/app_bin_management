@@ -123,7 +123,7 @@ const Festival = () => {
             onChangeFestival={handleFestivalChange}
           />
           <div className='flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 sm:h-52'>
-            {!favoriteFestival ? (
+            {(!favoriteFestival && !loading) ? (
               <>
                 <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full '>
 

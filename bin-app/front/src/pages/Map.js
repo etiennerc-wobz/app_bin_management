@@ -75,7 +75,7 @@ const Map = () => {
                 'title': bin.name,
                 'id': bin.id,
                 'zone': bin.zone,
-                'fillrate': bin.fillrate?.toFixed(2)*100 || -1
+                'fillrate': bin.fillrate ? Math.round(bin.fillrate * 100) : -1
               }
             }))
           }
