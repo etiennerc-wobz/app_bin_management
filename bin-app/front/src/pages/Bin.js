@@ -95,9 +95,11 @@ const Bin = () => {
 
   const fetchMyRole = async () => {
     try {
+      if(!thisFestival) {
+        return;
+      }
       const role = await getUserRole(user.id, thisFestival.id);
       setMyRole(role);
-      console.log('Role:', role);
     } catch (error) {
       console.error('Error fetching user role:', error);
     }
@@ -118,8 +120,6 @@ const Bin = () => {
         <CircularProgress />
       </div>
     );
-  }else{
-    console.log('myrole:', myRole.role);
   }
 
   const handleAddTrapButtonClicked = () => {
@@ -148,7 +148,6 @@ const Bin = () => {
 
   const handleAction = (action) => {
     if (action === 'gps') {
-      console.log('La bin', thisBin.id, 'veut changer sa pos');
       setOpenMap(true);
     }
     if (action === 'edit') {
@@ -160,7 +159,6 @@ const Bin = () => {
   };
 
   const handleBinMoved = (location) => {
-    console.log('La bin', thisBin.id, 'a été déplacée à', location);
 
     editBinLocation(location[1], location[0], thisBin.id)
       .then(() => {
@@ -248,7 +246,7 @@ const Bin = () => {
 
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
 
-      <BinDrawer open={openDrawer} setOpen={setOpenDrawer} action={action} onAction={handleAction} />
+      <BinDrawer open={openDrawer} isAdmin={myRole.role === 'admin' || user.iswobzadmin} setOpen={setOpenDrawer} action={action} onAction={handleAction} />
       <MapBinLocate open={openMap} bin={thisBin} onClose={() => setOpenMap(false)} locationPicked={location => handleBinMoved(location)} />
     </div>
   );

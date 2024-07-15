@@ -19,6 +19,8 @@ import { useState } from 'react';
 import EditFestivalDialog from '../EditFestivalDialog/EditFestivalDialog';
 import AddUsersToFestival from '../AddUsersToFestival/AddUsersToFestival';
 import PeopleIcon from '@mui/icons-material/People';
+import { getUserRole } from '../../api';
+import { useEffect } from 'react';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -74,6 +76,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   const [openEditFestivalDialog, setOpenEditFestivalDialog] = useState(false);
   const [festivalId, setFestivalId] = React.useState(festival ? festival.id : null);
   const [openEditUsersDialog, setOpenEditUsersDialog] = useState(false);
+  const [myRole, setMyRole] = useState('');
 
   const { logout } = useContext(AuthContext);
   const { user } = useContext(AuthContext);
@@ -85,6 +88,21 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
     setAnchorEl(null);
   };
 
+  const fetchMyRole = async () => {
+    try {
+      if(!festivalId) {
+        return;
+      }
+      const role = await getUserRole(user.id, festivalId);
+      setMyRole(role);
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyRole();
+  }, [festivalId, user]);
 
 
   const handleFestivalChange = (event) => {
@@ -154,7 +172,8 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
         onClose={handleClose}
 
       >
-        {festivalId ? [
+        {(festivalId && user.iswobzadmin || myRole.role === 'admin')
+         ? [
           <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
             <EditIcon />
             Modifier infos festival

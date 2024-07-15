@@ -14,7 +14,7 @@ import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 
 import { useMediaQuery } from '@mui/material';
 
-export default function BinDrawer({ open, setOpen, onAction }) {
+export default function BinDrawer({ open, isAdmin, setOpen, onAction }) {
 
   const isMobile = useMediaQuery('(max-width:640px)');
 
@@ -25,7 +25,6 @@ export default function BinDrawer({ open, setOpen, onAction }) {
     setOpen(open);
   }
 
-
   const handleAction = (actionDone) => {
     onAction(actionDone);
   }
@@ -33,12 +32,12 @@ export default function BinDrawer({ open, setOpen, onAction }) {
   const DrawerList = (
     <Box sx={{ width: isMobile ? 240 : 290 }}
       role="presentation" onClick={toggleDrawer(false)}>
+      {isAdmin && (
       <List
         sx={{
-          paddingTop: { xs: 0, sm: 2 },
+          paddingTop: { xs: 0, sm: 0 },
         }}
       >
-
         <ListItem disablePadding onClick={() => handleAction('gps')}>
           <ListItemButton >
             <ListItemIcon>
@@ -64,6 +63,7 @@ export default function BinDrawer({ open, setOpen, onAction }) {
           </ListItemButton>
         </ListItem>
       </List>
+      )}
       <Divider />
       <List>
         <ListItem disablePadding onClick={() => handleAction('closeLeftDoor')}>
@@ -104,7 +104,7 @@ export default function BinDrawer({ open, setOpen, onAction }) {
         }}
         anchor='right'
       >
-        <div className="text-white p-4 text-center bg-green-800 mb-2 sm:mt-16">
+        <div className="text-black p-2 text-center mb-2 sm:text-2xl sm:mt-20">
           Menu Bin
         </div>
         {DrawerList}

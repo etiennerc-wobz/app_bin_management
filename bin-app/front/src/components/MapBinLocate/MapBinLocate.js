@@ -20,7 +20,6 @@ const MapBinLocate = ({ open, bin, onClose, locationPicked }) => {
     }
 
     useEffect(() => {
-        console.log("location", location);
     }, [location]);
 
     useEffect(() => {
