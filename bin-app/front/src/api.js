@@ -411,3 +411,35 @@ export const getFestivalUsers = async (festivalId) => {
     throw error;
   }
 }
+
+export const getUserRole = async (userId, festivalId) => {
+  try {
+    const response = await api.get(`/api/users/${userId}/role`, { params: { festivalId } });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user role:', error);
+    throw error;
+  }
+}
+
+
+export const changeUserRole = async (userId, festivalId, role) => {
+  try {
+    console.log('going to change user role userid : ', userId, ' festivalId : ', festivalId, ' role : ', role);
+    const response = await api.post(`/api/users/${userId}/role`, { festivalId, role });
+    return response.data;
+  } catch (error) {
+    console.error('Error changing user role:', error);
+    throw error;
+  }
+}
+
+export const removeUserFromFestival = async (userId, festivalId) => {
+  try {
+    const response = await api.post(`/api/users/${userId}/remove`, { festivalId });
+    return response.data;
+  } catch (error) {
+    console.error('Error removing user from festival:', error);
+    throw error;
+  }
+}

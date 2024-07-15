@@ -122,22 +122,17 @@ const Festival = () => {
             festivals={festivals}
             onChangeFestival={handleFestivalChange}
           />
-          <div className='flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 sm:h-52'>
-            {(!favoriteFestival && !loading) ? (
-              <>
-                <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full '>
-
-                  <h1 className='text-lg sm:text-2xl'>Vous n'avez pas de festival favori</h1>
-                  <h2 className='text-md sm:text-lg pt-8'>Veuillez en sélectionner un dans le menu.</h2>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center w-full '>
-
+          {(!favoriteFestival && !loading) ? (
+            <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center items-center w-full'>
+              <h1 className='text-lg sm:text-2xl'>Vous n'avez pas de festival favori</h1>
+              <h2 className='text-md sm:text-lg pt-8'>Veuillez en sélectionner un dans le menu.</h2>
+            </div>
+          ) : (
+            <div className='w-full flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0'>
+              <div className='w-full sm:w-2/3 flex flex-col space-y-10'>
+                <div className='bg-gray-200 p-6 rounded-lg'>
                   <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
-                  <p id='festival-name'
-                    className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
+                  <p id='festival-name' className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
                   <h3 id="date" className='text-md sm:text-xl pt-8'>
                     <TodayIcon className='inline-block mr-2' />
                     {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
@@ -152,28 +147,26 @@ const Festival = () => {
                     <h2 className='pt-10 text-md sm:text-lg'>Aucune trap pour ce festival</h2>
                   )}
                 </div>
-                <div className='w-full sm:w-2/3'>
+
+              </div>
+              <div className='flex flex-col items-center'>
+              <div className='w-full rounded-lg'>
+                <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} onUsersChanged={() => fetchFestivalTraps()} />
+              </div>
+              <div className='w-full'>
                   <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
-                </div>
-              </>
-            )}
-
-            
-
-          </div>
-          {favoriteFestival ? (
-            <div className='flex flex-col justify-center items-center w-full sm:w-1/3'>
-            <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} />
+              </div>
+              </div>
             </div>
-          ) : null}
-          
-          
+          )}
         </>
       )}
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color='success' />
     </div>
   );
+  
+  
 };
 
 export default Festival;
