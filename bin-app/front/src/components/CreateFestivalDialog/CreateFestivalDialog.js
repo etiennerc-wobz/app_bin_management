@@ -117,15 +117,14 @@ export default function CreateFestivalDialog({ open, onClose, onFestivalCreated 
                     </LocalizationProvider>
 
 
-
-
-
-
-
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Annuler</Button>
-                    <Button type="submit">Enregistrer</Button>
+                    <Button onClick={handleClose}
+                    sx={{ color: '#44150F' }}
+                    >Annuler</Button>
+                    <Button type="submit"
+                    sx={{ color: '#0F4430' }}
+                    >Enregistrer</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

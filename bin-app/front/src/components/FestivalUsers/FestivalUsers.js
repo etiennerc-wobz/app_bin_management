@@ -113,7 +113,6 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
 
   const hasAdminRights = user?.iswobzadmin || users.some(u => u.id === user.id && u.role.role === 'admin');
 
-  // Fonction de tri
   const sortUsers = (users) => {
     return users.sort((a, b) => {
       if (a.id === user.id) return -1;
@@ -203,7 +202,11 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${mapUser.name} ${user.id === mapUser.id ? '(vous)' : ''}`}
+                  primary={
+                    <span style={{ fontWeight: user.id === mapUser.id ? 'bold' : 'normal' }}>
+                      {`${mapUser.name} ${user.id === mapUser.id ? '(vous)' : ''}`}
+                    </span>
+                  }
                   secondary={
                     mapUser.role.role === 'owner' ? 'Propriétaire' :
                     mapUser.role.role === 'participant' ? 'Participant' :

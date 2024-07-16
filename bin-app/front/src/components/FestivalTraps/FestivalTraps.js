@@ -139,9 +139,8 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
             {user.iswobzadmin && (
               <Button
                 variant="contained"
-                color="success"
                 onClick={handleDialogOpen}
-                sx={{ mx: 1, my: 1 }}
+                sx={{ mx: 1, my: 1 , backgroundColor: '#1D7C58', color: 'white', '&:hover': { backgroundColor: '#186849' } }}
               >
                 Ajouter traps au festival
               </Button>

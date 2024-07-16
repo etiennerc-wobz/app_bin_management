@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
 
 const pages = ['Festival', 'Magic-Bins', 'Carte'];
-const settings = ['Profil','Déconnexion'];
+const settings = ['Profil', 'Déconnexion'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -28,7 +28,7 @@ function ResponsiveAppBar() {
     const { user } = useContext(AuthContext);
 
     const handlePageClick = (page) => {
-        
+
         if (page === 'Festival') page = '';
         if (page === 'Carte') page = 'map';
 
@@ -37,7 +37,7 @@ function ResponsiveAppBar() {
     };
 
     const handleSettingsButton = (setting) => {
-        
+
         if (setting.target.innerText === 'Déconnexion') {
             logout();
             return;
@@ -64,26 +64,9 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="fixed" sx={{ backgroundColor: user.iswobzadmin ? '#141714' : '#116e53' }}>
+        <AppBar position="fixed" sx={{ backgroundColor: user.iswobzadmin ? '#142914' : '#116e53' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        MOSH
-                    </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
@@ -121,24 +104,12 @@ function ResponsiveAppBar() {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        MOSH
-                    </Typography>
+
+                    <img src="/magicloop-logo.png" alt="Logo" style={{ width: '180px', height: 'auto', filter: 'grayscale(100%)' }}
+                        sx={{ display: { xs: 'flex', md: 'none' } }}
+                        className='mr-8'
+                    />
+
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => {
                             let pagePath = page.toLowerCase();
@@ -153,14 +124,16 @@ function ResponsiveAppBar() {
                                     onClick={() => handlePageClick(page)}
                                     sx={{
                                         my: 2,
-                                        marginRight: '20px',
+                                        px: 3,
+                                        mx: 1,
                                         color: 'white',
                                         display: 'block',
-                                        backgroundColor: isActive ? '#32924B' : 'transparent',
+                                        backgroundColor: isActive ? '#114A34' : 'transparent',
                                         '&:hover': {
-                                            backgroundColor: '#094735',
+                                            backgroundColor: '#14553D',
                                             cursor: 'pointer',
                                         },
+                                        borderRadius: '18px',
                                     }}
                                 >
                                     {page}
@@ -168,15 +141,15 @@ function ResponsiveAppBar() {
                             );
                         })}
                     </Box>
-                    <p style={{ color: 'white', textAlign: 'center', fontSize: '12px', marginBottom: '0',paddingRight:'12px' }}>
+                    <p style={{ color: 'white', textAlign: 'center', fontSize: '12px', marginBottom: '0', paddingRight: '12px' }}>
                         {user.iswobzadmin ? 'WOBZ ADMIN' : ''}
                     </p>
                     <Box sx={{ flexGrow: 0 }}>
-                        
+
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt={user? user.name : '?'}
-                                 src="/static/images/avatar/1.jpg" />
+                                <Avatar alt={user ? user.name : '?'}
+                                    src="/static/images/avatar/1.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -201,9 +174,9 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                             ))}
                         </Menu>
-                        
+
                     </Box>
-                    
+
                 </Toolbar>
 
             </Container>

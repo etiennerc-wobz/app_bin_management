@@ -8,12 +8,17 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import FestivalIcon from '@mui/icons-material/Festival';
 
+import { useContext } from 'react';
+import { AuthContext } from '../AuthContext/AuthContext';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
 const SimpleBottomNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const {user} = useContext(AuthContext);
 
   const pathToIndex = {
     '/': 0,
@@ -43,7 +48,7 @@ const SimpleBottomNavigation = () => {
         styleOverrides: {
           root: {
             "&.Mui-selected": {
-              color: "green",
+              color: user.iswobzadmin ? '#2222bb' : 'green',
             },
           },
         },

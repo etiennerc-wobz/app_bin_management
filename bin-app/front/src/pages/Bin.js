@@ -182,14 +182,14 @@ const Bin = () => {
               onClick={() => setOpenDrawer(true)}
               sx={{
                 color: 'white',
-                backgroundColor: '#06580A',
+                backgroundColor: '#155A40',
                 border: '2px solid #053B0B',
                 borderRadius: '50%',
                 minWidth: 'auto',
                 width: isMobile ? '50px' : '80px',
                 height: isMobile ? '50px' : '80px',
                 '&:hover': {
-                  backgroundColor: '#0A6914',
+                  backgroundColor: '#0F4430',
                 },
               }}
             >

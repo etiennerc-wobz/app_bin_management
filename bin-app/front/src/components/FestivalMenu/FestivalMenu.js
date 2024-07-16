@@ -36,6 +36,8 @@ const StyledMenu = styled((props) => (
     {...props}
   />
 ))(({ theme }) => ({
+
+
   '& .MuiPaper-root': {
     borderRadius: 6,
     marginTop: theme.spacing(0.2),
@@ -51,17 +53,18 @@ const StyledMenu = styled((props) => (
     '& .MuiMenuItem-root': {
       '& .MuiSvgIcon-root': {
         fontSize: 18,
-        color: theme.palette.text.secondary,
+        color: '#00352c',
         marginRight: theme.spacing(1.5),
 
       },
       '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
+        backgroundColor: 'rgba(0, 0, 0, 0.04)'
       },
-    },
+
+    
+
+  },
+
   },
 }));
 
@@ -90,7 +93,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
 
   const fetchMyRole = async () => {
     try {
-      if(!festivalId) {
+      if (!festivalId) {
         return;
       }
       const role = await getUserRole(user.id, festivalId);
@@ -158,7 +161,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
         disableElevation
         onClick={handleClick}
         endIcon={<MenuIcon />}
-        sx={{ borderRadius: 10, backgroundColor: '#08852E', color: 'white', '&:hover': { backgroundColor: '#388e3c' } }}
+        sx={{ borderRadius: 10, backgroundColor: '#186849', color: 'white', '&:hover': { backgroundColor: '#1D7C58' } }}
       >
         Menu
       </Button>
@@ -173,20 +176,22 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
 
       >
         {(festivalId && user.iswobzadmin || myRole.role === 'admin')
-         ? [
-          <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
-            <EditIcon />
-            Modifier infos festival
-          </MenuItem>,
-          <MenuItem onClick={() => setOpenEditUsersDialog(true)} key="users">
-            <PeopleIcon />
-            Gérer participants
-          </MenuItem>,
-          <Divider sx={{ my: 0.5 }} key="divider" />
-        ] : null}
+          ? [
+            <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
+              <EditIcon />
+              Modifier infos festival
+            </MenuItem>,
+            <MenuItem onClick={() => setOpenEditUsersDialog(true)} key="users">
+              <PeopleIcon />
+              Gérer participants
+            </MenuItem>,
+            <Divider sx={{ my: 0.5 }} key="divider" />
+          ] : null}
 
         <MenuItem disableRipple>
-          <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }}>
+          <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }}
+            color={festivalId ? 'primary' : 'error'}
+          >
             <InputLabel id="festival-select-label">Changer de festival</InputLabel>
             <Select
               labelId="festival-select-label"
@@ -213,13 +218,13 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
           </FormControl>
         </MenuItem>
 
-        {user.iswobzadmin && 
-        (
-          <MenuItem onClick={handleCreateClick}>
-            <AddHomeIcon />
-            Créer un festival
-          </MenuItem>
-        )
+        {user.iswobzadmin &&
+          (
+            <MenuItem onClick={handleCreateClick}>
+              <AddHomeIcon />
+              Créer un festival
+            </MenuItem>
+          )
         }
 
         <Divider sx={{ my: 0.5 }} />
