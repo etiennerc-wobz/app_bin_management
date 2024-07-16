@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
+import ListItemButton from '@mui/material/ListItemButton';
 import Avatar from '@mui/material/Avatar';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Dialog from '@mui/material/Dialog';
@@ -16,7 +17,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-import ListItemButton from '@mui/material/ListItemButton';
 
 import { getFestivalUsers, getUserRole, changeUserRole, removeUserFromFestival } from '../../api';
 import { useContext, useState, useEffect } from 'react';
@@ -49,6 +49,20 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
   useEffect(() => {
     fetchFestivalUsers();
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.user-list-box')) {
+        setListOpen(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
 
   const handleClickOpen = (selectedUser) => {
     setSelectedUser(selectedUser);
@@ -99,8 +113,30 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
 
   const hasAdminRights = user?.iswobzadmin || users.some(u => u.id === user.id && u.role.role === 'admin');
 
+  // Fonction de tri
+  const sortUsers = (users) => {
+    return users.sort((a, b) => {
+      if (a.id === user.id) return -1;
+      if (b.id === user.id) return 1;
+
+      const roleOrder = {
+        owner: 1,
+        admin: 2,
+        participant: 3,
+        unknown: 4
+      };
+
+      if (roleOrder[a.role.role] !== roleOrder[b.role.role]) {
+        return roleOrder[a.role.role] - roleOrder[b.role.role];
+      }
+
+      return a.name.localeCompare(b.name);
+    });
+  };
+
   return (
     <Box
+      className="user-list-box"
       sx={{
         bgcolor: listOpen ? 'rgba(17, 110, 83, 0.2)' : null,
         pb: listOpen ? 0 : 0,
@@ -116,6 +152,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
           px: 3,
           pt: 2.5,
           pb: listOpen ? 2 : 2.5,
+          borderRadius: '18px',
           '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.09)', borderRadius: '18px' },
           '@media (max-width: 600px)': {
             px: 2,
@@ -154,7 +191,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
       <Collapse in={listOpen} timeout="auto" unmountOnExit>
         <Box>
           <List dense style={{ maxHeight: '270px', overflow: 'auto' }}>
-            {users.map((mapUser, index) => (
+            {sortUsers(users).map((mapUser, index) => (
               <ListItem
                 key={index}
                 className={hasAdminRights ? "hover:bg-green-800 hover:bg-opacity-10 rounded-2xl cursor-pointer" : ""}
@@ -179,7 +216,6 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
           </List>
 
           {hasAdminRights && (
-
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">{selectedUser?.name}</DialogTitle>
             <DialogContent>
@@ -199,10 +235,10 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
               </Select>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleExcludeUser} color="secondary">
+              <Button onClick={handleExcludeUser} sx={{ color: '#2A0000', fontSize  : '0.9em' }}>
                 Exclure
               </Button>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose}  sx={{ color: '#0D5200' }}>
                 Fermer
               </Button>
             </DialogActions>

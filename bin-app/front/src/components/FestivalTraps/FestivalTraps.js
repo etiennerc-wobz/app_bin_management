@@ -15,7 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AssignTrapsToFestivalDialog from '../AssignTrapsToFestivalDialog/AssignTrapsToFestivalDialog';
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import { unassignTrapFromFestival } from '../../api';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../AuthContext/AuthContext';
 
 export default function FestivalTraps({ festivalId, traps, onUpdate }) {
@@ -62,12 +62,26 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
     setTrapToUnassign(null);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.user-list-box')) {
+        setOpen(false);
+      }
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   if (festivalId === null) {
     return null;
   }
 
   return (
     <Box
+      className="user-list-box"
       sx={{
         bgcolor: open ? 'rgba(17, 110, 83, 0.2)' : null,
         pb: open ? 0 : 0,
@@ -83,6 +97,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
           px: 3,
           pt: 2.5,
           pb: open ? 2 : 2.5,
+          borderRadius: '18px',
           '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.09)', borderRadius: '18px' },
           '@media (max-width: 600px)': {
             px: 2,
@@ -108,7 +123,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
             lineHeight: '16px',
             color: open ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.6)',
           }}
-          sx={{ my: 0 }}
+          sx={{ my: 0 , borderRadius: '18px'}}
         />
         <KeyboardArrowDown
           sx={{
@@ -120,7 +135,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box>
-          <List dense={dense} style={{ maxHeight: '270px', overflowY: 'scroll' }}>
+          <List dense={dense} style={{ maxHeight: '270px', overflow: 'auto' }}>
             {user.iswobzadmin && (
               <Button
                 variant="contained"
