@@ -50,18 +50,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
     fetchFestivalUsers();
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest('.user-list-box')) {
-        setListOpen(false);
-      }
-    };
-  
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+
   
 
   const handleClickOpen = (selectedUser) => {

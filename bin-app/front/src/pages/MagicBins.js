@@ -63,10 +63,10 @@ const MagicBins = () => {
       }
 
       setBins(bins);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching bins:', error);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

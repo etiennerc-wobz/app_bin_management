@@ -3,13 +3,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import { getFavoriteFestival } from '../api';
 import { getFestivalOwner } from '../api';
+import { CircularProgress } from '@mui/material';
 
 const UserProfile = () => {
     const { user } = useContext(AuthContext);
     const [favoriteFestival, setFavoriteFestival] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userRole, setUserRole] = useState('');
-
 
     const fetchUserRole = async () => {
         try {
@@ -33,7 +33,6 @@ const UserProfile = () => {
 
             } catch (error) {
                 console.error('Error fetching favorite festival:', error);
-                setLoading(false);
 
             }
         };
@@ -52,7 +51,11 @@ const UserProfile = () => {
         }
     }
         , [favoriteFestival]);
-
+if(loading){
+    return <div className='pt-40'>
+        <CircularProgress />
+    </div>
+}
 
     return (
         <div className='pt-40'>

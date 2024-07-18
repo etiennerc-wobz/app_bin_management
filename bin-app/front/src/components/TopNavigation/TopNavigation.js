@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext/AuthContext';
 
@@ -146,7 +148,7 @@ function ResponsiveAppBar() {
                     </p>
                     <Box sx={{ flexGrow: 0 }}>
 
-                        <Tooltip title="Open settings">
+                        <Tooltip title="Visualiser mon profil">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt={user ? user.name : '?'}
                                     src="/static/images/avatar/1.jpg" />

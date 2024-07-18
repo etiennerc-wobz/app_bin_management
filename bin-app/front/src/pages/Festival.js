@@ -18,6 +18,7 @@ const Festival = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [allFestivals, setAllFestivals] = useState([]);
 
   useEffect(() => {
     fetchFavoriteFestival();
@@ -27,11 +28,21 @@ const Festival = () => {
     setFestivals(festivals);
   }, [festivals]);
 
-  const fetchFestivals = async () => {
+  const fetchMyFestivals = async () => {
     setLoading(true);
     try {
       const festivals = await getMyFestivals(user.id);
       setFestivals(festivals);
+    } catch (error) {
+      console.error('Error fetching festivals:', error);
+    }
+  };
+
+  const fetchAllFestivals = async () => {
+    setLoading(true);
+    try {
+      const festivals = await getFestivals();
+      setAllFestivals(festivals);
     } catch (error) {
       console.error('Error fetching festivals:', error);
     }
@@ -49,21 +60,28 @@ const Festival = () => {
   };
 
   useEffect(() => {
-    fetchFestivals();
-  }, [token]);
+    fetchMyFestivals();
+    if(user) {
+      if(user.iswobzadmin){
+        fetchAllFestivals();
+        console.log('user is wobzadmin');
+      }
+    }
+  }, [user, token]);
 
   const fetchFestivalTraps = async () => {
     try {
       if (favoriteFestival) {
         const traps = await getFestivalTraps(favoriteFestival.id, token);
         setTraps(traps);
+        setTimeout(() => {
+          setLoading(false);
+        }, 200);
       }
     } catch (error) {
       console.error('Error fetching festival traps:', error);
     }
-    setTimeout(() => {
-      setLoading(false);
-    }, 200);
+
   };
 
   useEffect(() => {
@@ -84,7 +102,7 @@ const Festival = () => {
         setFavoriteFestival(festivals.find(festival => festival.id === festivalId));
         setSnackbarMessage('Festival favori modifié');
         setOpenSnackbar(true);
-        fetchFestivals();
+        fetchMyFestivals();
         fetchFavoriteFestival();
       });
     }
@@ -95,7 +113,7 @@ const Festival = () => {
   };
 
   const handleFestivalCreated = (newFestivalId) => {
-    fetchFestivals().then(() => {
+    fetchMyFestivals().then(() => {
       changeFavoriteFestival(user.id, newFestivalId, token).then(() => {
         setFavoriteFestival(festivals.find(festival => festival.id === newFestivalId));
         setSnackbarMessage('Festival créé et défini comme favori');
@@ -114,12 +132,14 @@ const Festival = () => {
   return (
     <div className='min-h-screen flex flex-col items-center p-4 sm:p-10 sm:pt-28 space-y-10'>
       {loading ? (
-        <CircularProgress />
+        <div className='pt-12'>
+          <CircularProgress />
+        </div>
       ) : (
         <>
           <FestivalMenu
             festival={favoriteFestival ? favoriteFestival : null}
-            festivals={festivals}
+            festivals={user.iswobzadmin ? allFestivals : festivals}
             onChangeFestival={handleFestivalChange}
           />
           {(!favoriteFestival && !loading) ? (

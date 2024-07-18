@@ -110,9 +110,11 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
 
   const handleFestivalChange = (event) => {
     const selected = event.target.value;
-    setSelectedFestival(selected.id);
-    setConfirmationDialogMessage(`Voulez-vous vraiment changer de festival pour ${selected.name || 'aucun'} ?`);
-    setConfirmationDialogOpen(true);
+    if(selected){
+      setSelectedFestival(selected.id);
+      setConfirmationDialogMessage(`Voulez-vous vraiment changer de festival pour ${selected.name || 'aucun'} ?`);
+      setConfirmationDialogOpen(true);  
+    }
   };
 
   const handleDialogClose = (answer) => {
@@ -214,6 +216,11 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
                 }
                 return null;
               })}
+              { (!festivalId && festivals.length === 0) &&  
+                <p style={{ color: 'red', textAlign: 'center', margin: '0.5rem 0' }}>
+                  Vous n'êtes inscrit à<br/>aucun festival.
+                </p>
+              }
             </Select>
           </FormControl>
         </MenuItem>
