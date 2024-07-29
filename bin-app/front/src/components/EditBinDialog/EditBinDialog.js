@@ -65,7 +65,7 @@ export default function EditBinDialog({bin, open, onClose, onBinEdited}) {
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">
+          <Button onClick={handleClose} sx={{color: 'darkred'}}>
             Annuler
           </Button>
           <Button onClick={handleSubmit} color="success">

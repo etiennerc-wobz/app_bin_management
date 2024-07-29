@@ -34,8 +34,12 @@ const Login = () => {
         navigate('/');
       }, 1500);
     } catch (error) {
+      if (error.message === 'Network Error') {
+        setSnackbarMessage('Serveur injoignable');
+      } else {
+        setSnackbarMessage('Nom d\'utilisateur ou mot de passe incorrect');
+      }
       setSnackbarColor('error');
-      setSnackbarMessage('Nom d\'utilisateur ou mot de passe incorrect');
       setOpenSnackbar(true);
     }
   };

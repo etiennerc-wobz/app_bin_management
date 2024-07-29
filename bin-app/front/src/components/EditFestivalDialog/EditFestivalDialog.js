@@ -120,7 +120,7 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
 
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} color="secondary">
+                        <Button onClick={handleClose} sx={{color: 'darkred'}}>
                             Annuler
                         </Button>
                         <Button onClick={handleSubmit} color="success">

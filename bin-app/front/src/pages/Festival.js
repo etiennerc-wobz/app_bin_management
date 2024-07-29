@@ -17,6 +17,7 @@ const Festival = () => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarColor, setSnackbarColor] = useState('success');
   const [loading, setLoading] = useState(true);
   const [allFestivals, setAllFestivals] = useState([]);
 
@@ -35,6 +36,14 @@ const Festival = () => {
       setFestivals(festivals);
     } catch (error) {
       console.error('Error fetching festivals:', error);
+      if (error.message === 'Network Error') {
+        setSnackbarColor('error');
+        setSnackbarMessage('Impossible de joindre le serveur');
+        setOpenSnackbar(true);
+        setTimeout(() => {
+          setSnackbarColor('success');
+        }, 3500);
+      }
     }
   };
 
@@ -74,13 +83,14 @@ const Festival = () => {
       if (favoriteFestival) {
         const traps = await getFestivalTraps(favoriteFestival.id, token);
         setTraps(traps);
-        setTimeout(() => {
-          setLoading(false);
-        }, 200);
+
       }
     } catch (error) {
       console.error('Error fetching festival traps:', error);
     }
+    setTimeout(() => {
+      setLoading(false);
+    }, 200);
 
   };
 
@@ -161,7 +171,7 @@ const Festival = () => {
                     {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.end_date))}
                     {new Date().getFullYear() !== new Date(favoriteFestival.end_date).getFullYear() ? ` ${new Date(favoriteFestival.end_date).getFullYear()}` : ''}
                   </h3>
-                  {traps.length > 0 ? (
+                  {traps.length > 0 && loading === false ? (
                     null
                   ) : (
                     <h2 className='pt-10 text-md sm:text-lg'>Aucune trap pour ce festival</h2>
@@ -173,7 +183,7 @@ const Festival = () => {
               <div className='w-full rounded-lg'>
                 <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} onUsersChanged={() => fetchFestivalTraps()} />
               </div>
-              <div className='w-full'>
+              <div className='w-full '>
                   <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
               </div>
               </div>
@@ -182,7 +192,7 @@ const Festival = () => {
         </>
       )}
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
-      <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color='success' />
+      <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color={snackbarColor} />
     </div>
   );
   
