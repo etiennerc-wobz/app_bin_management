@@ -16,6 +16,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import EditIcon from '@mui/icons-material/Edit';
 import EditFestivalDialog from '../components/EditFestivalDialog/EditFestivalDialog';
 
+import ChangeFestivalMenu from '../components/ChangeFestivalMenu/ChangeFestivalMenu';
+
 const Festival = () => {
   const { user, token } = useContext(AuthContext);
   const [favoriteFestival, setFavoriteFestival] = useState(null);
@@ -29,6 +31,8 @@ const Festival = () => {
   const [allFestivals, setAllFestivals] = useState([]);
   const [myRole, setMyRole] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openChangeFestivalMenu, setOpenChangeFestivalMenu] = useState(false);
+
 
   useEffect(() => {
     fetchFavoriteFestival();
@@ -175,7 +179,8 @@ const Festival = () => {
       <div className="w-full flex items-center justify-between bg-wobzBlue p-4 ">
         <FestivalIcon className="text-white" />
         <h1 className="text-3xl text-white font-inter ">Festival</h1>
-        <KeyboardArrowDownIcon className="text-white mr-12" />
+        <ChangeFestivalMenu festival={favoriteFestival ? favoriteFestival : null} festivals={user.iswobzadmin ? allFestivals : festivals} onChangeFestival={handleFestivalChange} />
+    
         <GlobalMenu
           festival={favoriteFestival ? favoriteFestival : null}
           festivals={user.iswobzadmin ? allFestivals : festivals}
@@ -246,6 +251,7 @@ const Festival = () => {
       {favoriteFestival &&
         <EditFestivalDialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} festival={favoriteFestival} onFestivalEdited={() => handleFestivalUpdated()} />
       }
+
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color={snackbarColor} />
     </div>
   );

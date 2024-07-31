@@ -61,21 +61,11 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
+export default function GlobalMenu({  }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [selectedFestival, setSelectedFestival] = useState('');
-  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
-  const [confirmationDialogMessage, setConfirmationDialogMessage] = useState('');
-  const [dialogAnswer, setDialogAnswer] = useState(false);
-  const [openCreateDialog, setOpenCreateDialog] = useState(false);
-  const [openEditFestivalDialog, setOpenEditFestivalDialog] = useState(false);
-  const [festivalId, setFestivalId] = useState(festival ? festival.id : null);
-  const [openEditUsersDialog, setOpenEditUsersDialog] = useState(false);
-  const [myRole, setMyRole] = useState('');
 
   const { logout } = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -87,49 +77,9 @@ export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
     setAnchorEl(null);
   };
 
-  const fetchMyRole = async () => {
-    try {
-      if (!festivalId) {
-        return;
-      }
-      const role = await getUserRole(user.id, festivalId);
-      setMyRole(role);
-    } catch (error) {
-      console.error('Error fetching user role:', error);
-    }
-  };
 
-  useEffect(() => {
-    fetchMyRole();
-  }, [festivalId, user]);
 
-  const handleFestivalChange = (event) => {
-    const selected = event.target.value;
-    if (selected) {
-      setSelectedFestival(selected.id);
-      setConfirmationDialogMessage(`Voulez-vous vraiment changer de festival pour ${selected.name || 'aucun'} ?`);
-      setConfirmationDialogOpen(true);
-    }
-  };
 
-  const handleDialogClose = (answer) => {
-    setConfirmationDialogOpen(false);
-    setDialogAnswer(answer);
-
-    if (answer) {
-      onChangeFestival(selectedFestival);
-    }
-  };
-
-  const handleFestivalCreated = (festivalId) => {
-    setSelectedFestival(festivalId);
-    onChangeFestival(festivalId);
-  };
-
-  const handleFestivalEdited = (festivalId) => {
-    setSelectedFestival(festivalId);
-    onChangeFestival(festivalId);
-  };
 
   const handleLogout = () => {
     setTimeout(() => {
@@ -142,13 +92,6 @@ export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
   }
 
 
-  const handleCreateClick = () => {
-    setOpenCreateDialog(true);
-  };
-
-  const handleUsersAdded = () => {
-    onChangeFestival(festivalId);
-  };
 
   return (
     <>
@@ -192,10 +135,6 @@ export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
           Plus
         </MenuItem>
       </StyledMenu>
-      <ConfirmationDialog open={confirmationDialogOpen} onClose={handleDialogClose} message={confirmationDialogMessage} />
-      <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={handleFestivalCreated} />
-      {festivalId && <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={handleFestivalEdited} />}
-      {festivalId && <AddUsersToFestival festivalId={festivalId} open={openEditUsersDialog} onClose={() => setOpenEditUsersDialog(false)} onUsersAdded={handleUsersAdded} />}
     </>
   );
 }

@@ -20,7 +20,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import GlobalMenu from '../components/GlobalMenu/GlobalMenu';
 
 const MagicBins = () => {
-
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -157,18 +156,16 @@ const MagicBins = () => {
             </div>
           ) : (
             <>
-              <div className="w-full max-h-screen overflow-y-auto  space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
-                <div id="pageHeader" className="w-full flex items-center justify-between bg-wobzBlue p-4 ">
-                  <DeleteSweepIcon className="text-white" />
-                  <h1 className="text-3xl text-white font-inter ">MagicBins</h1>
-                  <KeyboardArrowDownIcon className="text-white mr-12" />
-                  <GlobalMenu
-                    festival={null}
-                    festivals={null}
-                    onChangeFestival={null}
-                  />
-                </div>
-                <div className="flex flex-row items-center p-4 sm:pl-56">
+
+              <div id="pageHeader" className="w-full flex items-center justify-between bg-wobzBlue p-4 fixed top-0 left-0 right-0 z-10">
+                <DeleteSweepIcon className="text-white" />
+                <h1 className="text-3xl text-white font-inter pr-24">MagicBins</h1>
+                <GlobalMenu />
+              </div>
+
+
+              <div className="w-full max-h-screen overflow-y-auto px-2 space-y-4 sm:pt-24 pb-44 sm:pb-6 self-start">
+                <div className="flex flex-row items-center p-4 sm:pl-56 mt-20">
                   <input
                     type="text"
                     placeholder="Rechercher"
@@ -205,8 +202,7 @@ const MagicBins = () => {
               </div>
               {user.iswobzadmin && (
                 <ButtonBinList setUnassignMode={setUnassignMode} onAddBinClick={handleAddBinClick} />
-              )
-              }
+              )}
 
               <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color="success" />
               <AssignBinDialog

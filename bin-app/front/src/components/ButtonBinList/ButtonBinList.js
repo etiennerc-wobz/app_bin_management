@@ -25,7 +25,7 @@ const theme = createTheme({
         primary: {
           backgroundColor: '#74BDB6',
           '&:hover': {
-            backgroundColor: '#E6F4F2',
+            backgroundColor: '#74BDB6',
           },
         },
       },
@@ -63,7 +63,7 @@ export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
           flexGrow: 1,
           position: 'fixed',
           top: { xs: 'auto', sm: 'auto' },
-          bottom: { xs: 120, sm: 48 },
+          bottom: { xs: 280, sm: 48 },
           right: { xs: 2, sm: 48 },
         }}
       >
@@ -88,7 +88,7 @@ export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
 
           }}
           icon={<SpeedDialIcon />}
-          direction={isMobile ? 'down' : 'up'}
+          direction={isMobile ? 'up' : 'up'}
         >
           {actions.map((action) => (
             <SpeedDialAction
