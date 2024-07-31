@@ -24,6 +24,7 @@ module.exports = {
         'primary': '#479e96',
         'secondary': '#C1EAE5',
         'wobzBlue':'#74BDB6',
+        'wobzPink':'#EC6D64'
 
       },
     },

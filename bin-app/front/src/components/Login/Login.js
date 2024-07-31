@@ -80,8 +80,12 @@ const Login = () => {
   return (
     <>
       <div className="min-h-screen flex flex-col items-center justify-center sm:shadow-md w-full">
-          <h2 className="text-2xl font-bold mb-4 text-center">{registerMode ? 'Inscription' : 'Se connecter'}</h2>
-
+        {registerMode ?(
+          <img src={process.env.PUBLIC_URL + '/wobzPinkLogo.png'} alt="logo" className="w-52 h-auto mb-4" />
+        ) : (
+          <img src={process.env.PUBLIC_URL + '/wobzReuseLogo.png'} alt="logo" className="w-52 h-auto mb-4" />
+        )}
+        
           {!loading ? (
             <form onSubmit={registerMode ? handleRegisterSubmit : handleLoginSubmit} className="space-y-6 w-9/12 md:w-[20rem]">
                 <label htmlFor="username" className="block text-sm font-medium text-gray-700"></label>
@@ -94,7 +98,7 @@ const Login = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   autoComplete="off"
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-900 focus:border-green-900 sm:text-sm transition-colors duration-300 ease-in-out"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-wobzBlue focus:border-wobzBlue sm:text-sm transition-colors duration-300 ease-in-out"
                 />
               <div className="relative">
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700"></label>
@@ -107,7 +111,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="off"
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-900 focus:border-green-900 sm:text-sm transition-colors duration-300 ease-in-out"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-wobzBlue focus:border-wobzBlue sm:text-sm transition-colors duration-300 ease-in-out"
                 />
                 <button
                   type="button"
@@ -121,7 +125,7 @@ const Login = () => {
                 <button
                   type="submit"
                   className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-                  ${registerMode ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-green-900 hover:bg-green-1000'} focus:outline-none focus:ring-2 focus:ring-offset-2 ${registerMode ? 'focus:ring-indigo-500' : 'focus:ring-green-800'}`}
+                  ${registerMode ? 'bg-wobzPink hover:bg-wobzPink' : 'bg-wobzBlue hover:bg-wobzBlue'} focus:outline-none focus:ring-2 focus:ring-offset-2 ${registerMode ? 'focus:ring-wobzPink' : 'focus:ring-wobzBlue'}`}
                 >
                   {registerMode ? 'S\'inscrire' : 'Se connecter'}
                 </button>
@@ -139,7 +143,7 @@ const Login = () => {
                 Déjà inscrit ?{' '}
                 <button
                   onClick={toggleRegisterMode}
-                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                  className="font-medium text-wobzPink hover:text-wobzPink"
                 >
                   Connectez-vous ici
                 </button>
@@ -149,7 +153,7 @@ const Login = () => {
                 Pas encore inscrit ?{' '}
                 <button
                   onClick={toggleRegisterMode}
-                  className="font-medium text-green-900 hover:text-green-1000"
+                  className="font-medium text-wobzBlue hover:text-wobzBlue"
                 >
                   Inscrivez-vous ici
                 </button>
