@@ -62,8 +62,8 @@ export default function ButtonBinList({ setUnassignMode, onAddBinClick }) {
           transform: 'translateZ(0px)',
           flexGrow: 1,
           position: 'fixed',
-          top: { xs: 20, sm: 'auto' },
-          bottom: { xs: 'auto', sm: 48 },
+          top: { xs: 'auto', sm: 'auto' },
+          bottom: { xs: 120, sm: 48 },
           right: { xs: 2, sm: 48 },
         }}
       >

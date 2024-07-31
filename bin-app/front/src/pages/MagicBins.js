@@ -13,6 +13,11 @@ import Slide from '@mui/material/Slide';
 import { CircularProgress } from '@mui/material';
 import { AuthContext } from '../components/AuthContext/AuthContext';
 import ConfirmationDialog from '../components/ConfirmationDialog/ConfirmationDialog';
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+import GlobalMenu from '../components/GlobalMenu/GlobalMenu';
 
 const MagicBins = () => {
 
@@ -39,10 +44,10 @@ const MagicBins = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       fetchBins();
-    }, 5000); 
-  
-    return () => clearInterval(intervalId); 
-  }, [tri]); 
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [tri]);
 
   const fetchBins = async () => {
     try {
@@ -152,8 +157,18 @@ const MagicBins = () => {
             </div>
           ) : (
             <>
-              <div className="w-full max-h-screen overflow-y-auto p-4 space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
-                <div className="flex flex-row items-center sm:pl-56">
+              <div className="w-full max-h-screen overflow-y-auto  space-y-4 sm:pt-24 pb-20 sm:pb-6 self-start">
+                <div id="pageHeader" className="w-full flex items-center justify-between bg-wobzBlue p-4 ">
+                  <DeleteSweepIcon className="text-white" />
+                  <h1 className="text-3xl text-white font-inter ">MagicBins</h1>
+                  <KeyboardArrowDownIcon className="text-white mr-12" />
+                  <GlobalMenu
+                    festival={null}
+                    festivals={null}
+                    onChangeFestival={null}
+                  />
+                </div>
+                <div className="flex flex-row items-center p-4 sm:pl-56">
                   <input
                     type="text"
                     placeholder="Rechercher"

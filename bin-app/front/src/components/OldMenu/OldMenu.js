@@ -19,8 +19,6 @@ import EditFestivalDialog from '../EditFestivalDialog/EditFestivalDialog';
 import AddUsersToFestival from '../AddUsersToFestival/AddUsersToFestival';
 import PeopleIcon from '@mui/icons-material/People';
 import { getUserRole } from '../../api';
-import { useNavigate } from 'react-router-dom';
-import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -61,7 +59,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
+export default function OldMenu({ festival, festivals, onChangeFestival }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [selectedFestival, setSelectedFestival] = useState('');
@@ -76,8 +74,6 @@ export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
 
   const { logout } = useContext(AuthContext);
   const { user } = useContext(AuthContext);
-
-  const navigate = useNavigate();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -137,11 +133,6 @@ export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
     }, 200);
   };
 
-  const handleProfile = () => {
-    navigate('/profile');
-  }
-
-
   const handleCreateClick = () => {
     setOpenCreateDialog(true);
   };
@@ -178,11 +169,58 @@ export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleProfile}>
-          <InsertEmoticonIcon />
-          Mon profil
+        {(festivalId && user.iswobzadmin || myRole.role === 'admin') && (
+          <>
+            <MenuItem onClick={() => setOpenEditFestivalDialog(true)}>
+              <EditIcon />
+              Modifier infos festival
+            </MenuItem>
+            <MenuItem onClick={() => setOpenEditUsersDialog(true)}>
+              <PeopleIcon />
+              Gérer participants
+            </MenuItem>
+            <Divider sx={{ my: 0.5 }} />
+          </>
+        )}
+
+        <MenuItem disableRipple>
+          <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }} color={festivalId ? 'primary' : 'error'}>
+            <InputLabel id="festival-select-label">Changer de festival</InputLabel>
+            <Select labelId="festival-select-label" id="festival-select" value={selectedFestival} onChange={handleFestivalChange}>
+              {festivalId && (
+                <MenuItem value={{ id: -1, name: 'aucun' }} sx={{ color: 'red' }}>
+                  <em>Aucun festival</em>
+                </MenuItem>
+              )}
+              {festivals.map((mapFest) => {
+                if (mapFest.id !== festivalId) {
+                  return (
+                    <MenuItem key={mapFest.id} value={mapFest}>
+                      {mapFest.name}
+                    </MenuItem>
+                  );
+                }
+                return null;
+              })}
+              {!festivalId && festivals.length === 0 && (
+                <p style={{ color: 'red', textAlign: 'center', margin: '0.5rem 0' }}>
+                  Vous n'êtes inscrit à
+                  <br />
+                  aucun festival.
+                </p>
+              )}
+            </Select>
+          </FormControl>
         </MenuItem>
-        
+
+        {user.iswobzadmin && (
+          <MenuItem onClick={handleCreateClick}>
+            <AddHomeIcon />
+            Créer un festival
+          </MenuItem>
+        )}
+
+        <Divider sx={{ my: 0.5 }} />
         <MenuItem onClick={handleLogout}>
           <LogoutIcon />
           Se déconnecter

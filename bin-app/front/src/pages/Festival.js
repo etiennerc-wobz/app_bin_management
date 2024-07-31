@@ -12,6 +12,7 @@ import FestivalUsers from '../components/FestivalUsers/FestivalUsers';
 import MenuIcon from '@mui/icons-material/Menu';
 import FestivalIcon from '@mui/icons-material/Festival';
 import PlaceIcon from '@mui/icons-material/Place';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Festival = () => {
   const { user, token } = useContext(AuthContext);
@@ -145,8 +146,8 @@ const Festival = () => {
     <div className="min-h-screen flex flex-col items-center p-0 sm:p-10 sm:pt-28">
       <div className="w-full flex items-center justify-between bg-wobzBlue p-4 ">
         <FestivalIcon className="text-white" />
-        <h1 className="text-3xl text-white font-inter pr-4">Festival</h1>
-        <CalendarMonthIcon className="text-gray-600" />
+        <h1 className="text-3xl text-white font-inter ">Festival</h1>
+        <KeyboardArrowDownIcon className="text-white mr-12" />
         <GlobalMenu
           festival={favoriteFestival ? favoriteFestival : null}
           festivals={user.iswobzadmin ? allFestivals : festivals}
@@ -166,9 +167,9 @@ const Festival = () => {
             </div>
           ) : (
             <div className="w-full flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 pt-4 px-4">
-              <div className="w-full sm:w-2/3 flex flex-col border-2 border-gray-200 rounded-lg">
-                <div className="bg-white p-6 rounded-lg space-y-2">
-                  <p id="festival-name" className="text-2xl sm:text-4xl text-left font-inter">{favoriteFestival.name.toUpperCase()}</p>
+              <div className="w-full sm:w-2/3 flex flex-col ">
+                <div className="bg-white py-6 px-2 rounded-lg space-y-2">
+                  <p id="festival-name" className="text-3xl sm:text-4xl text-left font-inter">{favoriteFestival.name.toUpperCase()}</p>
                   <h3 id="date" className="text-md sm:text-xl text-left text-wobzBlue">
                     <CalendarMonthIcon className="inline-block mr-2 text-black" />
                     {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
