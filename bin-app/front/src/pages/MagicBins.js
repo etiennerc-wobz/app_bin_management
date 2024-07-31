@@ -51,12 +51,10 @@ const MagicBins = () => {
   const fetchBins = async () => {
     try {
       let bins = await getMyFestivalBins(user.id);
-
-      if (!tri) {
-        bins.sort((a, b) => a.name.localeCompare(b.name));
-      } else {
-        const triNumber = Number(tri);
-
+      const triNumber=10;
+      if(tri){
+         triNumber = Number(tri);
+      }
         if (triNumber === 10) {
           bins.sort((a, b) => b.fillrate - a.fillrate);
         } else if (triNumber === 20) {
@@ -64,7 +62,7 @@ const MagicBins = () => {
         } else if (triNumber === 30) {
           bins.sort((a, b) => a.traps.length - b.traps.length);
         }
-      }
+      
 
       setBins(bins);
       setLoading(false);
@@ -164,17 +162,8 @@ const MagicBins = () => {
               </div>
 
 
-              <div className="w-full max-h-screen overflow-y-auto px-2 space-y-4 sm:pt-24 pb-44 sm:pb-6 self-start">
-                <div className="flex flex-row items-center p-4 sm:pl-56 mt-20">
-                  <input
-                    type="text"
-                    placeholder="Rechercher"
-                    value={search}
-                    onChange={handleSearchChange}
-                    className="w-36 sm:w-48 px-3 py-2 placeholder-gray-500 text-gray-900 rounded-md focus:outline-blue outline"
-                  />
-                  <SelectInput onTriChange={handleTriChange} />
-                </div>
+              <div className="w-full max-h-screen overflow-y-auto px-2 space-y-4 sm:pt-24 pb-44 pt-24 sm:pb-6 self-start">
+
                 {bins.length === 0 && (
                   <h1 className="pt-20 sm:text-4xl">
                     Aucune Bin assignée à <strong>{FavoriteFestival.name}</strong>

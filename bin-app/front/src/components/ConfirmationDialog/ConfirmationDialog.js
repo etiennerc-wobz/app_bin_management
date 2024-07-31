@@ -29,9 +29,9 @@ export default function ConfirmationDialog({ open, onClose, message }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDisagree} sx={{ color: '#2A0000' }}
+          <Button onClick={handleDisagree} sx={{ color: '#19423d' }}
           >Annuler</Button>
-          <Button onClick={handleAgree} autoFocus sx={{ color: '#0D5200' }}
+          <Button onClick={handleAgree} autoFocus sx={{ color: '#74BDB6' }}
           >
             Valider
           </Button>

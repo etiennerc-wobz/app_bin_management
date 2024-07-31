@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import CircularProgressWithLabel from '../CircularProgressWithLabel/CircularProgressWithLabel';
 import StatusIndicator from '../StatusIndicator/StatusIndicator';
 import { getBinTraps } from '../../api';
+import { Icon } from '@mui/material';
+import ShareLocationIcon from '@mui/icons-material/ShareLocation';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const useResizeFont = (ref, containerRef, title) => {
   useEffect(() => {
@@ -25,7 +28,7 @@ const useResizeFont = (ref, containerRef, title) => {
 };
 
 const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, unassignMode }) => {
-  const baseStyle = "md:w-3/4 p-4 border-b border-gray-200 bg-gray-200 rounded-full mx-auto cursor-pointer flex items-center justify-between";
+  const baseStyle = "md:w-3/4 p-4 bg-secondary rounded-full mx-auto cursor-pointer flex items-center justify-between";
   const hoverStyle = unassignMode ? "hover:bg-red-500" : "hover:bg-gray-300";
   const activeStyle = unassignMode ? "bg-red-200" : "";
 
@@ -55,24 +58,28 @@ const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, una
 
 
   return (
-    <div className={`${baseStyle} ${hoverStyle} ${activeStyle}`} onClick={onClick}>
-      <div className="flex items-center">
-        <div className="ml-2 mr-2">
-          <CircularProgressWithLabel value={fillrate} size="1" />
-        </div>
+      <div className={`${baseStyle} ${hoverStyle} ${activeStyle}`} onClick={onClick}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="ml-2 mr-2">
+              <CircularProgressWithLabel value={fillrate} size="1" />
+            </div>
 
-        <div className="ml-4 sm:ml-10 flex flex-col items-start w-32 sm:w-80" ref={containerRef}>
-          <h2 className="text-xl pb-1 font-bold sm:text-4xl sm:mr-2" ref={titleRef}>
-            {title}
-          </h2>
-          <StatusIndicator isConnected={myStatus} />
+            <div className="ml-4 sm:ml-10 flex flex-col items-start w-48 sm:w-80" ref={containerRef}>
+              <h2 className="text-xl pb-1 font-bold sm:text-4xl sm:mr-2" ref={titleRef}>
+                {title}
+              </h2>
+              <h3 className="text-sm sm:text-lg text-gray-600">
+                <ShareLocationIcon className="text-gray-600 mr-2" />
+                {zone}
+              </h3>
+            </div>
+          </div>
+
+          <KeyboardArrowRightIcon className="text-gray-600 " />
         </div>
       </div>
-      <div className="text-right text-xs sm:text-base mr-2 sm:mr-10">
-        <p className="text-gray-600">Zone : <span className="font-bold">{zone}</span></p>
-        <p className="text-gray-600">Traps : <span className="font-bold">{binTraps ? binTraps.length : '...'}</span></p>
-      </div>
-    </div>
+
   );
 };
 

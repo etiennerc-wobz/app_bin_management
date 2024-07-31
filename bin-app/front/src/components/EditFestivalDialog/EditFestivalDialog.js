@@ -90,7 +90,7 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
                     <DialogContent>
 
                         <TextField
-                            autoFocus
+                            
                             margin="dense"
                             id="name"
                             placeholder={festival.name}
@@ -120,10 +120,10 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
 
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose} sx={{color: 'darkred'}}>
+                        <Button onClick={handleClose} sx={{color: '#19423d'}}>
                             Annuler
                         </Button>
-                        <Button onClick={handleSubmit} color="success">
+                        <Button onClick={handleSubmit} sx={{color: '#74BDB6'}}>
                             Enregistrer
                         </Button>
                     </DialogActions>
