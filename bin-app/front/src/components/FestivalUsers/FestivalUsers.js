@@ -127,7 +127,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
     <Box
       className="user-list-box font-sans"
       sx={{
-        bgcolor: listOpen ? '#d7f7f4' : '#C1EAE5',
+        bgcolor: listOpen ? '#E6F4F2' : '#C1EAE5',
         pb: listOpen ? 0 : 0,
         transition: 'background-color 0.3s ease',
         width: 'full',
@@ -141,9 +141,10 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
         sx={{
           px: 3,
           pt: 2.5,
-          pb: listOpen ? 2 : 2.5,
+          pb: listOpen ? 1.5 : 2.5,
           borderRadius: '18px',
-          '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.02)', borderRadius: '18px' },
+          backgroundColor: '#C1EAE5',
+          '&:hover, &:focus': { backgroundColor: '#C1EAE5', borderRadius: '18px' },
           '@media (max-width: 600px)': {
             px: 2,
             pt: 2,

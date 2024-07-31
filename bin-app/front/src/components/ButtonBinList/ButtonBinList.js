@@ -23,9 +23,9 @@ const theme = createTheme({
     MuiFab: {
       styleOverrides: {
         primary: {
-          backgroundColor: '#1D7C58',
+          backgroundColor: '#74BDB6',
           '&:hover': {
-            backgroundColor: '#155A40',
+            backgroundColor: '#E6F4F2',
           },
         },
       },

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../components/AuthContext/AuthContext';
-import { getFavoriteFestival, getFestivalTraps, getFestivals, getMyFestivals, changeFavoriteFestival } from '../api';
+import { getFavoriteFestival, getFestivalTraps, getUserRole, getFestivals, getMyFestivals, changeFavoriteFestival, editFestivalInformations } from '../api';
 import { Button, CircularProgress } from '@mui/material';
 import CreateFestivalDialog from '../components/CreateFestivalDialog/CreateFestivalDialog';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
@@ -13,6 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import FestivalIcon from '@mui/icons-material/Festival';
 import PlaceIcon from '@mui/icons-material/Place';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import EditIcon from '@mui/icons-material/Edit';
+import EditFestivalDialog from '../components/EditFestivalDialog/EditFestivalDialog';
 
 const Festival = () => {
   const { user, token } = useContext(AuthContext);
@@ -25,6 +27,8 @@ const Festival = () => {
   const [snackbarColor, setSnackbarColor] = useState('success');
   const [loading, setLoading] = useState(true);
   const [allFestivals, setAllFestivals] = useState([]);
+  const [myRole, setMyRole] = useState(null);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
 
   useEffect(() => {
     fetchFavoriteFestival();
@@ -83,6 +87,23 @@ const Festival = () => {
     }
   }, [user, token]);
 
+  const fetchMyRole = async () => {
+    try {
+      if (!favoriteFestival) {
+        return;
+      }
+      const role = await getUserRole(user.id, favoriteFestival.id);
+      console.log('role:', role);
+      setMyRole(role.role);
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+    }
+  };
+  useEffect(() => {
+    fetchMyRole();
+  }, [favoriteFestival, user]);
+
+
   const fetchFestivalTraps = async () => {
     try {
       if (favoriteFestival) {
@@ -119,6 +140,13 @@ const Festival = () => {
         fetchFavoriteFestival();
       });
     }
+  };
+
+  const handleFestivalUpdated = () => {
+    fetchFavoriteFestival();
+    fetchMyFestivals();
+    setSnackbarMessage('Festival modifié');
+    setOpenSnackbar(true);
   };
 
   const handleCreateButton = () => {
@@ -167,27 +195,38 @@ const Festival = () => {
             </div>
           ) : (
             <div className="w-full flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 pt-4 px-4">
-              <div className="w-full sm:w-2/3 flex flex-col ">
-                <div className="bg-white py-6 px-2 rounded-lg space-y-2">
-                  <p id="festival-name" className="text-3xl sm:text-4xl text-left font-inter">{favoriteFestival.name.toUpperCase()}</p>
-                  <h3 id="date" className="text-md sm:text-xl text-left text-wobzBlue">
-                    <CalendarMonthIcon className="inline-block mr-2 text-black" />
-                    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
-                    {new Date().getFullYear() !== new Date(favoriteFestival.start_date).getFullYear() ? ` ${new Date(favoriteFestival.start_date).getFullYear()}` : ''}
-                    <span> - </span>
-                    {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.end_date))}
-                    {new Date().getFullYear() !== new Date(favoriteFestival.end_date).getFullYear() ? ` ${new Date(favoriteFestival.end_date).getFullYear()}` : ''}
-                  </h3>
-                  <h3 id="location" className="text-md sm:text-xl text-left text-wobzBlue">
-                    <PlaceIcon className="inline-block mr-2 text-black" />
-                    {favoriteFestival.location}
-                  </h3>
-                  
-                  {traps.length > 0 && loading === false ? (
-                    null
-                  ) : (
-                    <h2 className="pt-10 text-md sm:text-lg text-left">Aucune trap pour ce festival</h2>
-                  )}
+              <div id="DivFestival" className="w-full sm:w-2/3 flex flex-col">
+                <div className="bg-white py-6 px-2 rounded-lg space-y-2 flex items-center">
+                  <div className="flex-1 space-y-2">
+                    <p id="festival-name" className="text-3xl sm:text-4xl text-left font-inter">{favoriteFestival.name.toUpperCase()}</p>
+                    <h3 id="date" className="text-md sm:text-xl text-left text-wobzBlue">
+                      <CalendarMonthIcon className="inline-block mr-2 text-black" />
+                      {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
+                      {new Date().getFullYear() !== new Date(favoriteFestival.start_date).getFullYear() ? ` ${new Date(favoriteFestival.start_date).getFullYear()}` : ''}
+                      <span> - </span>
+                      {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.end_date))}
+                      {new Date().getFullYear() !== new Date(favoriteFestival.end_date).getFullYear() ? ` ${new Date(favoriteFestival.end_date).getFullYear()}` : ''}
+                    </h3>
+                    <h3 id="location" className="text-md sm:text-xl text-left text-wobzBlue">
+                      <PlaceIcon className="inline-block mr-2 text-black" />
+                      {favoriteFestival.location}
+                    </h3>
+                    {traps.length > 0 && loading === false ? (
+                      null
+                    ) : (
+                      <h2 className="pt-10 text-md sm:text-lg text-left">Aucune trap pour ce festival</h2>
+                    )}
+                  </div>
+                  {myRole === 'admin' &&
+                    <div className="ml-4">
+                      <EditIcon className="text-black"
+                        onClick={() => {
+                          setOpenEditDialog(true);
+                        }}
+                      />
+                    </div>
+                  }
+
                 </div>
               </div>
 
@@ -204,6 +243,9 @@ const Festival = () => {
         </>
       )}
       <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
+      {favoriteFestival &&
+        <EditFestivalDialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} festival={favoriteFestival} onFestivalEdited={() => handleFestivalUpdated()} />
+      }
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color={snackbarColor} />
     </div>
   );
