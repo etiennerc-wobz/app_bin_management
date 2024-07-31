@@ -4,10 +4,14 @@ import { getFavoriteFestival, getFestivalTraps, getFestivals, getMyFestivals, ch
 import { Button, CircularProgress } from '@mui/material';
 import CreateFestivalDialog from '../components/CreateFestivalDialog/CreateFestivalDialog';
 import SnackbarAlert from '../components/SnackbarAlert/SnackbarAlert';
-import FestivalMenu from '../components/FestivalMenu/FestivalMenu';
+import GlobalMenu from '../components/GlobalMenu/GlobalMenu';
 import FestivalTraps from '../components/FestivalTraps/FestivalTraps';
-import TodayIcon from '@mui/icons-material/Today';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import FestivalUsers from '../components/FestivalUsers/FestivalUsers';
+
+import MenuIcon from '@mui/icons-material/Menu';
+import FestivalIcon from '@mui/icons-material/Festival';
+import PlaceIcon from '@mui/icons-material/Place';
 
 const Festival = () => {
   const { user, token } = useContext(AuthContext);
@@ -70,8 +74,8 @@ const Festival = () => {
 
   useEffect(() => {
     fetchMyFestivals();
-    if(user) {
-      if(user.iswobzadmin){
+    if (user) {
+      if (user.iswobzadmin) {
         fetchAllFestivals();
         console.log('user is wobzadmin');
       }
@@ -83,7 +87,6 @@ const Festival = () => {
       if (favoriteFestival) {
         const traps = await getFestivalTraps(favoriteFestival.id, token);
         setTraps(traps);
-
       }
     } catch (error) {
       console.error('Error fetching festival traps:', error);
@@ -91,7 +94,6 @@ const Festival = () => {
     setTimeout(() => {
       setLoading(false);
     }, 200);
-
   };
 
   useEffect(() => {
@@ -140,52 +142,61 @@ const Festival = () => {
   }
 
   return (
-    <div className='min-h-screen flex flex-col items-center p-4 sm:p-10 sm:pt-28 space-y-10'>
+    <div className="min-h-screen flex flex-col items-center p-0 sm:p-10 sm:pt-28">
+      <div className="w-full flex items-center justify-between bg-wobzBlue p-4 ">
+        <FestivalIcon className="text-white" />
+        <h1 className="text-3xl text-white font-inter pr-4">Festival</h1>
+        <CalendarMonthIcon className="text-gray-600" />
+        <GlobalMenu
+          festival={favoriteFestival ? favoriteFestival : null}
+          festivals={user.iswobzadmin ? allFestivals : festivals}
+          onChangeFestival={handleFestivalChange}
+        />
+      </div>
       {loading ? (
-        <div className='pt-12'>
+        <div className="pt-12">
           <CircularProgress />
         </div>
       ) : (
         <>
-          <FestivalMenu
-            festival={favoriteFestival ? favoriteFestival : null}
-            festivals={user.iswobzadmin ? allFestivals : festivals}
-            onChangeFestival={handleFestivalChange}
-          />
           {(!favoriteFestival && !loading) ? (
-            <div className='bg-gray-200 p-6 rounded-lg flex flex-col justify-center items-center w-full'>
-              <h1 className='text-lg sm:text-2xl'>Vous n'avez pas de festival favori</h1>
-              <h2 className='text-md sm:text-lg pt-8'>Veuillez en sélectionner un dans le menu.</h2>
+            <div className="bg-gray-200 p-6 rounded-lg flex flex-col justify-center items-center w-full px-4">
+              <h1 className="text-lg sm:text-2xl">Vous n'avez pas de festival favori</h1>
+              <h2 className="text-md sm:text-lg pt-8">Veuillez en sélectionner un dans le menu.</h2>
             </div>
           ) : (
-            <div className='w-full flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0'>
-              <div className='w-full sm:w-2/3 flex flex-col space-y-10'>
-                <div className='bg-gray-200 p-6 rounded-lg'>
-                  <h1 className='text-lg sm:text-2xl'>Votre festival favori est :</h1>
-                  <p id='festival-name' className='text-2xl sm:text-4xl pl-4'>{favoriteFestival.name}</p>
-                  <h3 id="date" className='text-md sm:text-xl pt-8'>
-                    <TodayIcon className='inline-block mr-2' />
+            <div className="w-full flex flex-col sm:flex-row sm:space-x-10 space-y-10 sm:space-y-0 pt-4 px-4">
+              <div className="w-full sm:w-2/3 flex flex-col border-2 border-gray-200 rounded-lg">
+                <div className="bg-white p-6 rounded-lg space-y-2">
+                  <p id="festival-name" className="text-2xl sm:text-4xl text-left font-inter">{favoriteFestival.name.toUpperCase()}</p>
+                  <h3 id="date" className="text-md sm:text-xl text-left text-wobzBlue">
+                    <CalendarMonthIcon className="inline-block mr-2 text-black" />
                     {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.start_date))}
                     {new Date().getFullYear() !== new Date(favoriteFestival.start_date).getFullYear() ? ` ${new Date(favoriteFestival.start_date).getFullYear()}` : ''}
                     <span> - </span>
                     {new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long' }).format(new Date(favoriteFestival.end_date))}
                     {new Date().getFullYear() !== new Date(favoriteFestival.end_date).getFullYear() ? ` ${new Date(favoriteFestival.end_date).getFullYear()}` : ''}
                   </h3>
+                  <h3 id="location" className="text-md sm:text-xl text-left text-wobzBlue">
+                    <PlaceIcon className="inline-block mr-2 text-black" />
+                    {favoriteFestival.location}
+                  </h3>
+                  
                   {traps.length > 0 && loading === false ? (
                     null
                   ) : (
-                    <h2 className='pt-10 text-md sm:text-lg'>Aucune trap pour ce festival</h2>
+                    <h2 className="pt-10 text-md sm:text-lg text-left">Aucune trap pour ce festival</h2>
                   )}
                 </div>
+              </div>
 
-              </div>
-              <div className='flex flex-col items-center space-y-10 w-full sm:w-1/3'>
-              <div className='w-full rounded-lg'>
-                <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} onUsersChanged={() => fetchFestivalTraps()} />
-              </div>
-              <div className='w-full '>
+              <div className="flex flex-col items-center space-y-10 w-full sm:w-1/3">
+                <div className="w-full rounded-lg">
+                  <FestivalUsers festivalId={favoriteFestival ? favoriteFestival.id : null} onUsersChanged={() => fetchFestivalTraps()} />
+                </div>
+                <div className="w-full">
                   <FestivalTraps festivalId={favoriteFestival ? favoriteFestival.id : null} traps={traps} onUpdate={handleTrapsUpdate} />
-              </div>
+                </div>
               </div>
             </div>
           )}
@@ -195,8 +206,6 @@ const Festival = () => {
       <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color={snackbarColor} />
     </div>
   );
-  
-  
 };
 
 export default Festival;

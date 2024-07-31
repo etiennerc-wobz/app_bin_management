@@ -22,6 +22,7 @@ import { getFestivalUsers, getUserRole, changeUserRole, removeUserFromFestival }
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../AuthContext/AuthContext';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
+import Divider from '@mui/material/Divider';
 
 export default function FestivalUsers({ festivalId, onUsersChanged }) {
   const [open, setOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
   }, []);
 
 
-  
+
 
   const handleClickOpen = (selectedUser) => {
     setSelectedUser(selectedUser);
@@ -72,7 +73,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
       ));
       fetchFestivalUsers();
       onUsersChanged();
-      setOpen(false); 
+      setOpen(false);
       setOpenSnackbar(true);
       setSnackbarMessage('Rôle modifié avec succès');
     } catch (error) {
@@ -86,7 +87,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
       setUsers(users.filter((user) => user.id !== selectedUser.id));
       fetchFestivalUsers();
       onUsersChanged();
-      setOpen(false); 
+      setOpen(false);
       setOpenSnackbar(true);
       setSnackbarMessage('Utilisateur exclu avec succès');
     } catch (error) {
@@ -124,13 +125,14 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
 
   return (
     <Box
-      className="user-list-box"
+      className="user-list-box font-sans"
       sx={{
-        bgcolor: listOpen ? 'rgba(17, 110, 83, 0.2)' : null,
+        bgcolor: listOpen ? '#d7f7f4' : '#C1EAE5',
         pb: listOpen ? 0 : 0,
         transition: 'background-color 0.3s ease',
-        width: '20rem',
+        width: 'full',
         borderRadius: '18px',
+        fontFamily: 'Inter, sans-serif',
       }}
     >
       <ListItemButton
@@ -141,7 +143,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
           pt: 2.5,
           pb: listOpen ? 2 : 2.5,
           borderRadius: '18px',
-          '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.09)', borderRadius: '18px' },
+          '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.02)', borderRadius: '18px' },
           '@media (max-width: 600px)': {
             px: 2,
             pt: 2,
@@ -150,9 +152,11 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
           },
         }}
       >
+        <AccountCircleIcon sx={{ mr: 1 }} />
         <ListItemText
-          primary="Voir users"
+          primary="Utilisateurs"
           primaryTypographyProps={{
+            fontFamily: 'Inter, sans-serif',
             fontSize: 15,
             fontWeight: 'medium',
             lineHeight: '20px',
@@ -180,61 +184,65 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
         <Box>
           <List dense style={{ maxHeight: '270px', overflow: 'auto' }}>
             {sortUsers(users).map((mapUser, index) => (
-              <ListItem
-                key={index}
-                className={hasAdminRights ? "hover:bg-green-800 hover:bg-opacity-10 rounded-2xl cursor-pointer" : ""}
-                onClick={() => handleClickOpen(mapUser)}
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    <AccountCircleIcon />
-                  </Avatar>
-                </ListItemAvatar>
+              <React.Fragment key={index}>
+                <ListItem
+                  key={index}
+                  className={hasAdminRights ? "hover:bg-green-800 hover:bg-opacity-10 rounded-2xl cursor-pointer" : ""}
+                  onClick={() => handleClickOpen(mapUser)}
+                  sx={{ paddingLeft: 3 }}
+                >
+
                 <ListItemText
+                  sx={{ fontFamily: 'Inter, sans-serif' }}
                   primary={
-                    <span style={{ fontWeight: user.id === mapUser.id ? 'bold' : 'normal' }}>
+                    <span style={{ fontWeight: user.id === mapUser.id ? 'bold' : 'normal', fontFamily: 'Inter, sans-serif' }}>
                       {`${mapUser.name} ${user.id === mapUser.id ? '(vous)' : ''}`}
                     </span>
                   }
                   secondary={
-                    mapUser.role.role === 'owner' ? 'Propriétaire' :
-                    mapUser.role.role === 'participant' ? 'Participant' :
-                    mapUser.role.role === 'admin' ? 'Administrateur' :
-                    'Unknown'
+                    <span style={{ fontFamily: 'Inter, sans-serif' }}>
+                      {mapUser.role.role === 'owner' ? 'Propriétaire' :
+                        mapUser.role.role === 'participant' ? 'Participant' :
+                          mapUser.role.role === 'admin' ? 'Administrateur' :
+                            'Unknown'}
+                    </span>
                   }
                 />
-              </ListItem>
+                </ListItem>
+                {index < users.length - 1 && <Divider sx={{width: '90%', margin: 'auto'}} />}
+              </React.Fragment>
+
             ))}
           </List>
 
           {hasAdminRights && (
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">{selectedUser?.name}</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Modifier le rôle de l'utilisateur ou l'exclure du festival.
-              </DialogContentText>
-              <Select
-                labelId="role-select-label"
-                id="role-select"
-                placeholder='Rôle'
-                value={selectedUser?.role.role || ''}
-                onChange={handleRoleChange}
-                fullWidth
-              >
-                <MenuItem value="participant">Participant</MenuItem>
-                <MenuItem value="admin">Admin</MenuItem>
-              </Select>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleExcludeUser} sx={{ color: '#2A0000', fontSize  : '0.9em' }}>
-                Exclure
-              </Button>
-              <Button onClick={handleClose}  sx={{ color: '#0D5200' }}>
-                Fermer
-              </Button>
-            </DialogActions>
-          </Dialog>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">{selectedUser?.name}</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Modifier le rôle de l'utilisateur ou l'exclure du festival.
+                </DialogContentText>
+                <Select
+                  labelId="role-select-label"
+                  id="role-select"
+                  placeholder='Rôle'
+                  value={selectedUser?.role.role || ''}
+                  onChange={handleRoleChange}
+                  fullWidth
+                >
+                  <MenuItem value="participant">Participant</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                </Select>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleExcludeUser} sx={{ color: '#2A0000', fontSize: '0.9em' }}>
+                  Exclure
+                </Button>
+                <Button onClick={handleClose} sx={{ color: '#0D5200' }}>
+                  Fermer
+                </Button>
+              </DialogActions>
+            </Dialog>
           )}
           <SnackbarAlert open={openSnackbar} onClose={() => setOpenSnackbar(false)} message={snackbarMessage} color={snackbarColor} />
         </Box>

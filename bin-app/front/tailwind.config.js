@@ -15,6 +15,16 @@ module.exports = {
           '100%': { opacity: 1 },
         },
       },
+      fontFamily: {
+        'inter': ['Inter', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+      },
+      colors: {
+        'primary': '#479e96',
+        'secondary': '#265450',
+        'wobzBlue':'#74BDB6',
+      },
     },
   },
   plugins: [],

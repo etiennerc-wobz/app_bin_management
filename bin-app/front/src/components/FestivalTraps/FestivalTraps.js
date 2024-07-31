@@ -18,6 +18,8 @@ import { unassignTrapFromFestival } from '../../api';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../AuthContext/AuthContext';
 
+import InventoryIcon from '@mui/icons-material/Inventory';
+
 export default function FestivalTraps({ festivalId, traps, onUpdate }) {
   const [open, setOpen] = React.useState(false);
   const [dense, setDense] = React.useState(false);
@@ -81,13 +83,15 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
 
   return (
     <Box
-      className="user-list-box"
+      className="user-list-box font-sans"
       sx={{
-        bgcolor: open ? 'rgba(17, 110, 83, 0.2)' : null,
+        bgcolor: open ? '#d7f7f4' : '#C1EAE5',
         pb: open ? 0 : 0,
         transition: 'background-color 0.3s ease',
         width: '20rem',
         borderRadius: '18px',
+        fontFamily: 'Inter, sans-serif',
+        width: '100%',
       }}
     >
       <ListItemButton
@@ -98,7 +102,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
           pt: 2.5,
           pb: open ? 2 : 2.5,
           borderRadius: '18px',
-          '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.09)', borderRadius: '18px' },
+          '&:hover, &:focus': { backgroundColor: 'rgba(0, 0, 0, 0.02)', borderRadius: '18px' },
           '@media (max-width: 600px)': {
             px: 2,
             pt: 2,
@@ -107,23 +111,25 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
           },
         }}
       >
+        <InventoryIcon sx={{ mr: 1 }} />
         <ListItemText
-          primary="Voir traps"
+          primary="Graals"
           primaryTypographyProps={{
+            fontFamily: 'Inter, sans-serif',
             fontSize: 15,
             fontWeight: 'medium',
             lineHeight: '20px',
             mb: '2px',
             borderRadius: '18px',
           }}
-          secondary={open ? null : `${traps.length} traps associées`}
+          secondary={open ? null : `${traps.length} graals associées`}
           secondaryTypographyProps={{
             noWrap: true,
             fontSize: 12,
             lineHeight: '16px',
             color: open ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.6)',
           }}
-          sx={{ my: 0 , borderRadius: '18px'}}
+          sx={{ my: 0, borderRadius: '18px' }}
         />
         <KeyboardArrowDown
           sx={{
@@ -140,7 +146,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
               <Button
                 variant="contained"
                 onClick={handleDialogOpen}
-                sx={{ mx: 1, my: 1 , backgroundColor: '#1D7C58', color: 'white', '&:hover': { backgroundColor: '#186849' } }}
+                sx={{ mx: 1, my: 1, backgroundColor: '#1D7C58', color: 'white', '&:hover': { backgroundColor: '#186849' } }}
               >
                 Ajouter traps au festival
               </Button>
@@ -167,7 +173,11 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`Trap ${trap.id}`}
+                  primary={
+                    <span style={{ fontFamily: 'Inter, sans-serif' }}>
+                      {`Trap ${trap.id}`}
+                    </span>
+                  }
                   secondary={secondary ? 'Secondary text' : null}
                 />
               </ListItem>

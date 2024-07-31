@@ -11,16 +11,14 @@ import { FormControl, InputLabel, Select } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { AuthContext } from '../AuthContext/AuthContext';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import ConfirmationDialog from '../ConfirmationDialog/ConfirmationDialog';
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import CreateFestivalDialog from '../CreateFestivalDialog/CreateFestivalDialog';
-import { useState } from 'react';
 import EditFestivalDialog from '../EditFestivalDialog/EditFestivalDialog';
 import AddUsersToFestival from '../AddUsersToFestival/AddUsersToFestival';
 import PeopleIcon from '@mui/icons-material/People';
 import { getUserRole } from '../../api';
-import { useEffect } from 'react';
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -36,8 +34,6 @@ const StyledMenu = styled((props) => (
     {...props}
   />
 ))(({ theme }) => ({
-
-
   '& .MuiPaper-root': {
     borderRadius: 6,
     marginTop: theme.spacing(0.2),
@@ -55,29 +51,24 @@ const StyledMenu = styled((props) => (
         fontSize: 18,
         color: '#00352c',
         marginRight: theme.spacing(1.5),
-
       },
       '&:active': {
-        backgroundColor: 'rgba(0, 0, 0, 0.04)'
+        backgroundColor: 'rgba(0, 0, 0, 0.04)',
       },
-
-    
-
-  },
-
+    },
   },
 }));
 
-export default function FestivalMenu({ festival, festivals, onChangeFestival }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function GlobalMenu({ festival, festivals, onChangeFestival }) {
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [selectedFestival, setSelectedFestival] = React.useState('');
-  const [confirmationDialogOpen, setConfirmationDialogOpen] = React.useState(false);
-  const [confirmationDialogMessage, setConfirmationDialogMessage] = React.useState('');
-  const [dialogAnswer, setDialogAnswer] = React.useState(false);
+  const [selectedFestival, setSelectedFestival] = useState('');
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+  const [confirmationDialogMessage, setConfirmationDialogMessage] = useState('');
+  const [dialogAnswer, setDialogAnswer] = useState(false);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openEditFestivalDialog, setOpenEditFestivalDialog] = useState(false);
-  const [festivalId, setFestivalId] = React.useState(festival ? festival.id : null);
+  const [festivalId, setFestivalId] = useState(festival ? festival.id : null);
   const [openEditUsersDialog, setOpenEditUsersDialog] = useState(false);
   const [myRole, setMyRole] = useState('');
 
@@ -87,6 +78,7 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -107,13 +99,12 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
     fetchMyRole();
   }, [festivalId, user]);
 
-
   const handleFestivalChange = (event) => {
     const selected = event.target.value;
-    if(selected){
+    if (selected) {
       setSelectedFestival(selected.id);
       setConfirmationDialogMessage(`Voulez-vous vraiment changer de festival pour ${selected.name || 'aucun'} ?`);
-      setConfirmationDialogOpen(true);  
+      setConfirmationDialogOpen(true);
     }
   };
 
@@ -134,23 +125,21 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
   const handleFestivalEdited = (festivalId) => {
     setSelectedFestival(festivalId);
     onChangeFestival(festivalId);
-  }
+  };
 
   const handleLogout = () => {
     setTimeout(() => {
       logout();
     }, 200);
-    return;
-  }
+  };
+
   const handleCreateClick = () => {
     setOpenCreateDialog(true);
-  }
+  };
 
   const handleUsersAdded = () => {
     onChangeFestival(festivalId);
-  }
-
-
+  };
 
   return (
     <>
@@ -159,13 +148,17 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
         aria-controls={open ? 'demo-customized-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
-        variant="contained"
-        disableElevation
         onClick={handleClick}
-        endIcon={<MenuIcon />}
-        sx={{ borderRadius: 10, backgroundColor: '#186849', color: 'white', '&:hover': { backgroundColor: '#1D7C58' } }}
+        sx={{
+          minWidth: 0,
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+          padding: 0,
+          backgroundColor: 'transparent',
+        }}
       >
-        Menu
+        <MenuIcon sx={{ color: 'white' }} />
       </Button>
       <StyledMenu
         id="demo-customized-menu"
@@ -175,32 +168,25 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-
       >
-        {(festivalId && user.iswobzadmin || myRole.role === 'admin')
-          ? [
-            <MenuItem onClick={() => setOpenEditFestivalDialog(true)} key="edit">
+        {(festivalId && user.iswobzadmin || myRole.role === 'admin') && (
+          <>
+            <MenuItem onClick={() => setOpenEditFestivalDialog(true)}>
               <EditIcon />
               Modifier infos festival
-            </MenuItem>,
-            <MenuItem onClick={() => setOpenEditUsersDialog(true)} key="users">
+            </MenuItem>
+            <MenuItem onClick={() => setOpenEditUsersDialog(true)}>
               <PeopleIcon />
               Gérer participants
-            </MenuItem>,
-            <Divider sx={{ my: 0.5 }} key="divider" />
-          ] : null}
+            </MenuItem>
+            <Divider sx={{ my: 0.5 }} />
+          </>
+        )}
 
         <MenuItem disableRipple>
-          <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }}
-            color={festivalId ? 'primary' : 'error'}
-          >
+          <FormControl variant="filled" sx={{ m: 1, minWidth: 220 }} color={festivalId ? 'primary' : 'error'}>
             <InputLabel id="festival-select-label">Changer de festival</InputLabel>
-            <Select
-              labelId="festival-select-label"
-              id="festival-select"
-              value={selectedFestival}
-              onChange={handleFestivalChange}
-            >
+            <Select labelId="festival-select-label" id="festival-select" value={selectedFestival} onChange={handleFestivalChange}>
               {festivalId && (
                 <MenuItem value={{ id: -1, name: 'aucun' }} sx={{ color: 'red' }}>
                   <em>Aucun festival</em>
@@ -216,23 +202,23 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
                 }
                 return null;
               })}
-              { (!festivalId && festivals.length === 0) &&  
+              {!festivalId && festivals.length === 0 && (
                 <p style={{ color: 'red', textAlign: 'center', margin: '0.5rem 0' }}>
-                  Vous n'êtes inscrit à<br/>aucun festival.
+                  Vous n'êtes inscrit à
+                  <br />
+                  aucun festival.
                 </p>
-              }
+              )}
             </Select>
           </FormControl>
         </MenuItem>
 
-        {user.iswobzadmin &&
-          (
-            <MenuItem onClick={handleCreateClick}>
-              <AddHomeIcon />
-              Créer un festival
-            </MenuItem>
-          )
-        }
+        {user.iswobzadmin && (
+          <MenuItem onClick={handleCreateClick}>
+            <AddHomeIcon />
+            Créer un festival
+          </MenuItem>
+        )}
 
         <Divider sx={{ my: 0.5 }} />
         <MenuItem onClick={handleLogout}>
@@ -244,17 +230,10 @@ export default function FestivalMenu({ festival, festivals, onChangeFestival }) 
           Plus
         </MenuItem>
       </StyledMenu>
-      <ConfirmationDialog
-        open={confirmationDialogOpen}
-        onClose={handleDialogClose}
-        message={confirmationDialogMessage}
-      />
-
-      <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={(festivalId) => handleFestivalCreated(festivalId)} />
-      {festivalId ? <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={(festivalId) => handleFestivalEdited(festivalId)} /> : null}
-      {festivalId &&
-        <AddUsersToFestival festivalId={festivalId} open={openEditUsersDialog} onClose={() => setOpenEditUsersDialog(false)} onUsersAdded={handleUsersAdded} />
-      }
+      <ConfirmationDialog open={confirmationDialogOpen} onClose={handleDialogClose} message={confirmationDialogMessage} />
+      <CreateFestivalDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} onFestivalCreated={handleFestivalCreated} />
+      {festivalId && <EditFestivalDialog festival={festival} open={openEditFestivalDialog} onClose={() => setOpenEditFestivalDialog(false)} onFestivalEdited={handleFestivalEdited} />}
+      {festivalId && <AddUsersToFestival festivalId={festivalId} open={openEditUsersDialog} onClose={() => setOpenEditUsersDialog(false)} onUsersAdded={handleUsersAdded} />}
     </>
   );
 }

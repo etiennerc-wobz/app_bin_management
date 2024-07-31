@@ -42,19 +42,22 @@ const SimpleBottomNavigation = () => {
       navigate('/map');
     }
   };
-  const theme = createTheme({
-    components: {
-      MuiBottomNavigationAction: {
-        styleOverrides: {
-          root: {
-            "&.Mui-selected": {
-              color: user.iswobzadmin ? '#2222bb' : 'green',
+    const theme = createTheme({
+      components: {
+        MuiBottomNavigationAction: {
+          styleOverrides: {
+            root: {
+              "&.Mui-selected": {
+                color: '#74C1BA',
+              },
+            },
+            label: {
+              fontFamily: 'Inter, sans-serif',
             },
           },
         },
       },
-    },
-  });
+    });
 
   return (
     <ThemeProvider theme={theme}>

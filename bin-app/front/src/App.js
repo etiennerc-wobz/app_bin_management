@@ -27,9 +27,9 @@ const App = () => {
   }
 
   return (
-    <Router className="overflow-hidden">
+    <Router className="overflow-hidden ">
       {user && token && (isMobile ? <SimpleBottomNavigation /> : <ResponsiveAppBar />)}
-      <div className="App flex flex-col min-h-screen">
+      <div className="App flex flex-col min-h-screen font-inter">
         <Routes>
           <Route path="/" element={<PrivateRoute><Festival /></PrivateRoute>} />
           <Route path="/login" element={<Login />} />
