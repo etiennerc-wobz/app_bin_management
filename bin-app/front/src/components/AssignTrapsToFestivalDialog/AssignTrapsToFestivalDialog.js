@@ -88,10 +88,10 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
 
                 }}
             >
-                <DialogTitle>Traps</DialogTitle>
+                <DialogTitle>Graals</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Liste des traps disponibles :
+                        Liste des graals disponibles :
                     </DialogContentText>
 
                     <FormGroup>
@@ -101,9 +101,9 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
                                     <Checkbox
                                         onChange={(event) => handleCheckboxChange(event, trap.id)}
                                         sx={{
-                                            color: '#0D5200',
+                                            color: '#19423d',
                                             '&.Mui-checked': {
-                                                color: '#0D5200',
+                                                color: '#19423d',
                                             },
                                         }}
                                     />
@@ -113,15 +113,25 @@ export default function AssignTrapsToFestivalDialog({ festivalId, open, onClose,
                                 checked={selectedTraps.includes(trap.id)}
                             />
                         ))}
+                        {freeTraps.length === 0 &&
+                            <DialogContentText
+                                sx={{
+                                    fontSize: '1.2em', // Augmente la taille de la police
+                                    color: '#19423d', // Change la couleur du texte en rouge
+                                }}
+                            >
+                                Aucun graal disponible
+                            </DialogContentText>
+                        }
                     </FormGroup>
 
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel} sx={{ color: '#2A0000' }}
+                    <Button onClick={handleCancel} sx={{ color: '#19423d' }}
                     >Annuler
                     </Button>
-                    <Button type="submit" sx={{ color: '#0D5200' }}
+                    <Button type="submit" sx={{ color: '#74BDB6' }}
                     >Enregistrer</Button>
                 </DialogActions>
             </Dialog>

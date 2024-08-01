@@ -176,7 +176,9 @@ const Festival = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center p-0 sm:p-10 sm:pt-28">
-      <div className="w-full flex items-center justify-between bg-wobzBlue p-4 ">
+      
+      
+      <div id="pageHeader" className="w-full flex items-center justify-between bg-wobzBlue p-4 ">
         <FestivalIcon className="text-white" />
         <h1 className="text-3xl text-white font-inter ">Festival</h1>
         <ChangeFestivalMenu festival={favoriteFestival ? favoriteFestival : null} festivals={user.iswobzadmin ? allFestivals : festivals} onChangeFestival={handleFestivalChange} />
@@ -187,6 +189,8 @@ const Festival = () => {
           onChangeFestival={handleFestivalChange}
         />
       </div>
+
+      
       {loading ? (
         <div className="pt-12">
           <CircularProgress />

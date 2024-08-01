@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import CircularProgressWithLabel from '../CircularProgressWithLabel/CircularProgressWithLabel';
 import StatusIndicator from '../StatusIndicator/StatusIndicator';
 import { getBinTraps } from '../../api';
-import { Icon } from '@mui/material';
+import { Box, Icon } from '@mui/material';
 import ShareLocationIcon from '@mui/icons-material/ShareLocation';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import Checkbox from '@mui/material/Checkbox';
 
 const useResizeFont = (ref, containerRef, title) => {
   useEffect(() => {
@@ -27,10 +28,10 @@ const useResizeFont = (ref, containerRef, title) => {
   }, [ref, containerRef, title]); // Ajoutez 'title' aux dépendances
 };
 
-const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, unassignMode }) => {
-  const baseStyle = "md:w-3/4 p-4 bg-secondary rounded-full mx-auto cursor-pointer flex items-center justify-between";
-  const hoverStyle = unassignMode ? "hover:bg-red-500" : "hover:bg-gray-300";
-  const activeStyle = unassignMode ? "bg-red-200" : "";
+const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, unassignMode, selected, onCheckboxChange }) => {
+  const baseStyle = "md:w-3/4 p-4 bg-secondary rounded-[2rem] mx-auto cursor-pointer flex items-center justify-between";
+  const hoverStyle = "md:w-3/4 p-4 bg-secondary rounded-[2rem] mx-auto cursor-pointer flex items-center justify-between";
+  const activeStyle = "md:w-3/4 p-4 bg-secondary rounded-[2rem] mx-auto cursor-pointer flex items-center justify-between"
 
   const myStatus = status === "connected";
   
@@ -59,7 +60,22 @@ const BinListElement = ({ id, title, zone, traps, fillrate, status, onClick, una
 
   return (
       <div className={`${baseStyle} ${hoverStyle} ${activeStyle}`} onClick={onClick}>
+              {unassignMode && (
+                <Checkbox
+                  checked={selected}
+                  onChange={() => onCheckboxChange(id)}
+                  inputProps={{ 'aria-label': 'primary checkbox' }}
+                  sx={{
+                    color: '#19423d',
+                    '&.Mui-checked': {
+                        color: '#19423d',
+                    },
+                  }}
+                />
+              )}
+
         <div className="flex items-center justify-between">
+
           <div className="flex items-center">
             <div className="ml-2 mr-2">
               <CircularProgressWithLabel value={fillrate} size="1" />

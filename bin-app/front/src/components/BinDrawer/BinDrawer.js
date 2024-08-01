@@ -92,7 +92,7 @@ export default function BinDrawer({ open, isAdmin, setOpen, onAction }) {
         open={open}
         onClose={toggleDrawer(false)}
         sx={{
-          zIndex: 2,
+          zIndex: 10,
           '& .MuiDrawer-paper': {
             width: isMobile ? 240 : 290,
             boxSizing: 'border-box',
@@ -104,7 +104,7 @@ export default function BinDrawer({ open, isAdmin, setOpen, onAction }) {
         }}
         anchor='right'
       >
-        <div className="text-black p-2 text-center mb-2 sm:text-2xl sm:mt-20">
+        <div className="text-black p-2 text-center mb-2 mt-8 sm:text-2xl sm:mt-20">
           Menu Bin
         </div>
         {DrawerList}

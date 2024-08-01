@@ -43,7 +43,7 @@ const Traps = ({ binId, update }) => {
   ) : (
     <>
       <p className="text-2xl sm:text-4xl text-start pl-4">
-        {traps.length > 0 ? 'Traps : ' : 'Aucune trap'}
+        {traps.length > 0 ? 'Graals : ' : 'Aucun graal'}
       </p>
       <div className="w-11/12 grid grid-cols-1 lg:grid-cols-2 gap-2 pb-4">
         {traps.map((trap, index) => (

@@ -15,6 +15,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MapBinLocate from '../components/MapBinLocate/MapBinLocate';
 import UnassignTrapsFromBinDialog from '../components/UnassignTrapsFromBinDialog/UnassignTrapsFromBinDialog';
 
+import GlobalMenu from '../components/GlobalMenu/GlobalMenu';
+import KitchenIcon from '@mui/icons-material/Kitchen';
+
+
 const Bin = () => {
   const { id } = useParams();
 
@@ -40,12 +44,12 @@ const Bin = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if(!openMap) {
-      fetchBins();
+      if (!openMap) {
+        fetchBins();
       }
-    }, 5000); 
-  
-    return () => clearInterval(intervalId); 
+    }, 5000);
+
+    return () => clearInterval(intervalId);
   }, [id, openMap]);
 
 
@@ -95,7 +99,7 @@ const Bin = () => {
 
   const fetchMyRole = async () => {
     try {
-      if(!thisFestival) {
+      if (!thisFestival) {
         return;
       }
       const role = await getUserRole(user.id, thisFestival.id);
@@ -116,9 +120,16 @@ const Bin = () => {
 
   if (!thisBin || !binTraps || !myRole) {
     return (
-      <div className='pt-20'>
-        <CircularProgress />
-      </div>
+      <>
+        <div id="pageHeader" className="w-full flex items-center justify-between bg-wobzBlue p-4 fixed top-0 left-0 right-0 z-20">
+          <KitchenIcon className="text-white" />
+          <h1 className="text-3xl text-white font-inter pr-44">Bin</h1>
+          <GlobalMenu />
+        </div>
+        <div className='pt-40'>
+          <CircularProgress />
+        </div>
+      </>
     );
   }
 
@@ -129,14 +140,14 @@ const Bin = () => {
 
   const handleTrapsUpdate = () => {
     setOpenSnackbar(true);
-    setSnackbarMessage('Traps ajoutées avec succès');
+    setSnackbarMessage('Graals ajoutées avec succès');
     fetchThisFestival();
   };
 
   const handleTrapsUnAssignment = () => {
     fetchThisFestival();
     setOpenSnackbar(true);
-    setSnackbarMessage('Traps supprimées avec succès');
+    setSnackbarMessage('Graals supprimées avec succès');
     fetchThisFestival();
   };
 
@@ -175,27 +186,17 @@ const Bin = () => {
 
   return (
     <div id="pageBin" className="flex flex-col items-start sm:items-center w-full h-full sm:pt-20">
-      <div id="header" className="w-full bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-row justify-between items-center sm:w-11/12">
+
+
+      <div id="pageHeader" className="w-full flex items-center justify-between bg-wobzBlue p-4 fixed top-0 left-0 right-0 z-20">
+        <KitchenIcon className="text-white" />
+        <h1 className="text-3xl text-white font-inter pr-44">Bin</h1>
+        <GlobalMenu />
+      </div>
+
+      <div id="DivBin" className="w-full sm:w-2/3 flex flex-row justify-between items-center pt-20 px-4 ">
         <div className="flex flex-col items-start sm:mr-10 w-[16em] sm:w-11/12" >
-          <div className="fixed bottom-16 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
-            <Button
-              onClick={() => setOpenDrawer(true)}
-              sx={{
-                color: 'white',
-                backgroundColor: '#155A40',
-                border: '2px solid #053B0B',
-                borderRadius: '50%',
-                minWidth: 'auto',
-                width: isMobile ? '50px' : '80px',
-                height: isMobile ? '50px' : '80px',
-                '&:hover': {
-                  backgroundColor: '#0F4430',
-                },
-              }}
-            >
-              <MenuIcon />
-            </Button>
-          </div>
+
 
           {!isMobile && (
             <div className="mb-4">
@@ -208,33 +209,57 @@ const Bin = () => {
           </div>
           <div className="text-2xl sm:text-4xl text-start mt-4" style={{ fontSize: '20px' }}>
             <ShareLocationIcon className="mr-1 mb-1" style={{ fontSize: 32 }} />
-            <span className="sm:text-4xl"><i>{thisBin.zone}</i></span>
+            <span className="sm:text-4xl text-wobzBlue">{thisBin.zone}</span>
           </div>
         </div>
         <div className='flex flex-col items-center sm:items-start sm:mr-10 sm:w-1/4'>
           {isMobile && (
-            <div className="mb-4">
+            <div className="mb-2">
               <StatusIndicator isConnected={thisStatus} />
             </div>
           )}
-          <div className="mt-4 sm:mt-0">
+          <div className="mt-0 sm:mt-0">
             <CircularProgressWithLabel value={thisBin.fillrate} size={isSmallScreen ? "2" : "3"} />
           </div>
         </div>
       </div>
+
+
       <div id="body" className="flex flex-col items-center w-full p-4 pb-32 sm:p-0 sm:pb-8 sm:mt-4">
         <Traps binId={thisBin.id} update={addTrapDialogOpen || unassignTrapDialogOpen} />
-        {(myRole.role === 'admin' || user.iswobzadmin) && 
-        (
-          <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 text:sm border-4 sm:border-2 border-gray-400 rounded-full cursor-pointer sm:hover:bg-gray-400' onClick={handleAddTrapButtonClicked}>
-          <p>Ajouter une trap</p>
-          {thisFestivalTraps.length > 0 && <p className="text-sm">({thisFestivalTraps.length} trap disponibles)</p>}
-        </div>
-        )  
+        {(myRole.role === 'admin' || user.iswobzadmin) &&
+          (
+            <div className='bg-gray-200 sm:bg-white p-4 sm:p-0 flex flex-col items-center w-3/4 text:sm border-4 sm:border-2 border-gray-400 rounded-full cursor-pointer sm:hover:bg-gray-400' onClick={handleAddTrapButtonClicked}>
+              <p>Ajouter un graal</p>
+              {thisFestivalTraps.length > 0 && <p className="text-sm">({thisFestivalTraps.length} graals disponibles)</p>}
+            </div>
+          )
         }
-        
+
 
       </div>
+
+
+      <div id="FAB" className="fixed bottom-16 right-4 sm:bottom-10 sm:right-20 sm:p-4 sm:p-0">
+        <Button
+          onClick={() => setOpenDrawer(true)}
+          sx={{
+            color: 'white',
+            backgroundColor: '#74BDB6',
+            border: '2px solid #304f4c',
+            borderRadius: '50%',
+            minWidth: 'auto',
+            width: isMobile ? '50px' : '80px',
+            height: isMobile ? '50px' : '80px',
+            '&:hover': {
+              backgroundColor: '#0F4430',
+            },
+          }}
+        >
+          <MenuIcon />
+        </Button>
+      </div>
+
       <AssignTrapsToBinDialog traps={thisFestivalTraps} binId={thisBin.id} festivalId={user.festivalId} open={addTrapDialogOpen} onClose={() => setAddTrapDialogOpen(false)} onUpdate={handleTrapsUpdate} />
       <EditBinDialog bin={thisBin} open={openEditBinDialog} onClose={() => setOpenEditBinDialog(false)} onBinEdited={handleBinEdited} />
       <UnassignTrapsFromBinDialog

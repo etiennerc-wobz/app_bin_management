@@ -17,12 +17,15 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Collapse from '@mui/material/Collapse';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
-
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import PersonIcon from '@mui/icons-material/Person';
 import { getFestivalUsers, getUserRole, changeUserRole, removeUserFromFestival } from '../../api';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../AuthContext/AuthContext';
 import SnackbarAlert from '../SnackbarAlert/SnackbarAlert';
 import Divider from '@mui/material/Divider';
+
+import AddUsersToFestival from '../AddUsersToFestival/AddUsersToFestival';
 
 export default function FestivalUsers({ festivalId, onUsersChanged }) {
   const [open, setOpen] = useState(false);
@@ -33,6 +36,8 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarColor, setSnackbarColor] = useState('success');
+  const [addUsersDialogOpen, setAddUsersDialogOpen] = useState(false);
+  const [myRole, setMyRole] = useState('');
 
   const fetchFestivalUsers = async () => {
     try {
@@ -52,6 +57,17 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
   }, []);
 
 
+  const fetchUserRole = async () => {
+    try {
+      const role = await getUserRole(user.id, festivalId);
+      setMyRole(role.role);
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+    }
+  };
+  useEffect(() => {
+    fetchUserRole();
+  }, []);
 
 
   const handleClickOpen = (selectedUser) => {
@@ -63,6 +79,20 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
     setOpen(false);
     setSelectedUser(null);
   };
+
+
+  const handleUsersAdded = () => {
+    fetchFestivalUsers();
+    onUsersChanged();
+    setOpenSnackbar(true);
+    setSnackbarMessage('Utilisateurs ajoutés avec succès');
+
+  };
+
+  const handleAddUsers = () => {
+    setAddUsersDialogOpen(true);
+  };
+
 
   const handleRoleChange = async (event) => {
     const newRole = event.target.value;
@@ -124,6 +154,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
   };
 
   return (
+    <>
     <Box
       className="user-list-box font-sans"
       sx={{
@@ -133,6 +164,7 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
         width: 'full',
         borderRadius: '18px',
         fontFamily: 'Inter, sans-serif',
+        maxHeight: '16rem',
       }}
     >
       <ListItemButton
@@ -183,12 +215,12 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
       </ListItemButton>
       <Collapse in={listOpen} timeout="auto" unmountOnExit>
         <Box>
-          <List dense style={{ maxHeight: '270px', overflow: 'auto' }}>
+          <List dense style={{ maxHeight: '12rem', overflow: 'auto' }}>
             {sortUsers(users).map((mapUser, index) => (
               <React.Fragment key={index}>
                 <ListItem
                   key={index}
-                  className={hasAdminRights ? "hover:bg-green-800 hover:bg-opacity-10 rounded-2xl cursor-pointer" : ""}
+                  className={hasAdminRights ? "hover:bg-wobzBlue hover:bg-opacity-10 rounded-2xl cursor-pointer" : ""}
                   onClick={() => handleClickOpen(mapUser)}
                   sx={{ paddingLeft: 3 }}
                 >
@@ -214,11 +246,25 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
               </React.Fragment>
 
             ))}
+
+            {(user.iswobzadmin || myRole==='admin' || myRole==='owner')
+             && (
+              <AddCircleOutlineIcon
+                variant="contained"
+                onClick={handleAddUsers}
+                sx={{ color: '#74BDB6', margin:1, fontSize: 40, margin: 'auto', display: 'block', cursor: 'pointer' }}
+              />
+                
+            )}
+
           </List>
 
           {hasAdminRights && (
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-              <DialogTitle id="form-dialog-title">{selectedUser?.name}</DialogTitle>
+              <DialogTitle id="form-dialog-title">
+                <PersonIcon className="mr-2"
+                />
+                {selectedUser?.name}</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   Modifier le rôle de l'utilisateur ou l'exclure du festival.
@@ -236,10 +282,10 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
                 </Select>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleExcludeUser} sx={{ color: '#2A0000', fontSize: '0.9em' }}>
+                <Button onClick={handleExcludeUser} sx={{ color: '#74BDB6', fontSize: '0.9em' }}>
                   Exclure
                 </Button>
-                <Button onClick={handleClose} sx={{ color: '#0D5200' }}>
+                <Button onClick={handleClose} sx={{ color: '#19423d' }}>
                   Fermer
                 </Button>
               </DialogActions>
@@ -249,5 +295,9 @@ export default function FestivalUsers({ festivalId, onUsersChanged }) {
         </Box>
       </Collapse>
     </Box>
+
+    <AddUsersToFestival open={addUsersDialogOpen} onClose={() => setAddUsersDialogOpen(false)} festivalId={festivalId} onUsersAdded={handleUsersAdded} />
+    </>
+
   );
 }

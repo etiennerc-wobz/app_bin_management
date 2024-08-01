@@ -102,6 +102,26 @@ export const unAssignBinFromFestival = async (binId) => {
   }
 };
 
+export const stopUsingFestivalBin = async (binId) => {
+  try {
+    const response = await api.post(`/api/bins/${binId}/stop-using`);
+    return response.data;
+  } catch (error) {
+    console.error('Error stopping using festival bin:', error);
+    throw error;
+  }
+};
+
+export const startUsingFestivalBins= async (festivaldId, bins) => {
+  try {
+    const response = await api.post(`/api/festivals/${festivaldId}/start-using`, { bins });
+    return response.data;
+  } catch (error) {
+    console.error('Error starting using festival bins:', error);
+    throw error;
+  }
+}
+
 //NOTE: This function is not used in the app (replaced by unAssignBinFromFestival)
 export const deleteBin = async (binId) => {
   try {
@@ -419,6 +439,16 @@ export const getUserRole = async (userId, festivalId) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching user role:', error);
+    throw error;
+  }
+}
+
+export const getUnusedFestivalBins = async (festivalId) => {
+  try {
+    const response = await api.get(`/api/festivals/${festivalId}/unused-bins`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching unused festival bins:', error);
     throw error;
   }
 }

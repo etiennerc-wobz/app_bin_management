@@ -90,10 +90,10 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
         bgcolor: open ? '#E6F4F2' : '#C1EAE5',
         pb: open ? 0 : 0,
         transition: 'background-color 0.3s ease',
-        width: '20rem',
         borderRadius: '18px',
         fontFamily: 'Inter, sans-serif',
         width: '100%',
+        maxHeight: '14rem',
       }}
     >
       <ListItemButton
@@ -105,12 +105,15 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
           pb: open ? 2 : 2.5,
           borderRadius: '18px',
           backgroundColor: '#C1EAE5',
+          maxHeight: '14rem',
+
           '&:hover, &:focus': { backgroundColor: '#C1EAE5', borderRadius: '18px' },
           '@media (max-width: 600px)': {
             px: 2,
             pt: 2,
             pb: 2,
             borderRadius: '18px',
+            
           },
         }}
       >
@@ -144,7 +147,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <Box>
-          <List dense={dense} style={{ maxHeight: '270px', overflow: 'auto' }}>
+          <List dense={dense} style={{ maxHeight: '10rem', overflow: 'auto' }}>
 
             {graals.length === 0 && (
               <h4 style={{ textAlign: 'center', color: 'rgba(0,0,0,0.6)', margin: '1rem 0' }}>

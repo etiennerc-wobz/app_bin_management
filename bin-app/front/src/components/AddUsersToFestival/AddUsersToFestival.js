@@ -10,15 +10,19 @@ import { useContext } from 'react';
 import { useState } from 'react';
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 
-import { getUsers } from '../../api';
+import { getUserRole, getUsers } from '../../api';
 import { addUsersToFestival } from '../../api';
 import { getFestivalUsers } from '../../api';
+import { getMyRole } from '../../api';
+
 export default function AddUsersToFestival({ festivalId, open, onClose, onUsersAdded }) {
 
     const [users, setUsers] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
     const { user } = useContext(AuthContext);
     const [myFestivalUsers, setMyFestivalUsers] = useState([]);
+
+    const [myRole, setMyRole] = useState('');
 
     const handleClose = () => {
         onClose();
@@ -45,6 +49,19 @@ export default function AddUsersToFestival({ festivalId, open, onClose, onUsersA
     }
 
 
+    const fetchMyRole = async () => {
+        try {
+            const role = await getUserRole(user.id, festivalId);
+            setMyRole(role);
+        } catch (error) {
+            console.error('Error fetching my role:', error);
+        }
+    }
+    React.useEffect (() => {
+        fetchMyRole();
+    }, []);
+
+
     const handleCheckboxChange = (event, userId) => {
         if (event.target.checked) {
 
@@ -66,7 +83,13 @@ export default function AddUsersToFestival({ festivalId, open, onClose, onUsersA
         const selectedUsersIds = selectedUsers.map(id => id);
         console.log('adding usersids:', selectedUsersIds)
         try {
+
+            console.log('festivalId:', festivalId);
+            console.log('my role:', myRole);
+
             const response = await addUsersToFestival(festivalId, { usersIds: selectedUsersIds });
+
+
             console.log('response:', response);
             fetchFestivalUsers();
             onUsersAdded();
@@ -102,9 +125,9 @@ export default function AddUsersToFestival({ festivalId, open, onClose, onUsersA
                                     <Checkbox
                                         onChange={(event) => handleCheckboxChange(event, user.id)}
                                         sx={{
-                                            color: '#0D5200',
+                                            color: '#74BDB6',
                                             '&.Mui-checked': {
-                                                color: '#0D5200',
+                                                color: '#74BDB6',
                                             },
                                         }}
                                     />
@@ -114,13 +137,21 @@ export default function AddUsersToFestival({ festivalId, open, onClose, onUsersA
                                 checked={selectedUsers.includes(user.id)}
                             />
                         ))}
+
                     </FormGroup>
+
+                    {users.filter(user => !myFestivalUsers.find(festivalUser => festivalUser.id === user.id)).length === 0 && (
+                        <p>
+                            Aucun utilisateur éligible
+                        </p>
+                    )}
+
 
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{ color: '#2A0000' }}>Annuler</Button>
-                    <Button type="submit" sx={{ color: '#0D5200' }}>Enregistrer</Button>
+                    <Button onClick={handleClose} sx={{ color: '#19423d' }}>Annuler</Button>
+                    <Button type="submit" sx={{ color: '#74BDB6' }}>Enregistrer</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

@@ -41,7 +41,7 @@ const TrapListElement = ({ trap, onUpdateTrap }) => {
     const myMode = thisTrap.mode === "open" ? "Actif" : "Verrouillé";
 
     return (
-        <div className="p-4 border-b border-gray-200 bg-gray-200 rounded-full mx-auto flex flex-row items-center justify-between">
+        <div className="p-4 border-b border-gray-200 bg-gray-200 rounded-[2rem] mx-auto flex flex-row items-center justify-between">
             <div className="flex flex-row items-center">
                 <p className="text-xl pb-1 font-bold ml-2 mr-2 sm:text-4xl sm:mr-2">
                     {thisTrap.id}

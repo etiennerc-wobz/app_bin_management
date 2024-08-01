@@ -93,9 +93,9 @@ export default function UnassignTrapsFromBinDialog({ binId, open, onClose, onUpd
                                         <Checkbox
                                             onChange={(event) => handleCheckboxChange(event, trap.id)}
                                             sx={{
-                                                color: '#0D5200',
+                                                color: '#19423d',
                                                 '&.Mui-checked': {
-                                                    color: '#0D5200',
+                                                    color: '#19423d',
                                                 },
                                             }}
                                         />
@@ -109,16 +109,16 @@ export default function UnassignTrapsFromBinDialog({ binId, open, onClose, onUpd
 
                             <DialogActions>
                                 <Button
-                                    sx={{ color: '#2A0000' }}
+                                    sx={{ color: '#74BDB6' }}
                                     onClick={onClose}
-                                    className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                                    className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wobzBlue'
                                 >
                                     Annuler
                                 </Button>
                                 <Button
-                                    sx={{ color: '#0D5200' }}
+                                    sx={{ color: '#19423d' }}
                                     type="submit"
-                                    className='px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                                    className='px-4 py-2 text-sm font-medium text-white bg-wobzBlue rounded-md hover:bg-wobzBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wobzBlue'
                                 >
                                     Désassigner
                                 </Button>

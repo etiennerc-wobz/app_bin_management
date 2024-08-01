@@ -6,10 +6,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { createFestival } from '../../api';
+import { createFestival, startUsingFestivalBins } from '../../api';
 
 import { useState } from 'react';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { Checkbox, Divider, FormControlLabel, FormGroup } from '@mui/material';
 import { getBins } from '../../api';
 import { getMyFestivalBins } from '../../api';
 import { AuthContext } from '../AuthContext/AuthContext';
@@ -24,6 +24,7 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
     const [selectedBins, setSelectedBins] = useState([]);
     const { user } = useContext(AuthContext);
     const [freeBins, setFreeBins] = useState([]);
+    const [unusedFestivalBins, setunusedFestivalBins] = useState([]);
 
     const handleClose = () => {
         onClose();
@@ -48,12 +49,15 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
         }
     }
 
+
     const fetchMyFestivalBins = async () => {
         try {
             const bins = await getMyFestivalBins(user.id);
 
             setMyFestivalBins(bins);
-            setSelectedBins(bins.map(bin => bin.id));
+            setSelectedBins(bins
+                .filter (bin => bin.used)
+                .map(bin => bin.id));
         } catch (error) {
             console.error('Error fetching bins:', error);
         }
@@ -82,13 +86,13 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
         const selectedBinsIds = selectedBins.map(id => ({ bin_id: id }));
 
         try {
-
-            const response = await setFestivalBins(festivalId.id, selectedBinsIds);
-
+            console.log('selectedBinsIds:', selectedBinsIds);
+            const response = await startUsingFestivalBins(festivalId.id, selectedBinsIds);
+            
             onAssignment();
             handleClose();
         } catch (error) {
-            console.error('Erreur lors de la création du festival:', error);
+            console.error('Erreur lors de lactivation des bins:', error);
         }
     };
 
@@ -108,19 +112,21 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
                 <DialogTitle>Bins</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Veuillez sélectionner les Bins à assigner
+                        Veuillez sélectionner les Bins à utiliser
                     </DialogContentText>
-
+                    <br />
                     <FormGroup>
-                        {freeBins.filter(bin => !myFestivalBins.some(festivalBin => festivalBin.id === bin.id)).map((bin, index) => (
+
+                        <h3>Bins non utilisées assignées à ce festival : </h3>
+                        {myFestivalBins.filter(bin => !bin.used ).map((bin, index) => (
                             <FormControlLabel
                                 control={
                                     <Checkbox
                                         onChange={(event) => handleCheckboxChange(event, bin.id)}
                                         sx={{
-                                            color: '#0D5200',
+                                            color: '#19423d',
                                             '&.Mui-checked': {
-                                                color: '#0D5200',
+                                                color: '#19423d',
                                             },
                                         }}
                                     />
@@ -130,13 +136,40 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
                                 checked={selectedBins.includes(bin.id)}
                             />
                         ))}
+                        {user.iswobzadmin && (
+                            <>
+                                <Divider />
+                                <h3>Bins non assignées à ce festival : </h3>
+                                {freeBins.filter(bin => !myFestivalBins.some(festivalBin => festivalBin.id === bin.id)).map((bin, index) => (
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                onChange={(event) => handleCheckboxChange(event, bin.id)}
+                                                sx={{
+                                                    color: '#19423d',
+                                                    '&.Mui-checked': {
+                                                        color: '#19423d',
+                                                    },
+                                                }}
+                                            />
+                                        }
+                                        label={"Bin " + bin.id + " (" + bin.name + ")"}
+                                        key={index}
+                                        checked={selectedBins.includes(bin.id)}
+                                    />
+                                ))}
+                            </>
+                        )
+                        }
+
+
                     </FormGroup>
 
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} sx={{ color: '#2A0000' }}>Annuler</Button>
-                    <Button type="submit" sx={{ color: '#0D5200' }}>Enregistrer</Button>
+                    <Button onClick={handleClose} sx={{ color: '#74BDB6' }}>Annuler</Button>
+                    <Button type="submit" sx={{ color: '#19423d' }}>Enregistrer</Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
