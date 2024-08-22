@@ -79,6 +79,7 @@ const MagicBins = () => {
         }
     };
 
+
     // Fetch the user's favorite festival and role
     useEffect(() => {
         fetchBins();

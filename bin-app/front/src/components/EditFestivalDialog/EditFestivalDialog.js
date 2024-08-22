@@ -6,22 +6,20 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { editFestivalInformations } from '../../api';
+import {editFestivalInformations} from '../../api';
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {MobileDatePicker} from '@mui/x-date-pickers/MobileDatePicker';
 
-import { useState } from 'react';
+import {useState} from 'react';
 import dayjs from 'dayjs';
-import { frFR } from '@mui/x-date-pickers/locales';
+import {frFR} from '@mui/x-date-pickers/locales';
 
 
-export default function EditFestivalDialog({ festival, open, onClose, onFestivalEdited }) {
+export default function EditFestivalDialog({festival, open, onClose, onFestivalEdited}) {
 
-    console.log('stdate', festival.start_date);
-    console.log('dayjsstdate', dayjs(festival.start_date));
     const [startDate, setStartDate] = useState(dayjs(festival.start_date));
     const [endDate, setEndDate] = useState(dayjs(festival.end_date));
 
@@ -74,8 +72,6 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
         }
     }
 
-    console.log('festival', festival);
-    console.log('fes id', festival.id);
     if (festival.id === -1) {
         return null;
     } else {
@@ -90,14 +86,14 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
                     <DialogContent>
 
                         <TextField
-                            
+
                             margin="dense"
                             id="name"
                             placeholder={festival.name}
                             type="Nom"
                             fullWidth
                             autoComplete='off'
-                            sx={{ mb: 2 }}
+                            sx={{mb: 2}}
                         />
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -106,7 +102,7 @@ export default function EditFestivalDialog({ festival, open, onClose, onFestival
                                 format="DD/MM/YYYY"
                                 value={startDate}
                                 onChange={handleStartDateChange}
-                                sx={{ mb: 2 }}
+                                sx={{mb: 2}}
                             />
                         </LocalizationProvider>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>

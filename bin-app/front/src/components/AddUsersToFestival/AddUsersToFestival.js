@@ -81,16 +81,12 @@ export default function AddUsersToFestival({ festivalId, open, onClose, onUsersA
     const handleSubmit = async (event) => {
         event.preventDefault();
         const selectedUsersIds = selectedUsers.map(id => id);
-        console.log('adding usersids:', selectedUsersIds)
         try {
 
-            console.log('festivalId:', festivalId);
-            console.log('my role:', myRole);
 
             const response = await addUsersToFestival(festivalId, { usersIds: selectedUsersIds });
 
 
-            console.log('response:', response);
             fetchFestivalUsers();
             onUsersAdded();
             handleClose();

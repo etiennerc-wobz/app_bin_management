@@ -59,7 +59,6 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
             await assignTrapsToBin(binId, selectedTraps);
             onUpdate();
             onClose();
-            console.log('Traps assigned to bin:', selectedTraps);
         } catch (error) {
             console.error('Error assigning traps to bin:', error);
         }

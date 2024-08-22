@@ -86,7 +86,6 @@ export default function AssignBinDialog({ festivalId, open, onClose, onAssignmen
         const selectedBinsIds = selectedBins.map(id => ({ bin_id: id }));
 
         try {
-            console.log('selectedBinsIds:', selectedBinsIds);
             const response = await startUsingFestivalBins(festivalId.id, selectedBinsIds);
             
             onAssignment();

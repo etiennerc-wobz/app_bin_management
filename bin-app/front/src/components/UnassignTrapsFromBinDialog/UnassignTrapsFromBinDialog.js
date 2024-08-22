@@ -4,11 +4,11 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { getBinTraps, unassignTrapsFromBin } from '../../api';
-import { useState, useEffect } from 'react';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import {getBinTraps, unassignTrapsFromBin} from '../../api';
+import {useState, useEffect} from 'react';
+import {Checkbox, FormControlLabel, FormGroup} from '@mui/material';
 
-export default function UnassignTrapsFromBinDialog({ binId, open, onClose, onUpdate }) {
+export default function UnassignTrapsFromBinDialog({binId, open, onClose, onUpdate}) {
     const [selectedTraps, setSelectedTraps] = useState([]);
     const [thisBinTraps, setThisBinTraps] = useState([]);
 
@@ -23,9 +23,7 @@ export default function UnassignTrapsFromBinDialog({ binId, open, onClose, onUpd
 
     const fetchBinTraps = async (binId) => {
         try {
-            console.log('Fetching traps for bin:', binId);
             const returnedTraps = await getBinTraps(binId);
-            console.log('Traps:', returnedTraps);
             setThisBinTraps(returnedTraps);
         } catch (error) {
             console.error('Error fetching traps:', error);
@@ -51,7 +49,6 @@ export default function UnassignTrapsFromBinDialog({ binId, open, onClose, onUpd
             onUpdate(); // Ensure onUpdate is called to trigger Bin component update
             fetchBinTraps(binId); // Fetch updated traps after unassignment
             onClose();
-            console.log('Traps unassigned from bin:', selectedTraps);
         } catch (error) {
             console.error('Error unassigning traps from bin:', error);
         }
@@ -109,14 +106,14 @@ export default function UnassignTrapsFromBinDialog({ binId, open, onClose, onUpd
 
                             <DialogActions>
                                 <Button
-                                    sx={{ color: '#74BDB6' }}
+                                    sx={{color: '#74BDB6'}}
                                     onClick={onClose}
                                     className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wobzBlue'
                                 >
                                     Annuler
                                 </Button>
                                 <Button
-                                    sx={{ color: '#19423d' }}
+                                    sx={{color: '#19423d'}}
                                     type="submit"
                                     className='px-4 py-2 text-sm font-medium text-white bg-wobzBlue rounded-md hover:bg-wobzBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wobzBlue'
                                 >
