@@ -12,26 +12,23 @@ const Map = () => {
   const [festivalId, setFestivalId] = useState(0);
   const { user } = useContext(AuthContext);
 
-
+  // Fetches bins associated with the user's festival
   const fetchMyFestivalBins = async () => {
     try {
       const bins = await getMyFestivalBins(user.id);
-
       setBins(bins);
     } catch (error) {
       console.error('Error fetching bins:', error);
     }
   }
 
+  // Fetch bins when the component mounts
   useEffect(() => {
     fetchMyFestivalBins();
   }, []);
 
-
-
-
+  // Initialize the map and add bins as markers
   useEffect(() => {
-
     mapboxgl.accessToken = 'pk.eyJ1IjoiZ3JlZ29pcmVtdWxsZXIiLCJhIjoiY2x4dnJubm9iMG9oZjJsc2dtZ281N3VzZiJ9.H_bx7U5CwGOjxDM7LP8nUQ';
     const map = new mapboxgl.Map({
       container: 'map', // container ID
@@ -44,7 +41,7 @@ const Map = () => {
     map.touchZoomRotate.disableRotation();
     map.touchPitch.disable();
 
-    // Add geolocate control to the map.
+    // Add geolocate control to the map
     const geolocate = new mapboxgl.GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
@@ -55,9 +52,8 @@ const Map = () => {
 
     map.addControl(geolocate);
 
-    // Trigger the geolocation control once the map is loaded
+    // Load custom marker image and add bins as markers on the map
     map.on('load', () => {
-
       map.loadImage('https://cdn-icons-png.flaticon.com/512/484/484167.png', (error, image) => {
         if (error) throw error;
         map.addImage('custom-marker', image);
@@ -118,21 +114,9 @@ const Map = () => {
     `)
             .addTo(map);
         });
-
-      }
-      );
-
-
-
-
+      });
     });
-
-
-
-
   }, [bins]);
-
-
 
   return <div id="map" className="w-full h-[100vh] sm:h-[90vh] mt-0 sm:mt-16 relative z-0" />;
 };
