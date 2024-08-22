@@ -1,19 +1,16 @@
-// src/api/api.js
 import axios from 'axios';
 
 const API_URL = 'http://10.58.131.69:4040';
 
-// Création d'une instance Axios
+// Create an Axios instance with the base URL
 const api = axios.create({
     baseURL: API_URL,
 });
 
 let logoutFunction = null;
 
-
-// Fonction pour définir le token JWT dans les en-têtes des requêtes Axios
+// Function to set the JWT token in Axios request headers
 export const setAuthToken = (token, logout) => {
-
     if (token) {
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
@@ -22,7 +19,7 @@ export const setAuthToken = (token, logout) => {
     logoutFunction = logout;
 };
 
-// Interceptor Axios pour gérer les erreurs d'authentification (401 et 403)
+// Axios interceptor to handle authentication errors (401 and 403)
 api.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -30,7 +27,7 @@ api.interceptors.response.use(
             const {status} = error.response;
             if (status === 401) {
                 console.error('*** Unauthorized error (Auth failed):', error);
-                // Déconnecter l'utilisateur côté client
+                // Log out the user on the client side
                 if (logoutFunction) {
                     logoutFunction();
                 }
@@ -42,7 +39,7 @@ api.interceptors.response.use(
     }
 );
 
-// Exports de toutes vos fonctions d'appel API avec l'instance Axios configurée
+// Fetch all bins
 export const getBins = async () => {
     try {
         const response = await api.get('/api/bins');
@@ -53,6 +50,7 @@ export const getBins = async () => {
     }
 };
 
+// Fetch all traps
 export const getTraps = async () => {
     try {
         const response = await api.get('/api/traps');
@@ -63,6 +61,7 @@ export const getTraps = async () => {
     }
 };
 
+// Fetch traps for a specific bin
 export const getBinTraps = async (binId) => {
     try {
         const response = await api.get('/api/bintraps', {
@@ -77,6 +76,7 @@ export const getBinTraps = async (binId) => {
     }
 };
 
+// Fetch a specific trap by ID
 export const getTrap = async (id) => {
     try {
         const response = await api.get('/api/trap', {
@@ -91,7 +91,7 @@ export const getTrap = async (id) => {
     }
 };
 
-// ** Protected to WOBZ ADMIN **
+// Unassign a bin from a festival (protected to WOBZ ADMIN)
 export const unAssignBinFromFestival = async (binId) => {
     try {
         const response = await api.post(`/api/bins/${binId}/unassign`);
@@ -102,6 +102,7 @@ export const unAssignBinFromFestival = async (binId) => {
     }
 };
 
+// Stop using a festival bin
 export const stopUsingFestivalBin = async (binId) => {
     try {
         const response = await api.post(`/api/bins/${binId}/stop-using`);
@@ -112,6 +113,7 @@ export const stopUsingFestivalBin = async (binId) => {
     }
 };
 
+// Start using bins for a festival
 export const startUsingFestivalBins = async (festivalId, bins) => {
     try {
         const response = await api.post(`/api/festivals/${festivalId}/start-using`, {bins});
@@ -120,9 +122,9 @@ export const startUsingFestivalBins = async (festivalId, bins) => {
         console.error('Error starting using festival bins:', error);
         throw error;
     }
-}
+};
 
-//NOTE: This function is not used in the app (replaced by unAssignBinFromFestival)
+// Delete a bin (not used in the app)
 export const deleteBin = async (binId) => {
     try {
         const response = await api.post('/api/deletebin', {id: binId});
@@ -133,7 +135,7 @@ export const deleteBin = async (binId) => {
     }
 };
 
-//NOTE: This function is not used in the app (replaced by assignTrapFromFestival)
+// Create a new bin (not used in the app)
 export const createBin = async (bin) => {
     try {
         const response = await api.post('/api/createbin', bin);
@@ -144,10 +146,10 @@ export const createBin = async (bin) => {
     }
 };
 
+// Close a trap
 export const closeTrap = async (trapId) => {
     try {
         const response = await api.post('/api/closetrap', {id: trapId});
-
         return response.data;
     } catch (error) {
         console.error('Error closing trap:', error);
@@ -155,11 +157,10 @@ export const closeTrap = async (trapId) => {
     }
 };
 
+// Open a trap
 export const openTrap = async (trapId) => {
     try {
-
         const response = await api.post('/api/opentrap', {id: trapId});
-
         return response.data;
     } catch (error) {
         console.error('Error opening trap:', error);
@@ -167,6 +168,7 @@ export const openTrap = async (trapId) => {
     }
 };
 
+// User login
 export const login = async (username, password) => {
     try {
         const response = await api.post('/api/login', {username, password});
@@ -177,17 +179,17 @@ export const login = async (username, password) => {
     }
 };
 
+// User registration
 export const register = async (username, password) => {
     try {
         const response = await api.post('/api/register', {username, password});
-        console.log('register response : ', response);
         return response.data;
     } catch (error) {
-        console.error('Error registering:', error);
         throw error;
     }
 };
 
+// Fetch the favorite festival of a user
 export const getFavoriteFestival = async (userId) => {
     try {
         const response = await api.get(`/api/users/${userId}/favorite-festival`);
@@ -198,6 +200,7 @@ export const getFavoriteFestival = async (userId) => {
     }
 };
 
+// Fetch bins associated with a user's festival
 export const getMyFestivalBins = async (userId) => {
     try {
         const response = await api.get(`/api/users/${userId}/bins`);
@@ -208,9 +211,9 @@ export const getMyFestivalBins = async (userId) => {
     }
 };
 
+// Fetch traps associated with a festival
 export const getFestivalTraps = async (festivalId) => {
     try {
-
         const response = await api.get(`/api/festivals/${festivalId}/traps`);
         return response.data;
     } catch (error) {
@@ -219,6 +222,7 @@ export const getFestivalTraps = async (festivalId) => {
     }
 }
 
+// Fetch all festivals
 export const getFestivals = async () => {
     try {
         const response = await api.get('/api/festivals');
@@ -229,6 +233,7 @@ export const getFestivals = async () => {
     }
 }
 
+// Change the favorite festival of a user
 export const changeFavoriteFestival = async (userId, festivalId) => {
     try {
         const response = await api.post(`/api/users/${userId}/favorite-festival`, {festivalId});
@@ -239,10 +244,9 @@ export const changeFavoriteFestival = async (userId, festivalId) => {
     }
 }
 
-// ** Protected to WOBZ ADMIN **
+// Create a new festival (protected to WOBZ ADMIN)
 export const createFestival = async (data) => {
     try {
-        console.log('data : ', data);
         const response = await api.post('/api/festivals', data);
         return response.data;
     } catch (error) {
@@ -251,7 +255,7 @@ export const createFestival = async (data) => {
     }
 }
 
-// ** Protected to WOBZ ADMIN **
+// Set bins for a festival (protected to WOBZ ADMIN)
 export const setFestivalBins = async (festivalId, bins) => {
     try {
         const response = await api.post(`/api/festivals/${festivalId}/bins`, {bins});
@@ -262,6 +266,7 @@ export const setFestivalBins = async (festivalId, bins) => {
     }
 }
 
+// Fetch free traps
 export const getFreeTraps = async () => {
     try {
         const response = await api.get('/api/traps/free');
@@ -272,6 +277,7 @@ export const getFreeTraps = async () => {
     }
 }
 
+// Fetch free bins
 export const getFreeBins = async () => {
     try {
         const response = await api.get('/api/bins/free');
@@ -282,7 +288,7 @@ export const getFreeBins = async () => {
     }
 }
 
-// ** Protected to WOBZ ADMIN **
+// Unassign a trap from a festival (protected to WOBZ ADMIN)
 export const unassignTrapFromFestival = async (trapId) => {
     try {
         const response = await api.post(`/api/traps/${trapId}/unassign`);
@@ -293,7 +299,7 @@ export const unassignTrapFromFestival = async (trapId) => {
     }
 }
 
-// ** Protected to WOBZ ADMIN **
+// Assign traps to a festival (protected to WOBZ ADMIN)
 export const assignTrapsToFestival = async (festivalId, traps) => {
     try {
         const response = await api.post(`/api/festivals/${festivalId}/traps`, {traps});
@@ -304,7 +310,7 @@ export const assignTrapsToFestival = async (festivalId, traps) => {
     }
 }
 
-// >> Protected to Festival Owner/Admin <<
+// Assign traps to a bin (protected to Festival Owner/Admin)
 export const assignTrapsToBin = async (binId, traps) => {
     try {
         const response = await api.post(`/api/bins/${binId}/traps`, {traps});
@@ -315,7 +321,7 @@ export const assignTrapsToBin = async (binId, traps) => {
     }
 }
 
-// >> Protected to Festival Owner/Admin <<
+// Unassign traps from a bin (protected to Festival Owner/Admin)
 export const unassignTrapsFromBin = async (binId, traps) => {
     try {
         const response = await api.post(`/api/bins/${binId}/unassign-traps`, {traps});
@@ -326,7 +332,7 @@ export const unassignTrapsFromBin = async (binId, traps) => {
     }
 }
 
-
+// Fetch free traps for a festival
 export const getFreeFestivalTraps = async (festivalId) => {
     try {
         const response = await api.get(`/api/festivals/${festivalId}/free-traps`);
@@ -337,9 +343,9 @@ export const getFreeFestivalTraps = async (festivalId) => {
     }
 }
 
+// Create a bin for demo purposes
 export const createBinDEMO = async (bin) => {
     try {
-
         const response = await api.post('/api/createbinDEMO', bin);
         return response.data;
     } catch (error) {
@@ -348,7 +354,7 @@ export const createBinDEMO = async (bin) => {
     }
 }
 
-// >> Protected to Festival Owner/Admin <<
+// Edit festival information (protected to Festival Owner/Admin)
 export const editFestivalInformations = async (name, dates, festivalId) => {
     try {
         const response = await api.post('/api/editfestival', {name, dates, festivalId});
@@ -359,10 +365,9 @@ export const editFestivalInformations = async (name, dates, festivalId) => {
     }
 }
 
-// >> Protected to Festival Owner/Admin <<
+// Edit bin information (protected to Festival Owner/Admin)
 export const editBinInformations = async (name, zone, binId) => {
     try {
-
         const response = await api.post('/api/editbin', {name, zone, binId});
         return response.data;
     } catch (error) {
@@ -371,7 +376,7 @@ export const editBinInformations = async (name, zone, binId) => {
     }
 }
 
-// >> Protected to Festival Owner/Admin <<
+// Edit bin location (protected to Festival Owner/Admin)
 export const editBinLocation = async (lat, lon, binId) => {
     try {
         const response = await api.post('/api/editbinlocation', {lat, lon, binId});
@@ -382,6 +387,7 @@ export const editBinLocation = async (lat, lon, binId) => {
     }
 }
 
+// Fetch the owner of a festival
 export const getFestivalOwner = async (festivalId) => {
     try {
         const response = await api.get(`/api/festivals/${festivalId}/owner`);
@@ -392,6 +398,7 @@ export const getFestivalOwner = async (festivalId) => {
     }
 }
 
+// Fetch festivals associated with a user
 export const getMyFestivals = async (userId) => {
     try {
         const response = await api.get(`/api/users/${userId}/festivals`);
@@ -402,6 +409,7 @@ export const getMyFestivals = async (userId) => {
     }
 }
 
+// Fetch all users
 export const getUsers = async () => {
     try {
         const response = await api.get('/api/users');
@@ -412,7 +420,7 @@ export const getUsers = async () => {
     }
 }
 
-// >> Protected to Festival Owner/Admin <<
+// Add users to a festival (protected to Festival Owner/Admin)
 export const addUsersToFestival = async (festivalId, usersIds) => {
     try {
         const response = await api.post(`/api/festivals/${festivalId}/users`, {usersIds});
@@ -423,6 +431,7 @@ export const addUsersToFestival = async (festivalId, usersIds) => {
     }
 }
 
+// Fetch users associated with a festival
 export const getFestivalUsers = async (festivalId) => {
     try {
         const response = await api.get(`/api/festivals/${festivalId}/users`);
@@ -433,6 +442,7 @@ export const getFestivalUsers = async (festivalId) => {
     }
 }
 
+// Fetch the role of a user in a festival
 export const getUserRole = async (userId, festivalId) => {
     try {
         const response = await api.get(`/api/users/${userId}/role`, {params: {festivalId}});
@@ -443,6 +453,7 @@ export const getUserRole = async (userId, festivalId) => {
     }
 }
 
+// Fetch unused bins for a festival
 export const getUnusedFestivalBins = async (festivalId) => {
     try {
         const response = await api.get(`/api/festivals/${festivalId}/unused-bins`);
@@ -453,8 +464,7 @@ export const getUnusedFestivalBins = async (festivalId) => {
     }
 }
 
-
-// >> Protected to Festival Owner/Admin <<
+// Change the role of a user in a festival (protected to Festival Owner/Admin)
 export const changeUserRole = async (userId, festivalId, role) => {
     try {
         const response = await api.post(`/api/users/${userId}/role`, {festivalId, role});
@@ -465,7 +475,7 @@ export const changeUserRole = async (userId, festivalId, role) => {
     }
 }
 
-// >> Protected to Festival Owner/Admin <<
+// Remove a user from a festival (protected to Festival Owner/Admin)
 export const removeUserFromFestival = async (userId, festivalId) => {
     try {
         const response = await api.post(`/api/users/${userId}/remove`, {festivalId});
