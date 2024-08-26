@@ -80,7 +80,7 @@ export default function UnassignTrapsFromBinDialog({binId, open, onClose, onUpda
 
                     {thisBinTraps.length === 0 ? (
                         <p className='text-base text-gray-700'>
-                            Aucun trap associée.
+                            Aucun graal associé.
                         </p>
                     ) : (
                         <FormGroup>

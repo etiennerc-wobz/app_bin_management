@@ -47,7 +47,7 @@ export default function FestivalTraps({ festivalId, traps, onUpdate }) {
   const handleUnassignGraal = (graalId) => () => {
     const graal = graals.find((graal) => graal.id === graalId);
     setGraalToUnassign(graal);
-    setConfirmationDialogMessage(`Voulez-vous vraiment supprimer la graal ${graalId} du festival ?`);
+    setConfirmationDialogMessage(`Voulez-vous vraiment supprimer le graal ${graalId} du festival ?`);
     setConfirmationDialogOpen(true);
   };
 

@@ -4,16 +4,16 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import { getFreeFestivalTraps, getFavoriteFestival, assignTrapsToBin } from '../../api';
-import { useState, useContext, useEffect } from 'react';
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
-import { AuthContext } from '../AuthContext/AuthContext';
-import { Link } from 'react-router-dom';
+import {getFreeFestivalTraps, getFavoriteFestival, assignTrapsToBin} from '../../api';
+import {useState, useContext, useEffect} from 'react';
+import {Checkbox, FormControlLabel, FormGroup} from '@mui/material';
+import {AuthContext} from '../AuthContext/AuthContext';
+import {Link} from 'react-router-dom';
 
-export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate }) {
+export default function AssignTrapsToBinDialog({binId, open, onClose, onUpdate}) {
     const [selectedTraps, setSelectedTraps] = useState([]);
     const [thisFestivalTraps, setThisFestivalTraps] = useState([]);
-    const { user } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
 
     useEffect(() => {
         if (open) {
@@ -80,7 +80,7 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
 
                     {thisFestivalTraps.length === 0 ? (
                         <p className='text-base text-gray-700'>
-                            Aucun trap disponible associée à ce festival. <br/>
+                            Aucun graal disponible associé à ce festival. <br/>
                             {user.iswobzadmin && (
                                 <p>
                                     Veuillez en associer depuis la page <strong><Link to="/" style={{

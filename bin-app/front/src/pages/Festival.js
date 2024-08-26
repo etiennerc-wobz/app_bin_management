@@ -246,7 +246,7 @@ const Festival = () => {
                                         {traps.length > 0 && loading === false ? (
                                             null
                                         ) : (
-                                            <h2 className="pt-10 text-md sm:text-lg text-left">Aucune trap pour ce
+                                            <h2 className="pt-10 text-md sm:text-lg text-left">Aucun graal pour ce
                                                 festival</h2>
                                         )}
                                     </div>
