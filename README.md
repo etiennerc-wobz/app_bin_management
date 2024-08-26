@@ -2,7 +2,7 @@
 
 ## Description
 
-The application is a front-end interface developed in React.js for managing cup collection bins (MagicBins) as part of the MagicLoop project. It allows users to manage the MagicBins, view associated data, and interact with the local server to update collection information.
+The application is a front-end interface developed in React.js for managing MagicBins and their Graals as part of the MagicLoop project. It allows users to manage the MagicBins, view associated data, and interact with the local server to update collection information.
 
 ## Project Structure
 
