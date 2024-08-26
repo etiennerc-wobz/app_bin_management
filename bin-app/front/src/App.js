@@ -8,6 +8,7 @@ import Festival from './pages/Festival';
 import MagicBins from './pages/MagicBins';
 import Map from './pages/Map';
 import Bin from './pages/Bin';
+import NotFound from "./pages/NotFound";
 import ResponsiveAppBar from './components/TopNavigation/TopNavigation';
 import Login from './components/Login/Login';
 import UserProfile from './pages/UserProfile';
@@ -37,6 +38,7 @@ const App = () => {
                     <Route path="/map" element={<PrivateRoute><Map/></PrivateRoute>}/>
                     <Route path="/magic-bins/:id" element={<PrivateRoute><Bin/></PrivateRoute>}/>
                     <Route path="/profile" element={<PrivateRoute><UserProfile/></PrivateRoute>}/>
+                    <Route path="*" element={<NotFound/>}/>
                 </Routes>
             </div>
         </Router>
