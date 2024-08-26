@@ -184,7 +184,7 @@ const Festival = () => {
     // Handle traps update
     const handleTrapsUpdate = () => {
         fetchFestivalTraps();
-        setSnackbarMessage("Traps modifiées");
+        setSnackbarMessage("Graals modifiées");
         setOpenSnackbar(true);
     }
 
