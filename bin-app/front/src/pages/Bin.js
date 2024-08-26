@@ -202,7 +202,7 @@ const Bin = () => {
             </div>
 
             <div id="DivBin" className="w-full sm:w-2/3 flex flex-row justify-between items-center pt-20 px-4 ">
-                <div className="flex flex-col items-start sm:mr-10 w-[16em] sm:w-11/12">
+                <div className="flex flex-col items-start sm:mr-10 w-[12rem] sm:w-11/12">
                     {!isMobile && (
                         <div className="mb-4">
                             <StatusIndicator isConnected={thisStatus}/>

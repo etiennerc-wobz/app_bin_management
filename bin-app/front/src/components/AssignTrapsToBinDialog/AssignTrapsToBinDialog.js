@@ -80,8 +80,16 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
 
                     {thisFestivalTraps.length === 0 ? (
                         <p className='text-base text-gray-700'>
-                            Aucun trap disponible associée à ce festival. <br />
-                            Veuillez en associer depuis la page <strong><Link to="/" style={{ textDecoration: 'underline', color: '#19423d' }}>Festival</Link></strong>.
+                            Aucun trap disponible associée à ce festival. <br/>
+                            {user.iswobzadmin && (
+                                <p>
+                                    Veuillez en associer depuis la page <strong><Link to="/" style={{
+                                    textDecoration: 'underline',
+                                    color: '#19423d'
+                                }}>Festival</Link></strong>.
+                                </p>
+                            )
+                            }
                         </p>
                     ) : (
                         <>
@@ -111,14 +119,14 @@ export default function AssignTrapsToBinDialog({ binId, open, onClose, onUpdate 
 
                                 <DialogActions>
                                     <Button
-                                        sx={{ color: '#74BDB6' }}
+                                        sx={{color: '#74BDB6'}}
                                         onClick={onClose}
                                         className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wobzBlue'
                                     >
                                         Annuler
                                     </Button>
                                     <Button
-                                        sx={{ color: '#19423d' }}
+                                        sx={{color: '#19423d'}}
                                         type="submit"
                                         className='px-4 py-2 text-sm font-medium text-white bg-wobzBlue rounded-md hover:bg-wobzBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wobzBlue'
                                     >
